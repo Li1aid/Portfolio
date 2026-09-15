@@ -282,178 +282,22 @@
 
                         <!-- 3D MAP — game-engine perspective plane -->
                         <section class="vp-screen vp-screen-map" data-screen="map">
-                            <div class="vp-map-canvas" id="vp-map-canvas" tabindex="0">
-                                <!-- Sky / horizon -->
-                                <div class="vp-map-sky"></div>
-                                <div class="vp-map-horizon-glow"></div>
+                            <div class="vp-map-canvas" id="vp-map-canvas">
+                                <div class="vp-map3d" id="vp-map3d"></div>
 
-                                <!-- World container: rotates and translates as a whole based on camera -->
-                                <div class="vp-world" id="vp-world">
-                                    <!-- The infinite-ish ground plane lives in 3D space -->
-                                    <div class="vp-ground" id="vp-ground">
-                                        <div class="vp-ground-grid"></div>
-                                    </div>
+                                <div class="vp-map3d-loading" id="vp-map3d-loading">
+                                    <span class="vp-map3d-spinner"></span>
+                                    <span data-en="Loading 3D harbour…" data-zh="正在加载 3D 港湾…">Loading 3D harbour…</span>
+                                </div>
 
-<<<<<<< Updated upstream
-                                    <!-- LANDMARKS — multi-layer Z-depth billboards.
-                                         Each landmark consists of multiple SVG layers placed at
-                                         different Z heights inside a preserve-3d wrapper.
-                                         When the world rotates, layers parallax against each
-                                         other, producing real volume. -->
-
-                                    <!-- Opera House landmark: dual-layer SVG wireframe.
-                                         Back layer is pushed away on Z and dimmed; front layer
-                                         sits at Z=0 at full glow. Together they parallax when
-                                         the camera rotates, producing real volume. -->
-                                    <div class="vp-landmark vp-landmark-opera vp-landmark-cyan vp-landmark-wire" style="--wx: -200px; --wz: 100px;" data-event="Opera Light" data-target="opera">
-                                        <div class="vp-lm-footprint vp-lm-footprint-opera"></div>
-                                        <div class="vp-lm-layers">
-                                            <!-- Back layer: dimmer silhouette outlines for depth parallax -->
-                                            <svg class="vp-lm-wire vp-lm-wire-back" viewBox="-105 -65 210 95" aria-hidden="true">
-                                                <g class="wf-stroke" fill="none" stroke-width="0.9" opacity="0.7">
-                                                    <path d="M -70.2 6 Q -79.3 -11.1 -86.2 -24.9 Q -69.1 -27.1 -52 -15.8 Q -57.8 -4.2 -60 6"/>
-                                                    <path d="M -60 6 Q -64.7 -20.2 -63.3 -40.9 Q -40.7 -39.8 -22.2 -15.8 Q -37.1 -3.1 -40.7 6"/>
-                                                    <path d="M -40.7 6 Q -45.1 -24.9 -53.1 -56.9 Q -24.7 -54.7 -0.7 -15.8 Q -16.7 -0.9 -22.2 6"/>
-                                                    <path d="M -18.9 6 Q 12 -31.8 53.1 -40.9 Q 52.7 -18 72.7 6"/>
-                                                    <path d="M 51 6 Q 63.6 -15.8 90.9 -19.1 Q 82.9 -4.2 72.7 6"/>
-                                                </g>
-                                            </svg>
-                                            <!-- Front layer: same silhouette as detail page, scaled to landmark size -->
-                                            <svg class="vp-lm-wire vp-lm-wire-front" viewBox="-105 -65 210 95" aria-hidden="true">
-                                                <g class="wf-stroke-bright" fill="none">
-                                                    <!-- Sail 1 -->
-                                                    <path d="M -70.2 6 Q -79.3 -11.1 -86.2 -24.9 Q -69.1 -27.1 -52 -15.8 Q -57.8 -4.2 -60 6"/>
-                                                    <!-- Sail 2 -->
-                                                    <path d="M -60 6 Q -64.7 -20.2 -63.3 -40.9 Q -40.7 -39.8 -22.2 -15.8 Q -37.1 -3.1 -40.7 6"/>
-                                                    <!-- Sail 3 (tallest) -->
-                                                    <path d="M -40.7 6 Q -45.1 -24.9 -53.1 -56.9 Q -24.7 -54.7 -0.7 -15.8 Q -16.7 -0.9 -22.2 6"/>
-                                                    <!-- Sail 4 (large right) — extends all the way to x≈73 -->
-                                                    <path d="M -18.9 6 Q 12 -31.8 53.1 -40.9 Q 52.7 -18 72.7 6"/>
-                                                    <!-- Sail 4 inner ridge -->
-                                                    <path d="M 12.7 6 Q 25.5 -18 42.9 -28.9"/>
-                                                    <!-- Sail 5 (small) — left base inside sail 4 at x≈51 -->
-                                                    <path d="M 51 6 Q 63.6 -15.8 90.9 -19.1 Q 82.9 -4.2 72.7 6"/>
-                                                    <!-- Sail 5 inner ridge -->
-                                                    <path d="M 63.6 6 Q 72.7 -9.3 84.4 -14.4"/>
-                                                </g>
-                                                <!-- Stepped podium — single clean outline -->
-                                                <g class="wf-stroke" fill="none" stroke-width="0.8">
-                                                    <path d="M -100 22 L 100 22"/>
-                                                    <path d="M -100 22 L -100 18.7 L -87.3 18.7 L -87.3 10.7 L -82.9 10.7 L -82.9 6 L 93.1 6 L 93.1 12.9 L 100 12.9 L 100 22"/>
-                                                </g>
-                                            </svg>
-                                        </div>
-                                        <button class="vp-landmark-pin" data-event="Opera Light" data-target="opera">
-                                            <span class="vp-pin-dot"></span>
-                                            <span class="vp-pin-label">Opera House</span>
-                                        </button>
-                                    </div>
-
-                                    <!-- Harbour Bridge landmark: dual-layer wireframe arch.
-                                         Back layer = simple silhouette arch; front layer = full
-                                         truss + hangers + deck. -->
-                                    <div class="vp-landmark vp-landmark-bridge vp-landmark-cyan vp-landmark-wire" style="--wx: 0px; --wz: -160px;" data-event="Harbour Bridge" data-target="bridge">
-                                        <div class="vp-lm-footprint vp-lm-footprint-bridge"></div>
-                                        <div class="vp-lm-layers">
-                                            <svg class="vp-lm-wire vp-lm-wire-back" viewBox="-150 -80 300 110" aria-hidden="true">
-                                                <g class="wf-stroke" fill="none">
-                                                    <path d="M -130 18 Q 0 -65 130 18"/>
-                                                    <line x1="-140" y1="18" x2="140" y2="18" stroke-width="1.2"/>
-                                                </g>
-                                            </svg>
-                                            <svg class="vp-lm-wire vp-lm-wire-front" viewBox="-160 -85 320 120" aria-hidden="true">
-                                                <!-- Outer arch -->
-                                                <path class="wf-stroke-bright" fill="none" d="M -140 22 Q 0 -78 140 22"/>
-                                                <!-- Inner arch chord -->
-                                                <path class="wf-stroke" fill="none" d="M -140 22 Q 0 -56 140 22" stroke-width="1.2"/>
-                                                <!-- Vertical hangers -->
-                                                <g class="wf-stroke" fill="none" stroke-width="0.8" opacity="0.85">
-                                                    <line x1="-110" y1="22" x2="-110" y2="-2"/>
-                                                    <line x1="-80"  y1="22" x2="-80"  y2="-26"/>
-                                                    <line x1="-50"  y1="22" x2="-50"  y2="-46"/>
-                                                    <line x1="-20"  y1="22" x2="-20"  y2="-58"/>
-                                                    <line x1="10"   y1="22" x2="10"   y2="-58"/>
-                                                    <line x1="40"   y1="22" x2="40"   y2="-50"/>
-                                                    <line x1="70"   y1="22" x2="70"   y2="-32"/>
-                                                    <line x1="100"  y1="22" x2="100"  y2="-6"/>
-                                                </g>
-                                                <!-- Cross truss zigzag -->
-                                                <path class="wf-stroke" fill="none" stroke-width="0.6" opacity="0.55"
-                                                      d="M -110 -2 L -80 22 L -50 -46 L -20 22 L 10 -58 L 40 22 L 70 -32 L 100 22"/>
-                                                <!-- Deck (3 lines) -->
-                                                <line class="wf-stroke-bright" x1="-150" y1="22" x2="150" y2="22"/>
-                                                <line class="wf-stroke" x1="-150" y1="28" x2="150" y2="28" stroke-width="0.9"/>
-                                                <!-- Pylons -->
-                                                <g class="wf-stroke" fill="none" stroke-width="1">
-                                                    <rect x="-148" y="-2" width="10" height="38"/>
-                                                    <rect x="138"  y="-2" width="10" height="38"/>
-                                                </g>
-                                            </svg>
-                                        </div>
-                                        <button class="vp-landmark-pin" data-event="Harbour Bridge" data-target="bridge">
-                                            <span class="vp-pin-dot"></span>
-                                            <span class="vp-pin-label">Harbour Bridge</span>
-                                        </button>
-                                    </div>
-
-                                    <!-- Drone Show landmark: stylised swarm rising from a launch pad,
-                                         with concentric ground rings on the back layer for depth. -->
-                                    <div class="vp-landmark vp-landmark-drones vp-landmark-cyan vp-landmark-wire" style="--wx: 220px; --wz: 100px;" data-event="Drone Show" data-target="drones">
-                                        <div class="vp-lm-footprint vp-lm-footprint-drones"></div>
-                                        <div class="vp-lm-layers">
-                                            <svg class="vp-lm-wire vp-lm-wire-back" viewBox="-80 -85 160 105" aria-hidden="true">
-                                                <!-- Concentric ground rings for the launch pad -->
-                                                <g class="wf-stroke" fill="none" opacity="0.7">
-                                                    <ellipse cx="0" cy="18" rx="62" ry="9"/>
-                                                    <ellipse cx="0" cy="18" rx="42" ry="6"/>
-                                                    <ellipse cx="0" cy="18" rx="22" ry="3"/>
-                                                </g>
-                                                <!-- Trailing back drones -->
-                                                <g class="wf-stroke" fill="currentColor" opacity="0.6">
-                                                    <circle cx="-30" cy="-22" r="1.4"/>
-                                                    <circle cx="14"  cy="-46" r="1.4"/>
-                                                    <circle cx="-10" cy="-66" r="1.4"/>
-                                                </g>
-                                            </svg>
-                                            <svg class="vp-lm-wire vp-lm-wire-front" viewBox="-90 -90 180 110" aria-hidden="true">
-                                                <!-- Front swarm: drones tracing an infinity loop in mid-air -->
-                                                <path class="wf-stroke-bright" fill="none" stroke-width="1.4"
-                                                      d="M -50 -40 Q -30 -60 0 -40 Q 30 -20 50 -40 Q 30 -60 0 -40 Q -30 -20 -50 -40 Z"/>
-                                                <!-- Drones along the path (highlight beats) -->
-                                                <g fill="currentColor" class="wf-stroke-bright">
-                                                    <circle cx="-50" cy="-40" r="1.6"/>
-                                                    <circle cx="-30" cy="-52" r="1.4"/>
-                                                    <circle cx="0"   cy="-40" r="1.8"/>
-                                                    <circle cx="30"  cy="-28" r="1.4"/>
-                                                    <circle cx="50"  cy="-40" r="1.6"/>
-                                                    <circle cx="30"  cy="-52" r="1.4"/>
-                                                    <circle cx="-30" cy="-28" r="1.4"/>
-                                                </g>
-                                                <!-- Vertical light beams from pad -->
-                                                <g class="wf-stroke" fill="none" stroke-width="0.6" opacity="0.6" stroke-dasharray="2 3">
-                                                    <line x1="-50" y1="20" x2="-50" y2="-30"/>
-                                                    <line x1="-25" y1="20" x2="-25" y2="-50"/>
-                                                    <line x1="0"   y1="20" x2="0"   y2="-70"/>
-                                                    <line x1="25"  y1="20" x2="25"  y2="-50"/>
-                                                    <line x1="50"  y1="20" x2="50"  y2="-30"/>
-                                                </g>
-                                                <!-- Launch pad ring -->
-                                                <ellipse class="wf-stroke-bright" cx="0" cy="20" rx="68" ry="10" fill="none"/>
-                                            </svg>
-                                        </div>
-                                        <button class="vp-landmark-pin" data-event="Drone Show" data-target="drones">
-                                            <span class="vp-pin-dot"></span>
-                                            <span class="vp-pin-label">Drone Show</span>
-                                        </button>
-                                    </div>
-=======
                                 <div class="vp-map3d-hints" aria-hidden="true">
                                     <span data-en="AUTO ORBIT · 360°" data-zh="自动环绕 · 360°">AUTO ORBIT · 360°</span>
                                     <span data-en="SCROLL · ZOOM" data-zh="滚轮 · 缩放">SCROLL · ZOOM</span>
                                     <span data-en="CLICK LABEL · SELECT" data-zh="点击标签 · 选中">CLICK LABEL · SELECT</span>
                                 </div>
->>>>>>> Stashed changes
 
+                                <div class="vp-map3d-compass" aria-hidden="true">
+                                    <span class="vp-compass-arrow">▲</span>N
                                 </div>
 
                                 <!-- Compass / reset -->
@@ -468,13 +312,8 @@
 
                             <aside class="vp-map-sidepanel" id="vp-map-sidepanel">
                                 <div class="vp-side-eyebrow" data-en="SELECT A LANDMARK" data-zh="选一个地标">SELECT A LANDMARK</div>
-<<<<<<< Updated upstream
-                                <h4 class="vp-side-title" id="vp-map-title">Pick a glowing point</h4>
-                                <p class="vp-side-desc" id="vp-map-desc" data-en="Drag the world to look around. Use WASD to fly across the harbour. Click any pin to enter its scene." data-zh="拖动画面环顾四周，用 WASD 在海港上空飞，点任意图钉进入它的场景。">Drag the world to look around. Use WASD to fly across the harbour. Click any pin to enter its scene.</p>
-=======
                                 <h4 class="vp-side-title" id="vp-map-title" data-en="Pick a glowing point" data-zh="选一个发光的点">Pick a glowing point</h4>
                                 <p class="vp-side-desc" id="vp-map-desc" data-en="A slow 360° aerial of Sydney Harbour — Circular Quay, the Bridge, the Opera House on Bennelong Point. The compass tracks north as the view turns. Scroll to zoom, click a floating label to select its landmark." data-zh="镜头绕着悉尼港缓缓转一圈：环形码头、海港大桥、便利朗角上的歌剧院都在。画面转动时，指南针始终指向北。滚轮缩放，点浮动的标签选中地标。">A slow 360° aerial of Sydney Harbour — Circular Quay, the Bridge, the Opera House on Bennelong Point. The compass tracks north as the view turns. Scroll to zoom, click a floating label to select its landmark.</p>
->>>>>>> Stashed changes
                                 <button class="vp-side-cta" id="vp-map-start" disabled>
                                     <span data-en="START" data-zh="开始">START</span>
                                     <span>→</span>
@@ -850,6 +689,7 @@
     </section>
 
     <script src="../script.js"></script>
+    <script src="vivid-map3d.js" defer></script>
     <script src="vivid-demos.js"></script>
     <script>
         document.body.classList.add('loaded');

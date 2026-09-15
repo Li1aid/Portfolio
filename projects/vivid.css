@@ -2046,8 +2046,6 @@
 
     .vp-screen-map { grid-template-columns: 1fr; }
 }
-<<<<<<< Updated upstream
-=======
 
 /* ── Real WebGL 3D map (vivid-map3d.js) ───────────────────────── */
 
@@ -2145,4 +2143,3 @@
     display: inline-block;       /* rotated by vivid-map3d.js as the camera orbits */
     will-change: transform;
 }
->>>>>>> Stashed changes

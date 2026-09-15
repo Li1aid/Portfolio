@@ -113,107 +113,49 @@
         });
     }
 
-    /* ---------- 3D MAP — game-engine camera ---------- */
+    /* ---------- 3D MAP — real WebGL harbour (vivid-map3d.js) ----------
+       The Three.js scene lives in its own module and is lazy-loaded the
+       first time the visitor opens the Map screen. If WebGL or the CDN
+       fails we degrade to a message — the rest of the demo is untouched. */
 
-    // Camera state — only rotation (drag to look around). No translation.
-    let cam = { rotZ: 0, rotX: 60 };
-    let camAuto = true;
-    let camAutoFrame = null;
-    let mapDragging = false;
-    let mapDragStart = { x: 0, y: 0, rotZ: 0, rotX: 60 };
+    let map3dCtrl = null;
+    let map3dLoading = false;
+    let map3dFailed = false;
 
-    function applyCamera() {
-        const world = $('#vp-world');
-        if (!world) return;
-        world.style.transform = `translate(-50%, -50%) rotateX(${cam.rotX}deg) rotateZ(${cam.rotZ}deg)`;
-        // Push camera angles to CSS variables so each landmark / pin
-        // can billboard itself toward the viewer.
-        const canvas = $('#vp-map-canvas');
-        if (canvas) {
-            canvas.style.setProperty('--cam-rx', cam.rotX + 'deg');
-            canvas.style.setProperty('--cam-rz', cam.rotZ + 'deg');
-        }
-    }
-
-    function startMapAutoSpin() {
-        stopMapAutoSpin();
-        if (!camAuto) return;
-        const tick = () => {
-            if (!camAuto || mapDragging) {
-                camAutoFrame = null;
-                return;
-            }
-            cam.rotZ = (cam.rotZ + 0.05) % 360;
-            applyCamera();
-            camAutoFrame = requestAnimationFrame(tick);
-        };
-        camAutoFrame = requestAnimationFrame(tick);
-    }
-
-    function stopMapAutoSpin() {
-        if (camAutoFrame) {
-            cancelAnimationFrame(camAutoFrame);
-            camAutoFrame = null;
+    function map3dFallback() {
+        map3dFailed = true;
+        const loading = $('#vp-map3d-loading');
+        if (loading) {
+            loading.classList.add('failed');
+            loading.innerHTML =
+                '<span data-en="3D map needs WebGL — try a desktop browser." data-zh="3D 地图需要 WebGL——请试试桌面浏览器。">3D map needs WebGL — try a desktop browser.</span>';
         }
     }
 
     function initMap() {
-        const canvas = $('#vp-map-canvas');
-        const reset = $('#vp-map-reset');
         const startBtn = $('#vp-map-start');
         const title = $('#vp-map-title');
         const desc = $('#vp-map-desc');
-        if (!canvas) return;
+        const reset = $('#vp-map-reset');
 
         const meta = {
             'Opera Light':    'Sydney Opera House — projection mapping turns the sails into a moving canvas.',
             'Harbour Bridge': 'Harbour Bridge — synchronised lights pulse along the steel arch.',
-            'Drone Show':     'Botanic Gardens — 500 drones choreograph stories above the trees.',
+            'Drone Show':     'Botanic Gardens — 400 drones choreograph stories above the harbour.',
         };
 
         let selected = null;
 
-        // Drag to rotate the world (look around)
-        canvas.addEventListener('mousedown', (e) => {
-            mapDragging = true;
-            camAuto = false;
-            mapDragStart = { x: e.clientX, y: e.clientY, rotZ: cam.rotZ, rotX: cam.rotX };
-            stopMapAutoSpin();
-        });
-        window.addEventListener('mousemove', (e) => {
-            if (!mapDragging) return;
-            const dx = e.clientX - mapDragStart.x;
-            const dy = e.clientY - mapDragStart.y;
-            cam.rotZ = mapDragStart.rotZ + dx * 0.4;
-            cam.rotX = Math.max(25, Math.min(80, mapDragStart.rotX - dy * 0.25));
-            applyCamera();
-        });
-        window.addEventListener('mouseup', () => { mapDragging = false; });
-
-        // Reset camera
-        if (reset) {
-            reset.addEventListener('click', () => {
-                cam = { rotZ: 0, rotX: 60 };
-                applyCamera();
-                camAuto = true;
-                startMapAutoSpin();
-            });
-        }
-
-        // Pin clicks
-        $$('.vp-landmark-pin').forEach(pin => {
-            pin.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const event = pin.dataset.event;
-                $$('.vp-landmark').forEach(l => l.classList.remove('selected'));
-                const lm = pin.closest('.vp-landmark');
-                if (lm) lm.classList.add('selected');
-
-                selected = event;
-                if (title) title.textContent = event;
-                if (desc) desc.textContent = meta[event] || '';
-                if (startBtn) startBtn.disabled = false;
-            });
+        window.addEventListener('vivid-map3d:select', (e) => {
+            const event = e.detail.event;
+            selected = event;
+            if (!event) {
+                if (startBtn) startBtn.disabled = true;
+                return;
+            }
+            if (title) title.textContent = event;
+            if (desc) desc.textContent = meta[event] || '';
+            if (startBtn) startBtn.disabled = false;
         });
 
         if (startBtn) {
@@ -224,11 +166,31 @@
             });
         }
 
-        applyCamera();
+        if (reset) reset.addEventListener('click', () => map3dCtrl?.resetCamera());
     }
 
-    function startMap() { startMapAutoSpin(); }
-    function stopMap() { stopMapAutoSpin(); }
+    function startMap() {
+        if (map3dFailed) return;
+        if (map3dCtrl) { map3dCtrl.start(); return; }
+        if (map3dLoading) return;
+
+        const container = $('#vp-map3d');
+        if (!container || !window.VividMap3D) { map3dFallback(); return; }
+
+        map3dLoading = true;
+        window.VividMap3D.mount(container)
+            .then((ctrl) => {
+                map3dCtrl = ctrl;
+                $('#vp-map3d-loading')?.remove();
+                if (currentScreen === 'map') ctrl.start();
+            })
+            .catch(() => map3dFallback())
+            .finally(() => { map3dLoading = false; });
+    }
+
+    function stopMap() {
+        if (map3dCtrl) map3dCtrl.stop();
+    }
 
     /* ---------- EVENTS list ---------- */
 
