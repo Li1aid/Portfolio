@@ -1,11 +1,11 @@
 /* TEAM */
-Designer & Creator: Xuejian Yang (杨雪健, Aiden)
+Designer & Creator: Aiden Yang
 Site: https://aidenyang.me/
 Location: Sydney, Australia
 Contact: AidenYang5995 [at] gmail.com
 LinkedIn: https://www.linkedin.com/in/aiden-yang-ty
 
-Names: Xuejian Yang · 杨雪健 · Yang Xuejian · Aiden Yang · Xuejian Aiden Yang
+Also known as: Xuejian Yang · 杨雪健
 Role: Design Engineer
 Focus: Product Design, Vibecoding, AI-driven Experiences
 Education: Master of Interaction Design — University of Sydney (completed July 2026)
