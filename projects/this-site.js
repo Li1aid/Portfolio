@@ -5,7 +5,6 @@
 (function () {
     const nodes = {
         user: {
-            eyebrow: { en: 'NODE · BROWSER', zh: '节点 · 浏览器' },
             title:   { en: 'Visitor browser', zh: '访客浏览器' },
             body: {
                 en: 'The starting point for every request. Loads static HTML/CSS/JS from GitHub Pages, then talks to the Cloudflare Worker for AI chat.',
@@ -19,11 +18,10 @@
             flows: ['arch-line-visit', 'arch-line-chat', 'arch-line-admin']
         },
         ghpages: {
-            eyebrow: { en: 'NODE · HOSTING', zh: '节点 · 托管' },
             title:   { en: 'GitHub Pages', zh: 'GitHub Pages' },
             body: {
-                en: 'Free static hosting from GitHub. I git push the front-end (vanilla JS, GSAP animations, project pages) and GitHub serves it through a global CDN.',
-                zh: 'GitHub 的免费静态托管。前端（原生 JS、GSAP 动画、项目页）git push 上去，GitHub 就通过全球 CDN 分发出去。'
+                en: 'I publish the static HTML, CSS and JavaScript on GitHub Pages. Each project has its own link, and the page content arrives with the first request.',
+                zh: '我用 GitHub Pages 发布静态 HTML、CSS 和 JavaScript。每个项目都有独立链接，首次请求就能拿到页面正文。'
             },
             why: {
                 en: 'For a portfolio I never need server-side rendering. GitHub Pages is free, fast, and version-controlled by default. Trying to be more clever would cost more and break easier.',
@@ -32,7 +30,6 @@
             flows: ['arch-line-visit']
         },
         worker: {
-            eyebrow: { en: 'NODE · BACKEND', zh: '节点 · 后端' },
             title:   { en: 'Cloudflare Worker', zh: 'Cloudflare Worker' },
             body: {
                 en: 'A tiny JavaScript function that runs on Cloudflare\'s edge network — 300+ cities worldwide. It routes chat requests to the right AI provider, logs the conversation to D1, and serves the admin dashboard.',
@@ -45,7 +42,6 @@
             flows: ['arch-line-chat', 'arch-line-admin']
         },
         access: {
-            eyebrow: { en: 'NODE · AUTH', zh: '节点 · 鉴权' },
             title:   { en: 'Cloudflare Access', zh: 'Cloudflare Access' },
             body: {
                 en: 'A zero-trust gateway in front of the admin dashboard. Any request to /admin must pass Access first — it forces a Google or email login, verifies the email matches my allow-list, and only then forwards the request to the Worker.',
@@ -58,7 +54,6 @@
             flows: ['arch-line-admin']
         },
         ai: {
-            eyebrow: { en: 'NODE · LLM', zh: '节点 · 大模型' },
             title:   { en: 'Claude · DeepSeek', zh: 'Claude · DeepSeek' },
             body: {
                 en: 'Two AI providers, picked by the visitor\'s country. Claude Haiku 4.5 for everyone outside mainland China (low latency, strong English). DeepSeek for visitors inside China (server in CN bypasses network friction, excellent Chinese).',
@@ -71,7 +66,6 @@
             flows: ['arch-line-chat']
         },
         d1: {
-            eyebrow: { en: 'NODE · STORAGE', zh: '节点 · 存储' },
             title:   { en: 'Cloudflare D1', zh: 'Cloudflare D1' },
             body: {
                 en: 'Cloudflare\'s managed SQLite database. Every chat exchange gets a row: user message, AI reply, country, language, provider, and any "signal tags" matched (hire / contact / pricing / portfolio). A scheduled cron purges rows older than 30 days.',
@@ -85,70 +79,5 @@
         }
     };
 
-    function currentLang() {
-        const active = document.querySelector('.lang-option.active');
-        return active && active.dataset.lang === 'zh' ? 'zh' : 'en';
-    }
-
-    function renderPanel(key) {
-        const panel = document.getElementById('arch-panel');
-        const content = panel.querySelector('.arch-panel-content');
-        const data = nodes[key];
-        const lang = currentLang();
-        if (!data) return;
-        content.innerHTML = `
-            <div class="arch-panel-eyebrow">${escapeHtml(data.eyebrow[lang] || data.eyebrow.en)}</div>
-            <h3 class="arch-panel-title">${escapeHtml(data.title[lang] || data.title.en)}</h3>
-            <p>${escapeHtml(data.body[lang] || data.body.en)}</p>
-            <div class="why-row">
-                <strong>${lang === 'zh' ? '为什么这样选' : 'Why this choice'}</strong>
-                <p>${escapeHtml(data.why[lang] || data.why.en)}</p>
-            </div>
-        `;
-        content.dataset.nodeDetail = key;
-    }
-
-    function highlightNode(key) {
-        const svg = document.getElementById('arch-svg');
-        if (!svg) return;
-        svg.classList.add('has-active');
-        svg.querySelectorAll('.arch-node').forEach(n => {
-            n.classList.toggle('active', n.dataset.node === key);
-        });
-        // highlight relevant lines
-        const flows = nodes[key]?.flows || [];
-        svg.querySelectorAll('.arch-line').forEach(l => {
-            const matches = flows.some(f => l.classList.contains(f));
-            l.classList.toggle('arch-active-flow', matches);
-        });
-    }
-
-    function escapeHtml(s) {
-        return String(s ?? '').replace(/[&<>"']/g, c => ({
-            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-        }[c]));
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const svg = document.getElementById('arch-svg');
-        if (!svg) return;
-        svg.querySelectorAll('.arch-node').forEach(node => {
-            node.addEventListener('click', () => {
-                const key = node.dataset.node;
-                renderPanel(key);
-                highlightNode(key);
-            });
-        });
-
-        // Re-render panel content when language changes
-        const langToggle = document.getElementById('langToggle');
-        if (langToggle) {
-            langToggle.addEventListener('click', () => {
-                const active = document.querySelector('.arch-panel-content');
-                if (active && active.dataset.nodeDetail && active.dataset.nodeDetail !== 'default') {
-                    setTimeout(() => renderPanel(active.dataset.nodeDetail), 30);
-                }
-            });
-        }
-    });
+    window.mountProjectArchitecture(nodes);
 })();

@@ -3,7 +3,6 @@
 (function () {
     const nodes = {
         me: {
-            eyebrow: { en: 'NODE · CLIENT', zh: '节点 · 客户端' },
             title:   { en: 'My phone or Mac', zh: '我的手机或 Mac' },
             body: {
                 en: 'The only human user is me. The dashboard is a single-page app — Alpine.js + Tailwind in one HTML template — that fetches JSON from the Flask API. Sydney and New York clocks sit side by side in the header, because the app lives in both timezones at once.',
@@ -16,7 +15,6 @@
             flows: ['arch-line-request', 'arch-line-data']
         },
         flask: {
-            eyebrow: { en: 'NODE · BACKEND', zh: '节点 · 后端' },
             title:   { en: 'Flask on Railway', zh: 'Railway 上的 Flask' },
             body: {
                 en: 'An app-factory Flask application with 8 API blueprints — holdings, transactions, watchlist, prices, pnl, search, buckets, meta — behind gunicorn, health-checked at /api/health. The custom domain points here through Cloudflare DNS. Mutating routes require a bearer token; reads stay open.',
@@ -29,7 +27,6 @@
             flows: ['arch-line-request', 'arch-line-data', 'arch-line-external', 'arch-line-cron', 'arch-line-agent']
         },
         db: {
-            eyebrow: { en: 'NODE · STORAGE', zh: '节点 · 存储' },
             title:   { en: 'portfolio.db (SQLite)', zh: 'portfolio.db（SQLite）' },
             body: {
                 en: 'One SQLite file in WAL mode on Railway\'s persistent /data volume. The transactions ledger is the single source of trade entry: buys update weighted-average cost, sells accrue realized P&L, and one daily P&L row per ET trading day feeds the calendar.',
@@ -42,7 +39,6 @@
             flows: ['arch-line-data']
         },
         upstreams: {
-            eyebrow: { en: 'NODE · EXTERNAL', zh: '节点 · 外部依赖' },
             title:   { en: 'Tencent qt · yfinance · akshare', zh: '腾讯 qt · yfinance · akshare' },
             body: {
                 en: 'Three families of quote data: one batched, GBK-decoded Tencent qt call covers every A-share and HK code at once; yfinance handles US stocks, ASX and FX pairs; akshare pulls mainland fund NAVs and Shanghai gold. Each source is wrapped so a failure marks its rows "no price" instead of aborting the refresh.',
@@ -55,7 +51,6 @@
             flows: ['arch-line-external']
         },
         sched: {
-            eyebrow: { en: 'NODE · CRON', zh: '节点 · 定时任务' },
             title:   { en: 'APScheduler — exactly two jobs', zh: 'APScheduler：只有两个任务' },
             body: {
                 en: 'In-process cron inside the same container: refresh prices and FX every 5 minutes, and compute the day\'s P&L at 16:15 New York time on weekdays — 15 minutes after the US close. The trading day is keyed to US Eastern; everything I see is displayed in Sydney time.',
@@ -68,7 +63,6 @@
             flows: ['arch-line-cron']
         },
         agent: {
-            eyebrow: { en: 'NODE · AGENT', zh: '节点 · AGENT' },
             title:   { en: 'A scheduled Claude agent', zh: '定时运行的 Claude agent' },
             body: {
                 en: 'Every weekday at 09:20 Beijing time — ten minutes before the A-share open — a scheduled Claude agent (Cowork + Chrome plugin) reads /api/holdings, /api/buckets, /api/watchlist and /api/summary and writes me a pre-market briefing, under hard risk rules it is not allowed to override.',
@@ -82,68 +76,5 @@
         }
     };
 
-    function currentLang() {
-        const active = document.querySelector('.lang-option.active');
-        return active && active.dataset.lang === 'zh' ? 'zh' : 'en';
-    }
-
-    function renderPanel(key) {
-        const panel = document.getElementById('arch-panel');
-        const content = panel.querySelector('.arch-panel-content');
-        const data = nodes[key];
-        const lang = currentLang();
-        if (!data) return;
-        content.innerHTML = `
-            <div class="arch-panel-eyebrow">${escapeHtml(data.eyebrow[lang] || data.eyebrow.en)}</div>
-            <h3 class="arch-panel-title">${escapeHtml(data.title[lang] || data.title.en)}</h3>
-            <p>${escapeHtml(data.body[lang] || data.body.en)}</p>
-            <div class="why-row">
-                <strong>${lang === 'zh' ? '为什么这么选' : 'Why this choice'}</strong>
-                <p>${escapeHtml(data.why[lang] || data.why.en)}</p>
-            </div>
-        `;
-        content.dataset.nodeDetail = key;
-    }
-
-    function highlightNode(key) {
-        const svg = document.getElementById('arch-svg');
-        if (!svg) return;
-        svg.classList.add('has-active');
-        svg.querySelectorAll('.arch-node').forEach(n => {
-            n.classList.toggle('active', n.dataset.node === key);
-        });
-        const flows = nodes[key]?.flows || [];
-        svg.querySelectorAll('.arch-line').forEach(l => {
-            const matches = flows.some(f => l.classList.contains(f));
-            l.classList.toggle('arch-active-flow', matches);
-        });
-    }
-
-    function escapeHtml(s) {
-        return String(s ?? '').replace(/[&<>"']/g, c => ({
-            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-        }[c]));
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const svg = document.getElementById('arch-svg');
-        if (!svg) return;
-        svg.querySelectorAll('.arch-node').forEach(node => {
-            node.addEventListener('click', () => {
-                const key = node.dataset.node;
-                renderPanel(key);
-                highlightNode(key);
-            });
-        });
-
-        const langToggle = document.getElementById('langToggle');
-        if (langToggle) {
-            langToggle.addEventListener('click', () => {
-                const active = document.querySelector('.arch-panel-content');
-                if (active && active.dataset.nodeDetail && active.dataset.nodeDetail !== 'default') {
-                    setTimeout(() => renderPanel(active.dataset.nodeDetail), 30);
-                }
-            });
-        }
-    });
+    window.mountProjectArchitecture(nodes);
 })();

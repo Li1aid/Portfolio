@@ -15,34 +15,17 @@
     let currentScreen = 'home';
 
     function setScreen(name) {
-        const previous = currentScreen;
         currentScreen = name;
-
-        const useGsap = typeof window.gsap !== 'undefined';
-        $$('.vp-screen').forEach(s => {
-            const isTarget = s.dataset.screen === name;
-            const wasActive = s.dataset.screen === previous;
-            if (isTarget && !s.classList.contains('active')) {
-                s.classList.add('active');
-                if (useGsap) {
-                    gsap.fromTo(s,
-                        { opacity: 0, scale: 1.04 },
-                        { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' }
-                    );
-                }
-            } else if (!isTarget && s.classList.contains('active')) {
-                if (useGsap && wasActive) {
-                    gsap.to(s, {
-                        opacity: 0, scale: 0.96, duration: 0.3, ease: 'power2.in',
-                        onComplete: () => s.classList.remove('active'),
-                    });
-                } else {
-                    s.classList.remove('active');
-                }
-            }
+        $$('.vp-screen').forEach(screen => {
+            const active = screen.dataset.screen === name;
+            screen.classList.toggle('active', active);
+            screen.inert = !active;
         });
-
-        $$('.vp-sb-item').forEach(b => b.classList.toggle('active', b.dataset.screen === name));
+        $$('.vp-sb-item').forEach(button => {
+            const active = button.dataset.screen === name;
+            button.classList.toggle('active', active);
+            button.setAttribute('aria-pressed', String(active));
+        });
 
         // Lifecycle hooks
         if (name === 'immersive') startImmersive();
@@ -58,11 +41,16 @@
         const shell = $('#vp-shell');
         if (!poster || !enter || !shell) return;
 
+        shell.inert = true;
         function launch() {
+            if (poster.inert) return;
+            poster.inert = true;
+            shell.inert = false;
             poster.classList.add('hidden');
             shell.classList.add('active');
             shell.setAttribute('aria-hidden', 'false');
             setScreen('home');
+            $('.vp-sb-item.active')?.focus({preventScroll: true});
         }
 
         enter.addEventListener('click', launch);
@@ -97,18 +85,11 @@
                 e.preventDefault();
                 const target = el.dataset.jump;
                 const eventName = el.dataset.event;
-                jumpFromTile(target, eventName);
-
                 if (!el.closest('#vivid-demo')) {
-                    const demo = document.getElementById('vivid-demo');
-                    if (demo) demo.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    setTimeout(() => {
-                        const poster = $('#vp-poster');
-                        if (poster && !poster.classList.contains('hidden')) {
-                            $('#vp-enter')?.click();
-                        }
-                    }, 600);
+                    $('#vp-enter')?.click();
+                    $('#vivid-demo')?.scrollIntoView({behavior: 'instant', block: 'start'});
                 }
+                jumpFromTile(target, eventName);
             });
         });
     }
@@ -128,7 +109,7 @@
         if (loading) {
             loading.classList.add('failed');
             loading.innerHTML =
-                '<span data-en="3D map needs WebGL — try a desktop browser." data-zh="3D 地图需要 WebGL——请试试桌面浏览器。">3D map needs WebGL — try a desktop browser.</span>';
+                '<span data-en="3D view unavailable. Choose a landmark below." data-zh="三维视图不可用。请从列表选择地标。">3D view unavailable. Choose a landmark below.</span>';
         }
     }
 
@@ -144,19 +125,41 @@
             'Drone Show':     'Botanic Gardens — 400 drones choreograph stories above the harbour.',
         };
 
+        const selector = document.createElement('select');
+        selector.className = 'vp-map-landmarks';
+        const firstOption = new Option('Choose a landmark', '');
+        selector.add(firstOption);
+        for (const name of Object.keys(meta)) selector.add(new Option(name, name));
+        title.before(selector);
+        const initialTitle = {...title.dataset};
+        const initialDesc = {...desc.dataset};
+        const descZh = {
+            'Opera Light': '悉尼歌剧院：投影映射点亮船帆。',
+            'Harbour Bridge': '悉尼海港大桥：同步灯光沿钢拱流动。',
+            'Drone Show': '皇家植物园：无人机在海港上空编队飞行。'
+        };
         let selected = null;
-
-        window.addEventListener('vivid-map3d:select', (e) => {
-            const event = e.detail.event;
-            selected = event;
-            if (!event) {
-                if (startBtn) startBtn.disabled = true;
-                return;
-            }
-            if (title) title.textContent = event;
-            if (desc) desc.textContent = meta[event] || '';
-            if (startBtn) startBtn.disabled = false;
+        function showLandmark(name) {
+            selected = Object.hasOwn(meta, name) ? name : null;
+            selector.value = selected || '';
+            title.dataset.en = selected || initialTitle.en;
+            title.dataset.zh = selected || initialTitle.zh;
+            desc.dataset.en = selected ? meta[selected] : initialDesc.en;
+            desc.dataset.zh = selected ? descZh[selected] : initialDesc.zh;
+            const lang = document.documentElement.lang.startsWith('zh') ? 'zh' : 'en';
+            firstOption.textContent = lang === 'zh' ? '选择一个地标' : 'Choose a landmark';
+            selector.setAttribute('aria-label', firstOption.textContent);
+            title.textContent = title.dataset[lang];
+            desc.textContent = desc.dataset[lang];
+            startBtn.disabled = !selected;
+        }
+        selector.addEventListener('change', () => {
+            if (map3dCtrl) map3dCtrl.selectLandmark(selector.value || null);
+            else showLandmark(selector.value);
         });
+        window.addEventListener('vivid-map3d:select', event => showLandmark(event.detail.event));
+        document.addEventListener('portfolio:language', () => showLandmark(selected));
+        showLandmark(null);
 
         if (startBtn) {
             startBtn.addEventListener('click', () => {
@@ -181,6 +184,8 @@
         window.VividMap3D.mount(container)
             .then((ctrl) => {
                 map3dCtrl = ctrl;
+                const selected = $('.vp-map-landmarks')?.value;
+                if (selected) ctrl.selectLandmark(selected);
                 $('#vp-map3d-loading')?.remove();
                 if (currentScreen === 'map') ctrl.start();
             })

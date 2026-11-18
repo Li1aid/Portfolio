@@ -3,7 +3,6 @@
 (function () {
     const nodes = {
         pubmed: {
-            eyebrow: { en: 'NODE · RETRIEVAL', zh: '节点 · 检索' },
             title:   { en: 'PubMed, twice', zh: 'PubMed，查两遍' },
             body: {
                 en: 'Route one searches the subject and keeps only papers from a 51-journal whitelist, tiered by field relevance. Route two searches by publication type — guideline, practice guideline, consensus — and deliberately ignores the whitelist, with a date window four times wider.',
@@ -16,7 +15,6 @@
             flows: ['arch-line-fetch']
         },
         sources: {
-            eyebrow: { en: 'NODE · SOURCES', zh: '节点 · 来源' },
             title:   { en: '26 feeds beyond PubMed', zh: 'PubMed 之外的 26 个来源' },
             body: {
                 en: '18 RSS feeds (STAT, Healio, ScienceDaily, WHO, FDA…), 6 society sitemaps (FIGO, ACOG, ASRM, NICE, ESGO, ESMO) and 2 scraped guideline pages, plus a manual channel for societies that cannot be scraped. Each source carries a hand-tuned rank.',
@@ -29,7 +27,6 @@
             flows: ['arch-line-fetch']
         },
         fetchers: {
-            eyebrow: { en: 'NODE · PIPELINE', zh: '节点 · 流水线' },
             title:   { en: 'Two stdlib-only scripts', zh: '两个纯标准库脚本' },
             body: {
                 en: 'fetch_papers.py and fetch_news.py — raw urllib, no frameworks, no packages. They filter, deduplicate the same story across outlets by text similarity, call Claude with bounded concurrency, and write results incrementally under a lock so a crash never loses paid analysis.',
@@ -42,7 +39,6 @@
             flows: ['arch-line-fetch', 'arch-line-grade', 'arch-line-store']
         },
         claude: {
-            eyebrow: { en: 'NODE · LLM', zh: '节点 · 大模型' },
             title:   { en: 'Claude as the reader', zh: '让 Claude 来读' },
             body: {
                 en: 'Every paper gets an A/B/C grade (or FILTER, and it disappears) plus a structured Chinese reading card — core question, design, results, limitations, next steps. Guideline-type items switch to a version-diff prompt. News gets a type label and a 1–5 importance score.',
@@ -55,7 +51,6 @@
             flows: ['arch-line-grade']
         },
         store: {
-            eyebrow: { en: 'NODE · STORAGE', zh: '节点 · 存储' },
             title:   { en: 'Flat JSON + per-item caches', zh: '扁平 JSON + 按条缓存' },
             body: {
                 en: 'Results land in data.json and news.json; every analysed paper and news item is also cached by its ID. Re-runs skip anything already analysed. Favourites live server-side with atomic writes and 30 days of dated snapshots.',
@@ -68,7 +63,6 @@
             flows: ['arch-line-store', 'arch-line-serve']
         },
         dashboard: {
-            eyebrow: { en: 'NODE · FRONT-END', zh: '节点 · 前端' },
             title:   { en: 'One HTML file, four tabs', zh: '一个 HTML 文件，四个标签页' },
             body: {
                 en: 'A single dependency-free HTML file served by a ~400-line stdlib server on port 8765: latest papers, academic news, weekly picks (A-grade papers + major news), and favourites with folders and tags. A rotating banner surfaces importance-5 items.',
@@ -82,68 +76,5 @@
         }
     };
 
-    function currentLang() {
-        const active = document.querySelector('.lang-option.active');
-        return active && active.dataset.lang === 'zh' ? 'zh' : 'en';
-    }
-
-    function renderPanel(key) {
-        const panel = document.getElementById('arch-panel');
-        const content = panel.querySelector('.arch-panel-content');
-        const data = nodes[key];
-        const lang = currentLang();
-        if (!data) return;
-        content.innerHTML = `
-            <div class="arch-panel-eyebrow">${escapeHtml(data.eyebrow[lang] || data.eyebrow.en)}</div>
-            <h3 class="arch-panel-title">${escapeHtml(data.title[lang] || data.title.en)}</h3>
-            <p>${escapeHtml(data.body[lang] || data.body.en)}</p>
-            <div class="why-row">
-                <strong>${lang === 'zh' ? '为什么这样选' : 'Why this choice'}</strong>
-                <p>${escapeHtml(data.why[lang] || data.why.en)}</p>
-            </div>
-        `;
-        content.dataset.nodeDetail = key;
-    }
-
-    function highlightNode(key) {
-        const svg = document.getElementById('arch-svg');
-        if (!svg) return;
-        svg.classList.add('has-active');
-        svg.querySelectorAll('.arch-node').forEach(n => {
-            n.classList.toggle('active', n.dataset.node === key);
-        });
-        const flows = nodes[key]?.flows || [];
-        svg.querySelectorAll('.arch-line').forEach(l => {
-            const matches = flows.some(f => l.classList.contains(f));
-            l.classList.toggle('arch-active-flow', matches);
-        });
-    }
-
-    function escapeHtml(s) {
-        return String(s ?? '').replace(/[&<>"']/g, c => ({
-            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-        }[c]));
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const svg = document.getElementById('arch-svg');
-        if (!svg) return;
-        svg.querySelectorAll('.arch-node').forEach(node => {
-            node.addEventListener('click', () => {
-                const key = node.dataset.node;
-                renderPanel(key);
-                highlightNode(key);
-            });
-        });
-
-        const langToggle = document.getElementById('langToggle');
-        if (langToggle) {
-            langToggle.addEventListener('click', () => {
-                const active = document.querySelector('.arch-panel-content');
-                if (active && active.dataset.nodeDetail && active.dataset.nodeDetail !== 'default') {
-                    setTimeout(() => renderPanel(active.dataset.nodeDetail), 30);
-                }
-            });
-        }
-    });
+    window.mountProjectArchitecture(nodes);
 })();

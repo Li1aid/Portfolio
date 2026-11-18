@@ -4,110 +4,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Whisper Field — Immersive Space for Neurodiversity | Xuejian (Aiden) Yang, Sydney</title>
-    <meta name="description" content="Whisper Field — a non-intrusive multi-sensory space for ADHD and neurodiversity. Immersive design case study by Aiden Yang, Sydney-based designer.">
-    <meta name="keywords" content="Whisper Field, ADHD, neurodiversity, immersive experience, spatial design, Aiden Yang, Sydney designer, USYD design">
-    <meta name="author" content="Xuejian (Aiden) Yang · 杨雪健">
+    <link rel="icon" href="../Assets/favicon.png" type="image/png">
+    <title>Whisper Field | Aiden Yang</title>
+    <meta name="description" content="Two installations for neurodivergent visitors. One landscape responds to touch and breathing rhythms, the other to people gathering below it.">
+    <meta name="author" content="Aiden Yang">
     <link rel="canonical" href="https://aidenyang.me/projects/whisper.html">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://aidenyang.me/projects/whisper.html">
-    <meta property="og:title" content="Whisper Field — Immersive Space for Neurodiversity | Aiden Yang">
-    <meta property="og:description" content="A non-intrusive multi-sensory space for ADHD and broader neurodiversity. Case study by Sydney-based designer.">
+    <meta property="og:title" content="Whisper Field | Aiden Yang">
+    <meta property="og:description" content="Two installations for neurodivergent visitors. One landscape responds to touch and breathing rhythms, the other to people gathering below it.">
     <meta property="og:image" content="https://aidenyang.me/Assets/4.jpg">
     <meta property="og:site_name" content="Aiden Yang Portfolio">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="project.css">
     <link rel="stylesheet" href="whisper.css">
+    <link rel="stylesheet" href="case-layout.css">
 </head>
 
-<body class="project-page">
-    <!-- Animated Background -->
-    <canvas id="particles-canvas"></canvas>
-    <div class="grid-background"></div>
-
-    <!-- Custom Cursor -->
-    <div class="cursor"><div class="cursor-glow"></div></div>
-    <div class="cursor-dot"></div>
-
-    <!-- Subpage Top Bar -->
-    <nav class="project-nav">
-        <a href="../index.html#showcase" class="project-nav-btn project-nav-back">
-            <span class="arrow">←</span>
-            <span data-en="Back to Works" data-zh="返回作品">Back to Works</span>
-        </a>
-        <button class="lang-toggle" id="langToggle">
-            <span class="lang-option active" data-lang="en">EN</span>
-            <span class="lang-divider">/</span>
-            <span class="lang-option" data-lang="zh">中</span>
-        </button>
-        <a href="../index.html" class="project-nav-btn project-nav-home">
-            <span data-en="Visit Main Site" data-zh="前往主站">Visit Main Site</span>
-            <span class="arrow">→</span>
-        </a>
+<body class="project-page case-page case-whisper">
+    <a class="case-skip" href="#case-main" data-en="Skip to project" data-zh="跳至作品正文">Skip to project</a>
+    <nav class="project-nav" aria-label="Main navigation" data-aria-en="Main navigation" data-aria-zh="主导航">
+        <a class="case-name" href="../">Aiden Yang</a>
+        <div class="case-nav-tools">
+            <a href="../#showcase" data-en="Work" data-zh="作品">Work</a>
+            <button type="button" class="lang-toggle" id="langToggle" data-switch-language lang="zh-CN" aria-label="切换为中文">中文</button>
+        </div>
     </nav>
-
-    <!-- Hero -->
-    <section class="project-hero whisper-hero">
-        <div class="whisper-hero-bg" aria-hidden="true">
-            <div class="whisper-hero-glow whisper-glow-1"></div>
-            <div class="whisper-hero-glow whisper-glow-2"></div>
-            <div class="whisper-hero-glow whisper-glow-3"></div>
-            <div class="whisper-hero-grass" id="whisper-hero-grass"></div>
-        </div>
-
-        <div class="project-hero-inner">
-            <div class="project-tagline" data-en="IMMERSIVE EXPERIENCE · 2024" data-zh="沉浸式体验 · 2024">IMMERSIVE EXPERIENCE · 2024</div>
-            <h1 class="project-title-xl whisper-title">Whisper Field</h1>
-            <p class="project-subtitle" data-en="A non-intrusive, multi-sensory space for ADHD and broader neurodiversity." data-zh="一个不打扰人的多感官空间，为 ADHD 和更多神经多样性人群而做。">
-                A non-intrusive, multi-sensory space for ADHD and broader neurodiversity.
-            </p>
-
-            <div class="project-meta-grid">
-                <div class="meta-cell">
-                    <div class="meta-label" data-en="ROLE" data-zh="角色">ROLE</div>
-                    <div class="meta-value" data-en="Spatial · Interaction" data-zh="空间 · 交互">Spatial · Interaction</div>
-                </div>
-                <div class="meta-cell">
-                    <div class="meta-label" data-en="YEAR" data-zh="年份">YEAR</div>
-                    <div class="meta-value">2024</div>
-                </div>
-                <div class="meta-cell">
-                    <div class="meta-label" data-en="TYPE" data-zh="类型">TYPE</div>
-                    <div class="meta-value" data-en="Installation · Public Light" data-zh="装置 · 公共灯光">Installation · Public Light</div>
-                </div>
-                <div class="meta-cell">
-                    <div class="meta-label" data-en="TOOLS" data-zh="工具">TOOLS</div>
-                    <div class="meta-value">UE5 · Processing · Figma</div>
-                </div>
+    <main id="case-main" class="case-main">
+        <header class="case-intro">
+            <h1 class="case-title" data-en="Whisper Field" data-zh="Whisper Field">Whisper Field</h1>
+            <div class="case-intro-copy">
+                <p data-en="Two installations for neurodivergent visitors. One landscape responds to touch and breathing rhythms, the other to people gathering below it." data-zh="两件为神经多样性人群设计的装置。一件以触摸和呼吸节奏回应参观者，另一件会随树冠下聚集的人数变化。">Two installations for neurodivergent visitors. One landscape responds to touch and breathing rhythms, the other to people gathering below it.</p>
+                <div class="case-actions"><a class="case-inline-link" href="#whisper-cube-demo-section" data-en="Explore the Cube" data-zh="体验立方空间">Explore the Cube</a></div>
             </div>
-        </div>
-
-        <div class="project-cover whisper-cover">
-            <img src="../Assets/4.jpg" alt="Whisper Field cover">
-            <div class="whisper-cover-overlay"></div>
-        </div>
-    </section>
-
-    <!-- Overview -->
-    <section class="project-section">
-        <div class="project-container">
-            <div class="section-eyebrow" data-en="OVERVIEW" data-zh="项目简介">OVERVIEW</div>
-            <h2 class="project-h2" data-en="What is Whisper Field?" data-zh="Whisper Field 是什么？">What is Whisper Field?</h2>
-            <p class="project-lead" data-en="Whisper Field is a two-part immersive system for individuals with ADHD and broader neurodiversity. Inside the Cube, four screens and a tactile grass floor co-create AI-generated landscapes that breathe through generation, presentation and deconstruction. Outside, a Catenary canopy of flower-shaped lights blooms gently as people gather beneath. Both parts share one principle — guiding, never dominating — using delayed responses, low contrast and per-person interaction zones to support free exploration without overstimulation." data-zh="Whisper Field 由两部分组成，为 ADHD 和更多神经多样性人群而做。Cube 里面，四块屏幕和一片可以触摸的草地一起生成 AI 风景，在「生成、呈现、解构」三个阶段之间慢慢呼吸。Cube 外面，一片花朵造型的 Catenary 灯幕悬在头顶，人聚得越多，花开得越盛。两部分遵循同一个原则：引导，而不是支配。延迟的反馈、低对比度、每个人各自的互动范围，让人可以自由探索，又不会被刺激过头。">
-                Whisper Field is a two-part immersive system for individuals with ADHD and broader neurodiversity. Inside the Cube, four screens and a tactile grass floor co-create AI-generated landscapes that breathe through generation, presentation and deconstruction. Outside, a Catenary canopy of flower-shaped lights blooms gently as people gather beneath. Both parts share one principle — guiding, never dominating — using delayed responses, low contrast and per-person interaction zones to support free exploration without overstimulation.
-            </p>
-        </div>
-    </section>
-
-    <!-- ============== CUBE INTERACTIVE DEMO ============== -->
+        </header>
+        <figure class="case-cover">
+            <img src="../Assets/work/whisper-1200.webp" srcset="../Assets/work/whisper-480.webp 480w, ../Assets/work/whisper-1200.webp 1200w" sizes="(max-width: 760px) 92vw, min(90vw, 1250px)" alt="Whisper Field installation concept" decoding="async">
+        </figure>
     <section class="project-section bg-medium" id="whisper-cube-demo-section">
         <div class="project-container">
-            <div class="section-eyebrow" data-en="INTERACTIVE DEMO · CUBE" data-zh="交互演示 · CUBE">INTERACTIVE DEMO · CUBE</div>
-            <h2 class="project-h2" data-en="Step inside the Cube" data-zh="走进 Cube">Step inside the Cube</h2>
+            <h2 class="project-h2" data-en="Inside the Cube" data-zh="走进立方空间">Inside the Cube</h2>
             <p class="demos-hint" data-en="Move through the three breathing phases. Touch the grass, swap a scene, and watch the panorama respond." data-zh="在三个呼吸阶段之间来回切换。摸一摸草地，换一个场景，看全景怎么回应你。">
                 Move through the three breathing phases. Touch the grass, swap a scene, and watch the panorama respond.
             </p>
@@ -220,11 +155,9 @@
         </div>
     </section>
 
-    <!-- ============== CATENARY INTERACTIVE DEMO ============== -->
     <section class="project-section" id="whisper-cat-demo-section">
         <div class="project-container">
-            <div class="section-eyebrow" data-en="INTERACTIVE DEMO · CATENARY" data-zh="交互演示 · CATENARY">INTERACTIVE DEMO · CATENARY</div>
-            <h2 class="project-h2" data-en="Walk beneath Mind in Bloom" data-zh="站到「心绪绽放」下面">Walk beneath Mind in Bloom</h2>
+            <h2 class="project-h2" data-en="Mind in Bloom" data-zh="树冠下的光">Mind in Bloom</h2>
             <p class="demos-hint" data-en="Add visitors to the canopy, then pick a light mode. Flowers bloom further with every body that gathers." data-zh="往灯下加几个人，再选一种灯光模式。每多来一个人，花就多开一点。">
                 Add visitors to the canopy, then pick a light mode. Flowers bloom further with every body that gathers.
             </p>
@@ -330,21 +263,30 @@
         </div>
     </section>
 
-    <!-- Bottom Nav -->
-    <section class="project-end">
-        <a href="../index.html#showcase" class="project-end-link">
-            <span class="arrow">←</span>
-            <span data-en="Back to all works" data-zh="返回全部作品">Back to all works</span>
-        </a>
+    <section class="project-section">
+        <div class="project-container">
+            <h2 class="project-h2" data-en="Two responsive environments" data-zh="两个互动环境">Two responsive environments</h2>
+            <p class="project-lead" data-en="Whisper Field is a two-part immersive system for individuals with ADHD and broader neurodiversity. Inside the Cube, four screens and a tactile grass floor co-create AI-generated landscapes that breathe through generation, presentation and deconstruction. Outside, a Catenary canopy of flower-shaped lights blooms gently as people gather beneath. Both parts share one principle — guiding, never dominating — using delayed responses, low contrast and per-person interaction zones to support free exploration without overstimulation." data-zh="Whisper Field 由两部分组成，为 ADHD 和更多神经多样性人群而做。Cube 里面，四块屏幕和一片可以触摸的草地一起生成 AI 风景，在「生成、呈现、解构」三个阶段之间慢慢呼吸。Cube 外面，一片花朵造型的 Catenary 灯幕悬在头顶，人聚得越多，花开得越盛。两部分遵循同一个原则：引导，而不是支配。延迟的反馈、低对比度、每个人各自的互动范围，让人可以自由探索，又不会被刺激过头。">
+                Whisper Field is a two-part immersive system for individuals with ADHD and broader neurodiversity. Inside the Cube, four screens and a tactile grass floor co-create AI-generated landscapes that breathe through generation, presentation and deconstruction. Outside, a Catenary canopy of flower-shaped lights blooms gently as people gather beneath. Both parts share one principle — guiding, never dominating — using delayed responses, low contrast and per-person interaction zones to support free exploration without overstimulation.
+            </p>
+        </div>
     </section>
 
+        <details class="case-details">
+            <summary data-en="Project details" data-zh="项目信息">Project details</summary>
+            <dl>
+                <div><dt data-en="Role" data-zh="角色">Role</dt><dd data-en="Spatial · Interaction" data-zh="空间 · 交互">Spatial · Interaction</dd></div>
+                <div><dt data-en="Year" data-zh="年份">Year</dt><dd data-en="2024" data-zh="2024">2024</dd></div>
+                <div><dt data-en="Type" data-zh="类型">Type</dt><dd data-en="Installation · Public Light" data-zh="装置 · 公共灯光">Installation · Public Light</dd></div>
+                <div><dt data-en="Tools" data-zh="工具">Tools</dt><dd data-en="UE5 · Processing · Figma" data-zh="UE5 · Processing · Figma">UE5 · Processing · Figma</dd></div>
+            </dl>
+        </details>
+    </main>
+    <footer class="case-end">
+        <div class="case-end-links"><a href="../#showcase" data-en="All work" data-zh="全部作品">All work</a><button type="button" class="case-inline-link" data-chat-open data-en="AI Aiden" data-zh="AI Aiden">AI Aiden</button></div>
+        <a class="case-next" href="prime-bilingual.html"><span data-en="Next project" data-zh="下个项目">Next project</span><strong data-en="Prime Bilingual" data-zh="Prime Bilingual">Prime Bilingual</strong></a>
+    </footer>
     <script src="../script.js"></script>
     <script src="whisper-demos.js"></script>
-    <script>
-        document.body.classList.add('loaded');
-        const loaderEl = document.querySelector('.loader');
-        if (loaderEl) loaderEl.remove();
-    </script>
 </body>
-
 </html>

@@ -980,3 +980,10 @@
     }
     .whisper-cat-modes { grid-template-columns: repeat(2, 1fr); }
 }
+
+@media (prefers-reduced-motion: reduce) {
+    .whisper-cube-stage *, .whisper-cat-stage * {
+        animation-duration: 0s !important;
+        transition-duration: 0s !important;
+    }
+}

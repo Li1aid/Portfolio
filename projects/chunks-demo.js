@@ -125,12 +125,13 @@
     document.querySelectorAll('.ck-step').forEach(s => s.addEventListener('click', () => switchTab(s.dataset.step)));
 
     // ── Translate
-    $$('.ck-chip').forEach((chip, i) => chip.addEventListener('click', () => {
+    const sampleButtons = $$('.ck-chip');
+    sampleButtons.forEach((chip, i) => chip.addEventListener('click', () => {
+        if (busy) return;
         input.value = SAMPLES[i].zh;
-        input.focus();
+        sampleButtons.forEach(button => button.setAttribute('aria-pressed', String(button === chip)));
         translateBtn.disabled = false;
     }));
-    input.addEventListener('input', () => { translateBtn.disabled = !input.value.trim(); });
 
     function findSample(text) {
         const t = text.trim();
@@ -138,6 +139,7 @@
     }
 
     async function typeText(el, text, ms) {
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { el.textContent = text; return; }
         el.innerHTML = '<span class="cursor"></span>';
         let out = '';
         for (const ch of text) {
@@ -277,6 +279,14 @@
     tickClock(); setInterval(tickClock, 30000);
 
     // init
+    function updateSamplePrompt() {
+        const zh = document.documentElement.lang.startsWith('zh');
+        input.placeholder = zh ? '从下面选择一个例句' : 'Choose a sample sentence below';
+        input.setAttribute('aria-label', zh ? '选中的例句' : 'Selected sample sentence');
+    }
+    updateSamplePrompt();
+    document.addEventListener('portfolio:language', updateSamplePrompt);
+    sampleButtons.forEach(button => button.setAttribute('aria-pressed', 'false'));
     translateBtn.disabled = true;
     updateBadge();
     setStep('translate');

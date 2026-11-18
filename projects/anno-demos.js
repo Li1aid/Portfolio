@@ -70,40 +70,59 @@
         { id: 'evening', icon: '☾', name: 'Evening meds', name_zh: '晚上的药', time: '7:00 PM', taken: false },
     ];
 
+    function local(en, zh) {
+        return document.documentElement.lang.startsWith('zh') ? zh : en;
+    }
+
     function renderMeds() {
-        panelEyebrow.dataset.en = 'MEDICATION';
-        panelEyebrow.dataset.zh = '用药';
-        panelEyebrow.textContent = 'MEDICATION';
-        panelTitle.textContent = '8:00 AM — Morning routine';
-        panelBody.innerHTML = '';
-        meds.forEach((m, i) => {
-            const row = document.createElement('div');
+        panelEyebrow.textContent = local('Medication', '用药');
+        panelTitle.textContent = local('8:00 AM · Morning routine', '上午 8:00 · 日常用药');
+        panelBody.replaceChildren();
+        meds.forEach(m => {
+            const row = document.createElement('button');
+            row.type = 'button';
             row.className = 'anno-pill-row' + (m.taken ? ' taken' : '');
+            const name = local(m.name, m.name_zh);
+            row.setAttribute('aria-label', m.taken ? local(`${name}, marked taken`, `${name}，已记录服用`)
+                : local(`Mark ${name} as taken`, `记录已服用${name}`));
+            row.setAttribute('aria-pressed', String(m.taken));
             row.innerHTML = `
-                <div class="anno-pill-icon ${m.id}">${m.icon}</div>
-                <div class="anno-pill-info">
-                    <div class="anno-pill-name">${m.name}</div>
-                    <div class="anno-pill-time">${m.time}</div>
-                </div>
-                <div class="anno-pill-status">${m.taken ? 'TAKEN' : 'PENDING'}</div>
+                <span class="anno-pill-icon ${m.id}">${m.icon}</span>
+                <span class="anno-pill-info">
+                    <span class="anno-pill-name">${name}</span>
+                    <span class="anno-pill-time">${m.time}</span>
+                </span>
+                <span class="anno-pill-status">${m.taken ? local('Taken', '已服') : local('Pending', '待服')}</span>
             `;
             row.addEventListener('click', () => {
-                if (m.taken) return;
                 m.taken = true;
-                renderMeds();
-                say('Great job! Have a wonderful day.');
+                row.classList.add('taken');
+                row.setAttribute('aria-pressed', 'true');
+                row.setAttribute('aria-label', local(`${name}, marked taken`, `${name}，已记录服用`));
+                row.querySelector('.anno-pill-status').textContent = local('Taken', '已服');
+                say(local(`${name} marked as taken.`, `已记录服用${name}。`));
                 setMode('happy');
-                setTimeout(() => setMode('idle'), 2500);
             });
             panelBody.appendChild(row);
         });
-        promptsBar.innerHTML = '';
-        ['Did I take my pills?', 'Remind me at 7 PM', 'Skip noon meds'].forEach(txt => {
-            const b = document.createElement('button');
-            b.className = 'anno-voice-prompt';
-            b.textContent = '"' + txt + '"';
-            b.addEventListener('click', () => handleVoice(txt));
-            promptsBar.appendChild(b);
+        promptsBar.replaceChildren();
+        const prompts = [
+            [local('Did I take my pills?', '我早上吃过药了吗？'), () => meds[0].taken
+                ? local('Your morning dose is marked as taken.', '早上的药已记录为已服用。')
+                : local('Your morning dose is still marked as pending.', '早上的药仍显示待服。')],
+            [local('What is my next dose?', '下一个用药时间？'), () => {
+                const next = meds.find(m => !m.taken);
+                return next ? local(`Next on the list: ${next.name} at ${next.time}.`, `下一项是${next.name_zh}，时间 ${next.time}。`)
+                    : local('All three doses are marked as taken.', '三项用药都已记录为已服。');
+            }]
+        ];
+        prompts.forEach(([title, reply]) => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'anno-voice-prompt';
+            button.textContent = title;
+            button.addEventListener('click', () => say(reply()));
+            promptsBar.appendChild(button);
         });
     }
 
@@ -363,10 +382,7 @@
        prompt. Used by all scenes.
        ========================================================= */
     const voiceReplies = [
-        ['pill', 'You took your morning pills at 8:04 AM.'],
-        ['skip', 'OK, I will skip the noon meds today.'],
-        ['remind', 'Reminder set for 7 PM.'],
-        ['heart', 'Your heart rate is 74 — perfectly fine.'],
+        ['heart', () => `The current reading is ${screenBpm.textContent} bpm.`],
         ['daughter', 'Calling Sarah now.'],
         ['ok', 'Glad you are okay.'],
         ['dispense', 'Dispensing now.'],
@@ -381,17 +397,18 @@
     function handleVoice(text) {
         const t = text.toLowerCase();
         let reply = 'I heard you. Let me check.';
-        for (const [k, v] of voiceReplies) { if (t.includes(k)) { reply = v; break; } }
+        for (const [k, v] of voiceReplies) { if (t.includes(k)) { reply = typeof v === 'function' ? v() : v; break; } }
         say(reply);
         setMode('curious');
         setTimeout(() => setMode('idle'), 2200);
     }
 
+    if (bubble) bubble.setAttribute('role', 'status');
     if (mic) {
+        mic.setAttribute('aria-label', local('Choose a sample question', '选择示例问题'));
         mic.addEventListener('click', () => {
-            mic.classList.add('listening');
-            say('Listening...');
-            setTimeout(() => mic.classList.remove('listening'), 1600);
+            say(local('Choose a sample question below.', '请选择下方的示例问题。'));
+            promptsBar.querySelector('button')?.focus();
         });
     }
 
@@ -410,6 +427,8 @@
     function switchScene(name) {
         if (!scenes[name]) return;
         currentScene = name;
+        clearTimeout(bubbleTimer);
+        bubble?.classList.remove('show');
         $$('.anno-scene-btn').forEach(b => b.classList.toggle('active', b.dataset.scene === name));
         clearInterval(sosTimer);
         // Reset vitals before each scene paints its own
@@ -432,6 +451,10 @@
         });
     });
 
+    document.addEventListener('portfolio:language', () => {
+        if (mic) mic.setAttribute('aria-label', local('Choose a sample question', '选择示例问题'));
+        if (currentScene === 'meds') renderMeds();
+    });
     // Initial paint
     switchScene('meds');
 })();

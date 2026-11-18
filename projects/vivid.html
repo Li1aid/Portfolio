@@ -4,163 +4,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>vividXperience — Vision Pro Spatial Design | Xuejian (Aiden) Yang, Sydney</title>
-    <meta name="description" content="vividXperience — a Vision Pro app bringing Vivid Sydney into your living room. Spatial design case study by Aiden Yang, Sydney-based UX designer.">
-    <meta name="keywords" content="vividXperience, Vivid Sydney, Vision Pro, spatial design, AR VR, Aiden Yang, Sydney designer, USYD design">
-    <meta name="author" content="Xuejian (Aiden) Yang · 杨雪健">
+    <link rel="icon" href="../Assets/favicon.png" type="image/png">
+    <title>vividXperience | Aiden Yang</title>
+    <meta name="description" content="A spatial prototype for exploring Vivid Sydney from home through Vision Pro.">
+    <meta name="author" content="Aiden Yang">
     <link rel="canonical" href="https://aidenyang.me/projects/vivid.html">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://aidenyang.me/projects/vivid.html">
-    <meta property="og:title" content="vividXperience — Vision Pro Spatial Design | Aiden Yang">
-    <meta property="og:description" content="A Vision Pro app bringing the magic of Vivid Sydney into your living room. Case study by Sydney-based designer.">
+    <meta property="og:title" content="vividXperience | Aiden Yang">
+    <meta property="og:description" content="A spatial prototype for exploring Vivid Sydney from home through Vision Pro.">
     <meta property="og:image" content="https://aidenyang.me/Assets/vivid.png">
     <meta property="og:site_name" content="Aiden Yang Portfolio">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Press+Start+2P&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
     <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="project.css">
     <link rel="stylesheet" href="vivid.css">
+    <link rel="stylesheet" href="case-layout.css">
 </head>
 
-<body class="project-page vivid-page">
-    <!-- Animated Background -->
-    <canvas id="particles-canvas"></canvas>
-    <div class="grid-background"></div>
-
-    <!-- Custom Cursor -->
-    <div class="cursor">
-        <div class="cursor-glow"></div>
-    </div>
-    <div class="cursor-dot"></div>
-
-    <!-- Subpage Top Bar -->
-    <nav class="project-nav">
-        <a href="../index.html#showcase" class="project-nav-btn project-nav-back">
-            <span class="arrow">←</span>
-            <span data-en="Back to Works" data-zh="返回作品">Back to Works</span>
-        </a>
-        <button class="lang-toggle" id="langToggle">
-            <span class="lang-option active" data-lang="en">EN</span>
-            <span class="lang-divider">/</span>
-            <span class="lang-option" data-lang="zh">中</span>
-        </button>
-        <a href="../index.html" class="project-nav-btn project-nav-home">
-            <span data-en="Visit Main Site" data-zh="前往主站">Visit Main Site</span>
-            <span class="arrow">→</span>
-        </a>
+<body class="project-page case-page case-vivid">
+    <a class="case-skip" href="#case-main" data-en="Skip to project" data-zh="跳至作品正文">Skip to project</a>
+    <nav class="project-nav" aria-label="Main navigation" data-aria-en="Main navigation" data-aria-zh="主导航">
+        <a class="case-name" href="../">Aiden Yang</a>
+        <div class="case-nav-tools">
+            <a href="../#showcase" data-en="Work" data-zh="作品">Work</a>
+            <button type="button" class="lang-toggle" id="langToggle" data-switch-language lang="zh-CN" aria-label="切换为中文">中文</button>
+        </div>
     </nav>
-
-    <!-- Hero -->
-    <section class="project-hero vivid-hero">
-        <div class="vivid-hero-bg" aria-hidden="true">
-            <div class="vivid-hero-glow vivid-glow-1"></div>
-            <div class="vivid-hero-glow vivid-glow-2"></div>
-            <div class="vivid-hero-glow vivid-glow-3"></div>
-        </div>
-
-        <div class="project-hero-inner">
-            <div class="project-tagline" data-en="SPATIAL DESIGN · 2024 · IDEA9105" data-zh="空间设计 · 2024 · IDEA9105">SPATIAL DESIGN · 2024 · IDEA9105</div>
-            <h1 class="project-title-xl vivid-title">vividXperience</h1>
-            <p class="project-subtitle" data-en="Bring the magic of Vivid Sydney into your living room — through Vision Pro." data-zh="戴上 Vision Pro，把 Vivid Sydney 的魔法搬进你家客厅。">
-                Bring the magic of Vivid Sydney into your living room — through Vision Pro.
-            </p>
-
-            <div class="project-meta-grid">
-                <div class="meta-cell">
-                    <div class="meta-label" data-en="ROLE" data-zh="角色">ROLE</div>
-                    <div class="meta-value" data-en="UI/UX · Spatial" data-zh="UI/UX · 空间设计">UI/UX · Spatial</div>
-                </div>
-                <div class="meta-cell">
-                    <div class="meta-label" data-en="YEAR" data-zh="年份">YEAR</div>
-                    <div class="meta-value">2024</div>
-                </div>
-                <div class="meta-cell">
-                    <div class="meta-label" data-en="TYPE" data-zh="类型">TYPE</div>
-                    <div class="meta-value" data-en="Vision Pro AR/VR" data-zh="Vision Pro AR/VR">Vision Pro AR/VR</div>
-                </div>
-                <div class="meta-cell">
-                    <div class="meta-label" data-en="TOOLS" data-zh="工具">TOOLS</div>
-                    <div class="meta-value">Figma · AE</div>
-                </div>
+    <main id="case-main" class="case-main">
+        <header class="case-intro">
+            <h1 class="case-title" data-en="vividXperience" data-zh="vividXperience">vividXperience</h1>
+            <div class="case-intro-copy">
+                <p data-en="A spatial prototype for exploring Vivid Sydney from home through Vision Pro." data-zh="一个 Vision Pro 空间交互原型，让观众在家探索悉尼灯光节。">A spatial prototype for exploring Vivid Sydney from home through Vision Pro.</p>
+                <div class="case-actions"><a class="case-inline-link" href="#vivid-demo-section" data-en="Try the experience" data-zh="体验原型">Try the experience</a>
+                <a class="case-inline-link" href="https://www.figma.com/proto/pBlwlGPbSkKHGuwY6FfVLJ/Untitled?node-id=2-466&amp;page-id=0%3A1&amp;t=DlUesGIgp7iuU4Tv-1" target="_blank" rel="noopener" data-en="Open Figma prototype" data-zh="打开 Figma 原型">Open Figma prototype</a></div>
             </div>
-        </div>
-
-        <div class="project-cover vivid-cover">
-            <img src="../Assets/vivid.png" alt="vividXperience cover">
-            <div class="vivid-cover-overlay"></div>
-            <div class="vivid-cover-marquee">
-                <span>VIVID SYDNEY · LIGHT · MUSIC · IDEAS · VIVID SYDNEY · LIGHT · MUSIC · IDEAS · </span>
-                <span aria-hidden="true">VIVID SYDNEY · LIGHT · MUSIC · IDEAS · VIVID SYDNEY · LIGHT · MUSIC · IDEAS · </span>
-            </div>
-        </div>
-    </section>
-
-    <!-- Overview -->
-    <section class="project-section bg-medium">
-        <div class="project-container">
-            <div class="section-eyebrow" data-en="OVERVIEW" data-zh="项目简介">OVERVIEW</div>
-            <h2 class="project-h2" data-en="What is vividXperience?" data-zh="vividXperience 是什么？">What is vividXperience?</h2>
-            <p class="project-lead" data-en="vividXperience is a Vision Pro application that lets users experience the vibrant atmosphere of Vivid Sydney from home. Through immersive AR/VR, users explore digital replicas of light installations, navigate a 3D panoramic map of the festival, and interact with key highlights — making the festival accessible to anyone who can't attend in person." data-zh="vividXperience 是一款 Vision Pro 应用，让你在家也能感受 Vivid Sydney 的热闹。借助沉浸式 AR/VR，你可以走进灯光装置的数字复刻版，在 3D 全景地图上逛遍整个灯光节，和那些标志性的亮点互动。去不了现场的人，也能好好看一次 Vivid。">
-                vividXperience is a Vision Pro application that lets users experience the vibrant atmosphere of Vivid Sydney from home. Through immersive AR/VR, users explore digital replicas of light installations, navigate a 3D panoramic map of the festival, and interact with key highlights — making the festival accessible to anyone who can't attend in person.
-            </p>
-        </div>
-    </section>
-
-    <!-- Key Features -->
-    <section class="project-section">
-        <div class="project-container">
-            <div class="section-eyebrow" data-en="KEY FEATURES" data-zh="核心功能">KEY FEATURES</div>
-            <h2 class="project-h2" data-en="Four entry points" data-zh="四个入口">Four entry points</h2>
-
-            <div class="features-grid">
-                <a href="#vivid-demo" data-jump="map" class="feature-card vivid-feature">
-                    <div class="feature-num">01</div>
-                    <h3 class="feature-title" data-en="3D Panoramic Map" data-zh="3D 全景地图">3D Panoramic Map</h3>
-                    <p class="feature-desc" data-en="A bird's-eye view of the festival. Spin, zoom, and tap any landmark to drop into its immersive scene." data-zh="从空中俯瞰整个灯光节。转一转、放大看，点任意地标就能落进它的沉浸场景。">
-                        A bird's-eye view of the festival. Spin, zoom, and tap any landmark to drop into its immersive scene.
-                    </p>
-                    <span class="feature-cta" data-en="Try the demo →" data-zh="试试看 →">Try the demo →</span>
-                </a>
-
-                <a href="#vivid-demo" data-jump="events" class="feature-card vivid-feature">
-                    <div class="feature-num">02</div>
-                    <h3 class="feature-title" data-en="Event Discovery" data-zh="发现活动">Event Discovery</h3>
-                    <p class="feature-desc" data-en="Browse light shows, drone performances, and creative workshops by category. Cards animate forward on hover." data-zh="灯光秀、无人机表演、创意工作坊按类别分好。鼠标悬停时，卡片会向前浮起来。">
-                        Browse light shows, drone performances, and creative workshops by category. Cards animate forward on hover.
-                    </p>
-                    <span class="feature-cta" data-en="Try the demo →" data-zh="试试看 →">Try the demo →</span>
-                </a>
-
-                <a href="#vivid-demo" data-jump="immersive" class="feature-card vivid-feature">
-                    <div class="feature-num">03</div>
-                    <h3 class="feature-title" data-en="Immersive Experience" data-zh="沉浸式体验">Immersive Experience</h3>
-                    <p class="feature-desc" data-en="Step inside Vivid Sydney. Tap to summon a sidebar with pause, scene-switch, and a progress bar — without breaking the spell." data-zh="真正走进 Vivid Sydney。轻点一下呼出侧栏，暂停、切换场景、看进度，都不会把你从场景里拉出来。">
-                        Step inside Vivid Sydney. Tap to summon a sidebar with pause, scene-switch, and a progress bar — without breaking the spell.
-                    </p>
-                    <span class="feature-cta" data-en="Try the demo →" data-zh="试试看 →">Try the demo →</span>
-                </a>
-
-                <a href="#vivid-demo" data-jump="album" class="feature-card vivid-feature">
-                    <div class="feature-num">04</div>
-                    <h3 class="feature-title" data-en="Cross-device Album" data-zh="跨设备相册">Cross-device Album</h3>
-                    <p class="feature-desc" data-en="Record AR moments on your phone, then replay them in 3D inside Vision Pro. One album, two devices, one memory." data-zh="用手机录下 AR 瞬间，回到 Vision Pro 里以 3D 重温。两台设备，一本相册，同一段记忆。">
-                        Record AR moments on your phone, then replay them in 3D inside Vision Pro. One album, two devices, one memory.
-                    </p>
-                    <span class="feature-cta" data-en="Try the demo →" data-zh="试试看 →">Try the demo →</span>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Interactive Demo: Vision Pro Simulator -->
+        </header>
+        <figure class="case-cover">
+            <img src="../Assets/work/vivid-1200.webp" srcset="../Assets/work/vivid-480.webp 480w, ../Assets/work/vivid-1200.webp 1200w" sizes="(max-width: 760px) 92vw, min(90vw, 1250px)" alt="A spatial view of Vivid Sydney" decoding="async">
+        </figure>
     <section class="project-section bg-medium" id="vivid-demo-section">
         <div class="project-container">
-            <div class="section-eyebrow" data-en="INTERACTIVE DEMO" data-zh="交互演示">INTERACTIVE DEMO</div>
-            <h2 class="project-h2" data-en="Step inside" data-zh="走进去看看">Step inside</h2>
+            <h2 class="project-h2" data-en="Inside the festival" data-zh="体验灯光节">Inside the festival</h2>
             <p class="demos-hint" data-en="A miniature Vision Pro view. Click anywhere inside to start." data-zh="这是一个缩小版的 Vision Pro 视野，点一下框里任意位置就能开始。">A miniature Vision Pro view. Click anywhere inside to start.</p>
 
             <div class="vp-frame" id="vivid-demo">
@@ -205,7 +88,7 @@
                     </aside>
 
                     <!-- Main stage: screens swap here -->
-                    <main class="vp-stage" id="vp-stage">
+                    <div class="vp-stage" id="vp-stage">
 
                         <!-- HOME -->
                         <section class="vp-screen vp-screen-home active" data-screen="home">
@@ -660,42 +543,74 @@
                             </div>
                         </section>
 
-                    </main>
+                    </div>
                 </div>
 
             </div>
         </div>
     </section>
 
-    <!-- Prototype CTA -->
-    <section class="project-section bg-medium vivid-cta-section">
-        <div class="project-container vivid-cta-inner">
-            <div class="section-eyebrow" data-en="REAL PROTOTYPE" data-zh="完整原型">REAL PROTOTYPE</div>
-            <h2 class="project-h2" data-en="Open the Figma prototype" data-zh="打开 Figma 原型">Open the Figma prototype</h2>
-            <p class="vivid-cta-text" data-en="Want to drive the actual flows yourself? Jump into the live Figma prototype." data-zh="想自己把整个流程走一遍？直接打开 Figma 原型。">Want to drive the actual flows yourself? Jump into the live Figma prototype.</p>
-            <a href="https://www.figma.com/proto/pBlwlGPbSkKHGuwY6FfVLJ/Untitled?node-id=2-466&page-id=0%3A1&t=DlUesGIgp7iuU4Tv-1" target="_blank" rel="noopener" class="vivid-cta-btn">
-                <span data-en="Launch on Figma" data-zh="在 Figma 里打开">Launch on Figma</span>
-                <span class="vivid-cta-arrow">↗</span>
-            </a>
+    <section class="project-section bg-medium">
+        <div class="project-container">
+            <h2 class="project-h2" data-en="A festival from home" data-zh="在家参与灯光节">A festival from home</h2>
+            <p class="project-lead" data-en="vividXperience is a Vision Pro application that lets users experience the vibrant atmosphere of Vivid Sydney from home. Through immersive AR/VR, users explore digital replicas of light installations, navigate a 3D panoramic map of the festival, and interact with key highlights — making the festival accessible to anyone who can't attend in person." data-zh="vividXperience 是一款 Vision Pro 应用，让你在家也能感受 Vivid Sydney 的热闹。借助沉浸式 AR/VR，你可以走进灯光装置的数字复刻版，在 3D 全景地图上逛遍整个灯光节，和那些标志性的亮点互动。去不了现场的人，也能好好看一次 Vivid。">
+                vividXperience is a Vision Pro application that lets users experience the vibrant atmosphere of Vivid Sydney from home. Through immersive AR/VR, users explore digital replicas of light installations, navigate a 3D panoramic map of the festival, and interact with key highlights — making the festival accessible to anyone who can't attend in person.
+            </p>
         </div>
     </section>
 
-    <!-- Bottom Nav -->
-    <section class="project-end">
-        <a href="../index.html#showcase" class="project-end-link">
-            <span class="arrow">←</span>
-            <span data-en="Back to all works" data-zh="返回全部作品">Back to all works</span>
-        </a>
+    <section class="project-section">
+        <div class="project-container">
+            <h2 class="project-h2" data-en="Designing for Vision Pro" data-zh="为 Vision Pro 设计">Designing for Vision Pro</h2>
+
+            <div class="features-grid">
+                <a href="#vivid-demo" data-jump="map" class="feature-card vivid-feature">
+                    <h3 class="feature-title" data-en="3D Panoramic Map" data-zh="3D 全景地图">3D Panoramic Map</h3>
+                    <p class="feature-desc" data-en="A bird's-eye view of the festival. Spin, zoom, and tap any landmark to drop into its immersive scene." data-zh="从空中俯瞰整个灯光节。转一转、放大看，点任意地标就能落进它的沉浸场景。">
+                        A bird's-eye view of the festival. Spin, zoom, and tap any landmark to drop into its immersive scene.
+                    </p>
+                </a>
+
+                <a href="#vivid-demo" data-jump="events" class="feature-card vivid-feature">
+                    <h3 class="feature-title" data-en="Event Discovery" data-zh="发现活动">Event Discovery</h3>
+                    <p class="feature-desc" data-en="Browse light shows, drone performances, and creative workshops by category. Cards animate forward on hover." data-zh="灯光秀、无人机表演、创意工作坊按类别分好。鼠标悬停时，卡片会向前浮起来。">
+                        Browse light shows, drone performances, and creative workshops by category. Cards animate forward on hover.
+                    </p>
+                </a>
+
+                <a href="#vivid-demo" data-jump="immersive" class="feature-card vivid-feature">
+                    <h3 class="feature-title" data-en="Immersive Experience" data-zh="沉浸式体验">Immersive Experience</h3>
+                    <p class="feature-desc" data-en="Step inside Vivid Sydney. Tap to summon a sidebar with pause, scene-switch, and a progress bar — without breaking the spell." data-zh="真正走进 Vivid Sydney。轻点一下呼出侧栏，暂停、切换场景、看进度，都不会把你从场景里拉出来。">
+                        Step inside Vivid Sydney. Tap to summon a sidebar with pause, scene-switch, and a progress bar — without breaking the spell.
+                    </p>
+                </a>
+
+                <a href="#vivid-demo" data-jump="album" class="feature-card vivid-feature">
+                    <h3 class="feature-title" data-en="Cross-device Album" data-zh="跨设备相册">Cross-device Album</h3>
+                    <p class="feature-desc" data-en="Record AR moments on your phone, then replay them in 3D inside Vision Pro. One album, two devices, one memory." data-zh="用手机录下 AR 瞬间，回到 Vision Pro 里以 3D 重温。两台设备，一本相册，同一段记忆。">
+                        Record AR moments on your phone, then replay them in 3D inside Vision Pro. One album, two devices, one memory.
+                    </p>
+                </a>
+            </div>
+        </div>
     </section>
 
+        <details class="case-details">
+            <summary data-en="Project details" data-zh="项目信息">Project details</summary>
+            <dl>
+                <div><dt data-en="Role" data-zh="角色">Role</dt><dd data-en="UI/UX · Spatial" data-zh="UI/UX · 空间设计">UI/UX · Spatial</dd></div>
+                <div><dt data-en="Year" data-zh="年份">Year</dt><dd data-en="2024" data-zh="2024">2024</dd></div>
+                <div><dt data-en="Type" data-zh="类型">Type</dt><dd data-en="Vision Pro AR/VR" data-zh="Vision Pro AR/VR">Vision Pro AR/VR</dd></div>
+                <div><dt data-en="Tools" data-zh="工具">Tools</dt><dd data-en="Figma · AE" data-zh="Figma · AE">Figma · AE</dd></div>
+            </dl>
+        </details>
+    </main>
+    <footer class="case-end">
+        <div class="case-end-links"><a href="../#showcase" data-en="All work" data-zh="全部作品">All work</a><button type="button" class="case-inline-link" data-chat-open data-en="AI Aiden" data-zh="AI Aiden">AI Aiden</button></div>
+        <a class="case-next" href="anno.html"><span data-en="Next project" data-zh="下个项目">Next project</span><strong data-en="ANNO" data-zh="ANNO">ANNO</strong></a>
+    </footer>
     <script src="../script.js"></script>
     <script src="vivid-map3d.js" defer></script>
     <script src="vivid-demos.js"></script>
-    <script>
-        document.body.classList.add('loaded');
-        const loaderEl = document.querySelector('.loader');
-        if (loaderEl) loaderEl.remove();
-    </script>
 </body>
-
 </html>

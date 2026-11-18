@@ -4,174 +4,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anno — Companion Health Robot for Seniors | Xuejian (Aiden) Yang, Sydney</title>
-    <meta name="description" content="Anno — a puppy-shaped smart health companion for older adults living alone. Health tech case study by Aiden Yang, Sydney-based product designer.">
-    <meta name="keywords" content="Anno, health tech, companion robot, elderly care, product design, Aiden Yang, Sydney designer, USYD design">
-    <meta name="author" content="Xuejian (Aiden) Yang · 杨雪健">
+    <link rel="icon" href="../Assets/favicon.png" type="image/png">
+    <title>ANNO | Aiden Yang</title>
+    <meta name="description" content="A companion robot concept for older adults living alone, with gentle reminders and a small display for daily routines.">
+    <meta name="author" content="Aiden Yang">
     <link rel="canonical" href="https://aidenyang.me/projects/anno.html">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://aidenyang.me/projects/anno.html">
-    <meta property="og:title" content="Anno — Companion Health Robot | Aiden Yang">
-    <meta property="og:description" content="A puppy-shaped smart health companion for older adults living alone. Case study by Sydney-based designer.">
+    <meta property="og:title" content="ANNO | Aiden Yang">
+    <meta property="og:description" content="A companion robot concept for older adults living alone, with gentle reminders and a small display for daily routines.">
     <meta property="og:image" content="https://aidenyang.me/Assets/3.jpg">
     <meta property="og:site_name" content="Aiden Yang Portfolio">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="project.css">
     <link rel="stylesheet" href="anno.css">
+    <link rel="stylesheet" href="case-layout.css">
 </head>
 
-<body class="project-page">
-    <!-- Animated Background -->
-    <canvas id="particles-canvas"></canvas>
-    <div class="grid-background"></div>
-
-    <!-- Custom Cursor -->
-    <div class="cursor"><div class="cursor-glow"></div></div>
-    <div class="cursor-dot"></div>
-
-    <!-- Subpage Top Bar -->
-    <nav class="project-nav">
-        <a href="../index.html#showcase" class="project-nav-btn project-nav-back">
-            <span class="arrow">←</span>
-            <span data-en="Back to Works" data-zh="返回作品">Back to Works</span>
-        </a>
-        <button class="lang-toggle" id="langToggle">
-            <span class="lang-option active" data-lang="en">EN</span>
-            <span class="lang-divider">/</span>
-            <span class="lang-option" data-lang="zh">中</span>
-        </button>
-        <a href="../index.html" class="project-nav-btn project-nav-home">
-            <span data-en="Visit Main Site" data-zh="前往主站">Visit Main Site</span>
-            <span class="arrow">→</span>
-        </a>
+<body class="project-page case-page case-anno">
+    <a class="case-skip" href="#case-main" data-en="Skip to project" data-zh="跳至作品正文">Skip to project</a>
+    <nav class="project-nav" aria-label="Main navigation" data-aria-en="Main navigation" data-aria-zh="主导航">
+        <a class="case-name" href="../">Aiden Yang</a>
+        <div class="case-nav-tools">
+            <a href="../#showcase" data-en="Work" data-zh="作品">Work</a>
+            <button type="button" class="lang-toggle" id="langToggle" data-switch-language lang="zh-CN" aria-label="切换为中文">中文</button>
+        </div>
     </nav>
-
-    <!-- Hero -->
-    <section class="project-hero anno-hero">
-        <div class="anno-hero-bg" aria-hidden="true">
-            <div class="anno-hero-glow anno-glow-1"></div>
-            <div class="anno-hero-glow anno-glow-2"></div>
-        </div>
-
-        <div class="project-hero-inner">
-            <div class="project-tagline" data-en="HEALTH TECH · 2024" data-zh="健康科技 · 2024">HEALTH TECH · 2024</div>
-            <h1 class="project-title-xl anno-title">Anno</h1>
-            <p class="project-subtitle" data-en="A companion-shaped health system for older adults living alone." data-zh="为独居老人设计的健康系统，外形却像个小伙伴。">
-                A companion-shaped health system for older adults living alone.
-            </p>
-
-            <div class="project-meta-grid">
-                <div class="meta-cell">
-                    <div class="meta-label" data-en="ROLE" data-zh="角色">ROLE</div>
-                    <div class="meta-value" data-en="Product · UX" data-zh="产品 · UX">Product · UX</div>
-                </div>
-                <div class="meta-cell">
-                    <div class="meta-label" data-en="YEAR" data-zh="年份">YEAR</div>
-                    <div class="meta-value">2024</div>
-                </div>
-                <div class="meta-cell">
-                    <div class="meta-label" data-en="TYPE" data-zh="类型">TYPE</div>
-                    <div class="meta-value" data-en="Companion Robot" data-zh="陪伴机器人">Companion Robot</div>
-                </div>
-                <div class="meta-cell">
-                    <div class="meta-label" data-en="TOOLS" data-zh="工具">TOOLS</div>
-                    <div class="meta-value">Figma · Rhino · Web</div>
-                </div>
+    <main id="case-main" class="case-main">
+        <header class="case-intro">
+            <h1 class="case-title" data-en="ANNO" data-zh="ANNO">ANNO</h1>
+            <div class="case-intro-copy">
+                <p data-en="A companion robot concept for older adults living alone, with gentle reminders and a small display for daily routines." data-zh="一款为独居长者设计的陪伴机器人概念，用温和的提醒和侧面的小屏幕协助日常生活。">A companion robot concept for older adults living alone, with gentle reminders and a small display for daily routines.</p>
+                <div class="case-actions"><a class="case-inline-link" href="#anno-demo-section" data-en="Try the companion" data-zh="体验陪伴机器人">Try the companion</a></div>
             </div>
-        </div>
-
-        <div class="project-cover anno-cover">
-            <img src="../Assets/3.jpg" alt="Anno cover">
-            <div class="anno-cover-overlay"></div>
-        </div>
-    </section>
-
-    <!-- Overview -->
-    <section class="project-section bg-medium">
-        <div class="project-container">
-            <div class="section-eyebrow" data-en="OVERVIEW" data-zh="项目简介">OVERVIEW</div>
-            <h2 class="project-h2" data-en="What is Anno?" data-zh="Anno 是什么？">What is Anno?</h2>
-            <p class="project-lead" data-en="Anno is a puppy-shaped smart health companion designed for older adults living alone. It blends quiet, ambient health monitoring with the warmth of a pet — using voice, gentle body language, and a small side screen instead of apps and notifications. Medication reminders, anomaly detection, SOS protocols, and emotional feedback are all wrapped in a form that feels like company, not a medical device." data-zh="Anno 是一只小狗造型的智能健康陪伴机器人，专为独居老人设计。它把安静、无感的健康监测和宠物的温暖揉在一起：用语音、轻柔的肢体动作和一块小侧屏，代替 app 和推送通知。用药提醒、异常检测、SOS 流程和情绪反馈，都藏在一个像伙伴、不像医疗设备的身体里。">
-                Anno is a puppy-shaped smart health companion designed for older adults living alone. It blends quiet, ambient health monitoring with the warmth of a pet — using voice, gentle body language, and a small side screen instead of apps and notifications. Medication reminders, anomaly detection, SOS protocols, and emotional feedback are all wrapped in a form that feels like company, not a medical device.
-            </p>
-        </div>
-    </section>
-
-    <!-- Key Features -->
-    <section class="project-section">
-        <div class="project-container">
-            <div class="section-eyebrow" data-en="KEY FEATURES" data-zh="核心功能">KEY FEATURES</div>
-            <h2 class="project-h2" data-en="Six pillars" data-zh="六个核心设计">Six pillars</h2>
-
-            <div class="features-grid anno-features-grid">
-                <a href="#anno-demo" data-jump="meds" class="feature-card anno-feature">
-                    <div class="feature-num">01</div>
-                    <h3 class="feature-title" data-en="Voice-Guided Conversation" data-zh="开口就能操作">Voice-Guided Conversation</h3>
-                    <p class="feature-desc" data-en="Set medication reminders, check health data, or configure alarms with natural voice — no apps, no smartphones, suitable for low digital literacy." data-zh="直接开口说，就能设用药提醒、问健康数据、调闹钟。不用 app，不用智能手机，不太会用数码产品的老人也能上手。">
-                        Set medication reminders, check health data, or configure alarms with natural voice — no apps, no smartphones, suitable for low digital literacy.
-                    </p>
-                    <span class="feature-cta" data-en="Try the demo →" data-zh="试试看 →">Try the demo →</span>
-                </a>
-
-                <a href="#anno-demo" data-jump="health" class="feature-card anno-feature">
-                    <div class="feature-num">02</div>
-                    <h3 class="feature-title" data-en="Health Monitoring + SOS" data-zh="健康监测 + SOS">Health Monitoring + SOS</h3>
-                    <p class="feature-desc" data-en="Built-in sensors and a wearable wristband passively monitor heart rate, temperature, and activity. Anomalies trigger a voice prompt — or an SOS automatically." data-zh="机身传感器加一条腕带，安静地记录心率、体温和活动量。发现异常会先开口问一句，情况紧急就直接发出 SOS。">
-                        Built-in sensors and a wearable wristband passively monitor heart rate, temperature, and activity. Anomalies trigger a voice prompt — or an SOS automatically.
-                    </p>
-                    <span class="feature-cta" data-en="Try the demo →" data-zh="试试看 →">Try the demo →</span>
-                </a>
-
-                <a href="#anno-demo" data-jump="dispenser" class="feature-card anno-feature">
-                    <div class="feature-num">03</div>
-                    <h3 class="feature-title" data-en="Smart Medication Dispenser" data-zh="智能药盒">Smart Medication Dispenser</h3>
-                    <p class="feature-desc" data-en="Anno's internal dispenser prepares the right pills at scheduled times. Feedback comes through voice and subtle body movement, with prescription uploads via GP integration." data-zh="Anno 肚子里的药盒会在设定时间备好该吃的药，用声音和小动作提醒你；处方由家庭医生（GP）那边直接上传。">
-                        Anno's internal dispenser prepares the right pills at scheduled times. Feedback comes through voice and subtle body movement, with prescription uploads via GP integration.
-                    </p>
-                    <span class="feature-cta" data-en="Try the demo →" data-zh="试试看 →">Try the demo →</span>
-                </a>
-
-                <a href="#anno-demo" data-jump="emotion" class="feature-card anno-feature">
-                    <div class="feature-num">04</div>
-                    <h3 class="feature-title" data-en="Emotion-Based Companion" data-zh="有情绪的陪伴">Emotion-Based Companion</h3>
-                    <p class="feature-desc" data-en="Anno wags its tail, tilts its head, or moves slowly based on the user's health state. In critical moments an animated screen shows heart-rate status — turning a tool into a companion." data-zh="身体状态好，Anno 会摇尾巴、歪歪头；不太好，它的动作会慢下来。紧要关头，屏幕会用动画显示心率。它不只是个工具，更像个伴。">
-                        Anno wags its tail, tilts its head, or moves slowly based on the user's health state. In critical moments an animated screen shows heart-rate status — turning a tool into a companion.
-                    </p>
-                    <span class="feature-cta" data-en="Try the demo →" data-zh="试试看 →">Try the demo →</span>
-                </a>
-
-                <a href="#anno-demo" data-jump="privacy" class="feature-card anno-feature">
-                    <div class="feature-num">05</div>
-                    <h3 class="feature-title" data-en="Privacy-Respecting Display" data-zh="把隐私留给本人">Privacy-Respecting Display</h3>
-                    <p class="feature-desc" data-en="A side screen shows daily health summaries to the user. Doctors and family receive only critical alerts — clarity without information overload, autonomy with safety." data-zh="侧屏上的每日健康小结只给本人看，医生和家人只会收到真正要紧的警报。信息清楚但不过载，安全和自主两边都顾到。">
-                        A side screen shows daily health summaries to the user. Doctors and family receive only critical alerts — clarity without information overload, autonomy with safety.
-                    </p>
-                    <span class="feature-cta" data-en="Try the demo →" data-zh="试试看 →">Try the demo →</span>
-                </a>
-
-                <div class="feature-card anno-feature anno-feature-static">
-                    <div class="feature-num">06</div>
-                    <h3 class="feature-title" data-en="Senior-Friendly Form" data-zh="适老化外形">Senior-Friendly Form</h3>
-                    <p class="feature-desc" data-en="Visible, easy-press buttons; magnetic wristband docking; soft coverings hiding tech components — Anno blends into the home, not the hospital." data-zh="按钮大而显眼、一按就有反应；腕带磁吸归位；软软的外壳把电子元件全都藏起来。Anno 属于客厅，不属于医院。">
-                        Visible, easy-press buttons; magnetic wristband docking; soft coverings hiding tech components — Anno blends into the home, not the hospital.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============== INTERACTIVE DEMO ============== -->
+        </header>
+        <figure class="case-cover">
+            <img src="../Assets/work/anno-1200.webp" srcset="../Assets/work/anno-480.webp 480w, ../Assets/work/anno-1200.webp 1200w" sizes="(max-width: 760px) 92vw, min(90vw, 1250px)" alt="ANNO companion robot concept" decoding="async">
+        </figure>
     <section class="project-section bg-medium" id="anno-demo-section">
         <div class="project-container">
-            <div class="section-eyebrow" data-en="INTERACTIVE DEMO" data-zh="交互演示">INTERACTIVE DEMO</div>
-            <h2 class="project-h2" data-en="A day with Anno" data-zh="和 Anno 过一天">A day with Anno</h2>
-            <p class="demos-hint" data-en="Five scenes from a typical day. Pick a scene, then tap or speak to Anno." data-zh="日常一天里的五个场景。选一个，然后点一点，或者对 Anno 说句话。">
-                Five scenes from a typical day. Pick a scene, then tap or speak to Anno.
-            </p>
+            <h2 class="project-h2" data-en="A day with ANNO" data-zh="和 ANNO 的一天">A day with ANNO</h2>
+            <p class="demos-hint" data-en="Choose a scene, then select a question or an action." data-zh="选一个日常场景，再点一个问题或操作。">Choose a scene, then select a question or an action.</p>
 
             <div class="anno-stage" id="anno-demo">
                 <!-- Scene picker (top) -->
@@ -615,22 +487,80 @@
         </div>
     </section>
 
-
-    <!-- Bottom Nav -->
-    <section class="project-end">
-        <a href="../index.html#showcase" class="project-end-link">
-            <span class="arrow">←</span>
-            <span data-en="Back to all works" data-zh="返回全部作品">Back to all works</span>
-        </a>
+    <section class="project-section bg-medium">
+        <div class="project-container">
+            <h2 class="project-h2" data-en="Living with ANNO" data-zh="日常陪伴">Living with ANNO</h2>
+            <p class="project-lead" data-en="Anno is a puppy-shaped smart health companion designed for older adults living alone. It blends quiet, ambient health monitoring with the warmth of a pet — using voice, gentle body language, and a small side screen instead of apps and notifications. Medication reminders, anomaly detection, SOS protocols, and emotional feedback are all wrapped in a form that feels like company, not a medical device." data-zh="Anno 是一只小狗造型的智能健康陪伴机器人，专为独居老人设计。它把安静、无感的健康监测和宠物的温暖揉在一起：用语音、轻柔的肢体动作和一块小侧屏，代替 app 和推送通知。用药提醒、异常检测、SOS 流程和情绪反馈，都藏在一个像伙伴、不像医疗设备的身体里。">
+                Anno is a puppy-shaped smart health companion designed for older adults living alone. It blends quiet, ambient health monitoring with the warmth of a pet — using voice, gentle body language, and a small side screen instead of apps and notifications. Medication reminders, anomaly detection, SOS protocols, and emotional feedback are all wrapped in a form that feels like company, not a medical device.
+            </p>
+        </div>
     </section>
 
+    <section class="project-section">
+        <div class="project-container">
+            <h2 class="project-h2" data-en="Designing the companion" data-zh="陪伴机器人的设计">Designing the companion</h2>
+
+            <div class="features-grid anno-features-grid">
+                <a href="#anno-demo" data-jump="meds" class="feature-card anno-feature">
+                    <h3 class="feature-title" data-en="Voice-Guided Conversation" data-zh="开口就能操作">Voice-Guided Conversation</h3>
+                    <p class="feature-desc" data-en="Set medication reminders, check health data, or configure alarms with natural voice — no apps, no smartphones, suitable for low digital literacy." data-zh="直接开口说，就能设用药提醒、问健康数据、调闹钟。不用 app，不用智能手机，不太会用数码产品的老人也能上手。">
+                        Set medication reminders, check health data, or configure alarms with natural voice — no apps, no smartphones, suitable for low digital literacy.
+                    </p>
+                </a>
+
+                <a href="#anno-demo" data-jump="health" class="feature-card anno-feature">
+                    <h3 class="feature-title" data-en="Health Monitoring + SOS" data-zh="健康监测 + SOS">Health Monitoring + SOS</h3>
+                    <p class="feature-desc" data-en="Built-in sensors and a wearable wristband passively monitor heart rate, temperature, and activity. Anomalies trigger a voice prompt — or an SOS automatically." data-zh="机身传感器加一条腕带，安静地记录心率、体温和活动量。发现异常会先开口问一句，情况紧急就直接发出 SOS。">
+                        Built-in sensors and a wearable wristband passively monitor heart rate, temperature, and activity. Anomalies trigger a voice prompt — or an SOS automatically.
+                    </p>
+                </a>
+
+                <a href="#anno-demo" data-jump="dispenser" class="feature-card anno-feature">
+                    <h3 class="feature-title" data-en="Smart Medication Dispenser" data-zh="智能药盒">Smart Medication Dispenser</h3>
+                    <p class="feature-desc" data-en="Anno's internal dispenser prepares the right pills at scheduled times. Feedback comes through voice and subtle body movement, with prescription uploads via GP integration." data-zh="Anno 肚子里的药盒会在设定时间备好该吃的药，用声音和小动作提醒你；处方由家庭医生（GP）那边直接上传。">
+                        Anno's internal dispenser prepares the right pills at scheduled times. Feedback comes through voice and subtle body movement, with prescription uploads via GP integration.
+                    </p>
+                </a>
+
+                <a href="#anno-demo" data-jump="emotion" class="feature-card anno-feature">
+                    <h3 class="feature-title" data-en="Emotion-Based Companion" data-zh="有情绪的陪伴">Emotion-Based Companion</h3>
+                    <p class="feature-desc" data-en="Anno wags its tail, tilts its head, or moves slowly based on the user's health state. In critical moments an animated screen shows heart-rate status — turning a tool into a companion." data-zh="身体状态好，Anno 会摇尾巴、歪歪头；不太好，它的动作会慢下来。紧要关头，屏幕会用动画显示心率。它不只是个工具，更像个伴。">
+                        Anno wags its tail, tilts its head, or moves slowly based on the user's health state. In critical moments an animated screen shows heart-rate status — turning a tool into a companion.
+                    </p>
+                </a>
+
+                <a href="#anno-demo" data-jump="privacy" class="feature-card anno-feature">
+                    <h3 class="feature-title" data-en="Privacy-Respecting Display" data-zh="把隐私留给本人">Privacy-Respecting Display</h3>
+                    <p class="feature-desc" data-en="A side screen shows daily health summaries to the user. Doctors and family receive only critical alerts — clarity without information overload, autonomy with safety." data-zh="侧屏上的每日健康小结只给本人看，医生和家人只会收到真正要紧的警报。信息清楚但不过载，安全和自主两边都顾到。">
+                        A side screen shows daily health summaries to the user. Doctors and family receive only critical alerts — clarity without information overload, autonomy with safety.
+                    </p>
+                </a>
+
+                <div class="feature-card anno-feature anno-feature-static">
+                    <h3 class="feature-title" data-en="Senior-Friendly Form" data-zh="适老化外形">Senior-Friendly Form</h3>
+                    <p class="feature-desc" data-en="Visible, easy-press buttons; magnetic wristband docking; soft coverings hiding tech components — Anno blends into the home, not the hospital." data-zh="按钮大而显眼、一按就有反应；腕带磁吸归位；软软的外壳把电子元件全都藏起来。Anno 属于客厅，不属于医院。">
+                        Visible, easy-press buttons; magnetic wristband docking; soft coverings hiding tech components — Anno blends into the home, not the hospital.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+        <details class="case-details">
+            <summary data-en="Project details" data-zh="项目信息">Project details</summary>
+            <dl>
+                <div><dt data-en="Role" data-zh="角色">Role</dt><dd data-en="Product · UX" data-zh="产品 · UX">Product · UX</dd></div>
+                <div><dt data-en="Year" data-zh="年份">Year</dt><dd data-en="2024" data-zh="2024">2024</dd></div>
+                <div><dt data-en="Type" data-zh="类型">Type</dt><dd data-en="Companion Robot" data-zh="陪伴机器人">Companion Robot</dd></div>
+                <div><dt data-en="Tools" data-zh="工具">Tools</dt><dd data-en="Figma · Rhino · Web" data-zh="Figma · Rhino · Web">Figma · Rhino · Web</dd></div>
+            </dl>
+        </details>
+    </main>
+    <footer class="case-end">
+        <div class="case-end-links"><a href="../#showcase" data-en="All work" data-zh="全部作品">All work</a><button type="button" class="case-inline-link" data-chat-open data-en="AI Aiden" data-zh="AI Aiden">AI Aiden</button></div>
+        <a class="case-next" href="whisper.html"><span data-en="Next project" data-zh="下个项目">Next project</span><strong data-en="Whisper Field" data-zh="Whisper Field">Whisper Field</strong></a>
+    </footer>
     <script src="../script.js"></script>
     <script src="anno-demos.js"></script>
-    <script>
-        document.body.classList.add('loaded');
-        const loaderEl = document.querySelector('.loader');
-        if (loaderEl) loaderEl.remove();
-    </script>
 </body>
-
 </html>

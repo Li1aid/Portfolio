@@ -4,141 +4,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../Assets/favicon.png" type="image/png">
 
     <!-- Primary SEO -->
-    <title>Chunks — An English app that starts from what you couldn't say | Aiden Yang</title>
-    <meta name="description" content="Product design case study: an English-learning app built around the moment you fail to say something. Type Chinese; Chunks returns natural English and the reusable “chunks” become flashcards automatically. Interactive demo inside. By Xuejian (Aiden) Yang, Design Engineer, Sydney.">
-    <meta name="keywords" content="Chunks, language learning app, spaced repetition, FSRS, SM-2, Claude API, Cloudflare Worker, D1, SwiftUI, PWA, Aiden Yang, Xuejian Yang">
-    <meta name="author" content="Xuejian (Aiden) Yang · 杨雪健">
+    <title>Chunks | Aiden Yang</title>
+    <meta name="description" content="I built Chunks to practise the English I need in conversation. My own sentences become flashcards I can review later.">
+    <meta name="author" content="Aiden Yang">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://aidenyang.me/projects/chunks.html">
 
     <!-- Open Graph -->
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://aidenyang.me/projects/chunks.html">
-    <meta property="og:title" content="Chunks — Learn English in Chunks | Aiden Yang">
-    <meta property="og:description" content="Type a Chinese sentence; Chunks returns natural English and the reusable “chunks” as flashcards. Offline-first sync, SM-2 on PWA, FSRS on iOS.">
-    <meta property="og:image" content="https://aidenyang.me/Assets/chunks-poster.svg">
+    <meta property="og:title" content="Chunks | Aiden Yang">
+    <meta property="og:description" content="I built Chunks to practise the English I need in conversation. My own sentences become flashcards I can review later.">
+    <meta property="og:image" content="https://aidenyang.me/Assets/work/chunks-1200.webp">
     <meta property="og:site_name" content="Aiden Yang Portfolio">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Press+Start+2P&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
     <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="project.css">
     <link rel="stylesheet" href="this-site.css">
     <link rel="stylesheet" href="chunks.css">
+    <link rel="stylesheet" href="case-layout.css">
 </head>
 
-<body class="project-page">
-    <canvas id="particles-canvas"></canvas>
-    <div class="grid-background"></div>
-
-    <div class="cursor"><div class="cursor-glow"></div></div>
-    <div class="cursor-dot"></div>
-
-    <nav class="project-nav">
-        <a href="../index.html#showcase" class="project-nav-btn project-nav-back">
-            <span class="arrow">←</span>
-            <span data-en="Back to Works" data-zh="返回作品">Back to Works</span>
-        </a>
-        <button class="lang-toggle" id="langToggle">
-            <span class="lang-option active" data-lang="en">EN</span>
-            <span class="lang-divider">/</span>
-            <span class="lang-option" data-lang="zh">中</span>
-        </button>
-        <a href="../index.html" class="project-nav-btn project-nav-home">
-            <span data-en="Visit Main Site" data-zh="进入主页">Visit Main Site</span>
-            <span class="arrow">→</span>
-        </a>
+<body class="project-page case-page case-chunks">
+    <a class="case-skip" href="#case-main" data-en="Skip to project" data-zh="跳至作品正文">Skip to project</a>
+    <nav class="project-nav" aria-label="Main navigation" data-aria-en="Main navigation" data-aria-zh="主导航">
+        <a class="case-name" href="../">Aiden Yang</a>
+        <div class="case-nav-tools">
+            <a href="../#showcase" data-en="Work" data-zh="作品">Work</a>
+            <button type="button" class="lang-toggle" id="langToggle" data-switch-language lang="zh-CN" aria-label="切换为中文">中文</button>
+        </div>
     </nav>
-
-    <!-- ─── Hero ─── -->
-    <section class="project-hero">
-        <div class="project-hero-inner">
-            <div class="project-tagline" data-en="PRODUCT DESIGN · SOLO BUILD · 2026" data-zh="产品设计 · 独立开发 · 2026">PRODUCT DESIGN · SOLO BUILD · 2026</div>
-            <h1 class="project-title-xl">Chunks</h1>
-            <p class="project-subtitle" data-en="An English-learning app that starts from the sentence you just couldn't say." data-zh="一个英语学习 app，从你刚才没说出口的那句话开始。">
-                An English-learning app that starts from the sentence you just couldn't say.
-            </p>
-
-            <div class="project-meta-grid">
-                <div class="meta-cell">
-                    <div class="meta-label" data-en="ROLE" data-zh="角色">ROLE</div>
-                    <div class="meta-value" data-en="Design · Build · Daily user" data-zh="设计 · 开发 · 自己天天用">Design · Build · Daily user</div>
-                </div>
-                <div class="meta-cell">
-                    <div class="meta-label" data-en="PLATFORM" data-zh="平台">PLATFORM</div>
-                    <div class="meta-value" data-en="iPhone PWA · native iOS in progress" data-zh="iPhone PWA · 原生 iOS 开发中">iPhone PWA · native iOS in progress</div>
-                </div>
-                <div class="meta-cell">
-                    <div class="meta-label" data-en="YEAR" data-zh="年份">YEAR</div>
-                    <div class="meta-value">2026</div>
-                </div>
-                <div class="meta-cell">
-                    <div class="meta-label" data-en="STATUS" data-zh="状态">STATUS</div>
-                    <div class="meta-value" data-en="In daily use" data-zh="每天在用">In daily use</div>
-                </div>
+    <main id="case-main" class="case-main">
+        <header class="case-intro">
+            <h1 class="case-title" data-en="Chunks" data-zh="Chunks">Chunks</h1>
+            <div class="case-intro-copy">
+                <p data-en="I built Chunks to practise the English I need in conversation. My own sentences become flashcards I can review later." data-zh="我做 Chunks 是为了练习日常交流真正用得上的英语。把自己想说的话变成卡片，以后就能接着练。">I built Chunks to practise the English I need in conversation. My own sentences become flashcards I can review later.</p>
             </div>
-        </div>
-
-        <div class="project-cover">
-            <img src="../Assets/chunks-poster.svg" alt="Chunks — app poster">
-            <div class="project-cover-overlay"></div>
-        </div>
-    </section>
-
-    <!-- ─── The problem ─── -->
-    <section class="project-section bg-dark">
-        <div class="project-container">
-            <div class="section-eyebrow" data-en="THE PROBLEM" data-zh="问题">THE PROBLEM</div>
-            <h2 class="project-h2" data-en="I could read anything. I still froze mid-sentence." data-zh="什么都读得懂，一开口还是卡壳。">
-                I could read anything. I still froze mid-sentence.
-            </h2>
-            <p class="project-lead" data-en="After two years in Sydney my English was fine on paper. In conversation I kept hitting the same wall: I knew exactly what I wanted to say in Chinese, and the natural English for it just wasn't there. I tried the obvious tools. Each one solved the wrong half of the problem." data-zh="来悉尼两年，我的英语在纸面上没什么问题，一到聊天就总撞上同一堵墙：中文我清楚想说什么，可那句地道的英文就是冒不出来。能想到的工具我都试过了，每一个解决的都不是我卡住的那一半。">
-                After two years in Sydney my English was fine on paper. In conversation I kept hitting the same wall: I knew exactly what I wanted to say in Chinese, and the natural English for it just wasn't there. I tried the obvious tools. Each one solved the wrong half of the problem.
-            </p>
-
-            <div class="ck-problem-grid">
-                <div class="ck-problem">
-                    <div class="ck-problem-app" data-en="Vocabulary apps" data-zh="背单词 app">Vocabulary apps</div>
-                    <p class="ck-problem-quote" data-en="“Today's word: ubiquitous.”" data-zh="「今日单词：ubiquitous」">“Today's word: ubiquitous.”</p>
-                    <p class="ck-problem-so" data-en="× Someone else's list, in no context I'd ever meet. I learned words I never used and still lacked the ones I needed yesterday." data-zh="× 别人列的词，我根本遇不到的语境。背了一堆从没用过的词，昨天卡住的那个还是不会。"><strong>×</strong> Someone else's list, in no context I'd ever meet. I learned words I never used and still lacked the ones I needed yesterday.</p>
-                </div>
-                <div class="ck-problem">
-                    <div class="ck-problem-app" data-en="Translator apps" data-zh="翻译 app">Translator apps</div>
-                    <p class="ck-problem-quote" data-en="“Here's your sentence. Copy it.”" data-zh="「给你句子，复制就行。」">“Here's your sentence. Copy it.”</p>
-                    <p class="ck-problem-so" data-en="× Perfect answer, zero retention. I'd paste it, send it, and need the same phrase again a week later." data-zh="× 答案很完美，但什么都记不住。粘贴、发送，一周后同一句话还得再查一遍。"><strong>×</strong> Perfect answer, zero retention. I'd paste it, send it, and need the same phrase again a week later.</p>
-                </div>
-                <div class="ck-problem">
-                    <div class="ck-problem-app" data-en="Flashcard apps" data-zh="闪卡 app">Flashcard apps</div>
-                    <p class="ck-problem-quote" data-en="“Create a new card: front, back, tags…”" data-zh="「新建卡片：正面、背面、标签……」">“Create a new card: front, back, tags…”</p>
-                    <p class="ck-problem-so" data-en="× The memory science works. The card-making doesn't — it's a chore, so the deck stays empty." data-zh="× 记忆科学是管用的，做卡这一步不管用：太麻烦，所以卡组一直是空的。"><strong>×</strong> The memory science works. The card-making doesn't — it's a chore, so the deck stays empty.</p>
-                </div>
-            </div>
-
-            <div class="ck-insight">
-                <div class="ck-insight-eyebrow" data-en="THE INSIGHT" data-zh="我发现">THE INSIGHT</div>
-                <p data-en="The moment you fail to say something is the single best moment to learn it — you have the context, the motivation, and the exact sentence. Every existing tool threw that moment away. Chunks is built to catch it: ask once, and the phrases worth keeping become cards on their own." data-zh="说不出口的那一刻，恰恰是学会它的最好时机：语境、动机、原句都在手边。可现有的工具全把这一刻丢掉了。Chunks 就是为了接住它：你只管问，值得记的短语会自己变成卡片。">
-                    The moment you fail to say something is the single best moment to learn it — you have the context, the motivation, and the exact sentence. Every existing tool threw that moment away. Chunks is built to catch it: ask once, and the phrases worth keeping become cards on their own.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- ─── Live demo ─── -->
+        </header>
     <section class="project-section bg-medium">
         <div class="project-container">
-            <div class="section-eyebrow" data-en="TRY IT" data-zh="试一试">TRY IT</div>
-            <h2 class="project-h2" data-en="Three screens. That's the whole product." data-zh="三个页面，整个产品就这么多。">
-                Three screens. That's the whole product.
-            </h2>
-            <p class="project-lead" data-en="This is a working replica of the app — same layout, same copy, same scheduling code as the version on my phone. The AI replies are pre-baked so it runs without an API key; everything else is real." data-zh="这是一个能直接上手的复刻版：布局、文案、复习排期的代码都和我手机上那版一模一样。AI 回复是预先生成的，所以不需要 API key；其余全是真的。">
-                This is a working replica of the app — same layout, same copy, same scheduling code as the version on my phone. The AI replies are pre-baked so it runs without an API key; everything else is real.
-            </p>
+            <h2 class="project-h2" data-en="Try a sentence" data-zh="试一句中文">Try a sentence</h2>
+            <p class="project-lead" data-en="Choose one of three sample sentences, translate it and review the new cards. The demo uses prepared translations and the app’s review scheduler." data-zh="从三个例句中选一句，翻译后就能复习新卡。演示使用预设译文和应用的复习调度逻辑。">Choose one of three sample sentences, translate it and review the new cards. The demo uses prepared translations and the app’s review scheduler.</p>
 
             <div class="ck-demo-layout">
                 <!-- Phone -->
@@ -149,9 +57,9 @@
 
                         <!-- 翻译 -->
                         <div class="ck-panel active" id="ck-panel-translate">
-                            <div class="ck-navbar"><h1>Chunks</h1></div>
+                            <div class="ck-navbar"><h3>Chunks</h3></div>
                             <div class="ck-content">
-                                <div class="ck-card"><textarea class="ck-textarea" id="ck-input" rows="3" placeholder="Type a Chinese sentence"></textarea></div>
+                                <div class="ck-card"><textarea class="ck-textarea" id="ck-input" rows="3" readonly placeholder="Choose a sample sentence below" data-en="Choose a sample sentence below" data-zh="从下方选择一个例句" aria-label="Selected sample sentence" data-aria-en="Selected sample sentence" data-aria-zh="选中的例句"></textarea></div>
                                 <div class="ck-chips">
                                     <button class="ck-chip">这个方案我觉得有点悬…</button>
                                     <button class="ck-chip">我今天有点不在状态…</button>
@@ -173,7 +81,7 @@
 
                         <!-- 卡片 -->
                         <div class="ck-panel" id="ck-panel-library">
-                            <div class="ck-navbar"><h1>Cards</h1></div>
+                            <div class="ck-navbar"><h3>Cards</h3></div>
                             <div class="ck-content">
                                 <div class="ck-search"><svg viewBox="0 0 24 24" width="15" height="15"><path fill="currentColor" d="M10 2a8 8 0 1 0 5.3 14L21 21.7l1.4-1.4-5.7-5.7A8 8 0 0 0 10 2Zm0 2a6 6 0 1 1 0 12 6 6 0 0 1 0-12Z"/></svg><input type="text" id="ck-search" placeholder="Search"></div>
                                 <div class="ck-list" id="ck-library"></div>
@@ -182,7 +90,7 @@
 
                         <!-- 复习 -->
                         <div class="ck-panel" id="ck-panel-review">
-                            <div class="ck-navbar"><h1>Review</h1></div>
+                            <div class="ck-navbar"><h3>Review</h3></div>
                             <div class="ck-content">
                                 <div class="ck-card ck-stats">
                                     <div class="ck-stat"><div class="ck-stat-num" id="ck-due">0</div><div class="ck-stat-lbl">Due</div></div>
@@ -261,13 +169,44 @@
         </div>
     </section>
 
-    <!-- ─── Design details ─── -->
     <section class="project-section bg-dark">
         <div class="project-container">
-            <div class="section-eyebrow" data-en="DESIGN DETAILS" data-zh="设计细节">DESIGN DETAILS</div>
-            <h2 class="project-h2" data-en="Everything I took out, and the little I put in." data-zh="减掉的很多，加上的一点点。">
-                Everything I took out, and the little I put in.
+            <h2 class="project-h2" data-en="I could read anything. I still froze mid-sentence." data-zh="什么都读得懂，一开口还是卡壳。">
+                I could read anything. I still froze mid-sentence.
             </h2>
+            <p class="project-lead" data-en="After two years in Sydney my English was fine on paper. In conversation I kept hitting the same wall: I knew exactly what I wanted to say in Chinese, and the natural English for it just wasn't there. I tried the obvious tools. Each one solved the wrong half of the problem." data-zh="来悉尼两年，我的英语在纸面上没什么问题，一到聊天就总撞上同一堵墙：中文我清楚想说什么，可那句地道的英文就是冒不出来。能想到的工具我都试过了，每一个解决的都不是我卡住的那一半。">
+                After two years in Sydney my English was fine on paper. In conversation I kept hitting the same wall: I knew exactly what I wanted to say in Chinese, and the natural English for it just wasn't there. I tried the obvious tools. Each one solved the wrong half of the problem.
+            </p>
+
+            <div class="ck-problem-grid">
+                <div class="ck-problem">
+                    <div class="ck-problem-app" data-en="Vocabulary apps" data-zh="背单词 app">Vocabulary apps</div>
+                    <p class="ck-problem-quote" data-en="“Today's word: ubiquitous.”" data-zh="「今日单词：ubiquitous」">“Today's word: ubiquitous.”</p>
+                    <p class="ck-problem-so" data-en="× Someone else's list, in no context I'd ever meet. I learned words I never used and still lacked the ones I needed yesterday." data-zh="× 别人列的词，我根本遇不到的语境。背了一堆从没用过的词，昨天卡住的那个还是不会。"><strong>×</strong> Someone else's list, in no context I'd ever meet. I learned words I never used and still lacked the ones I needed yesterday.</p>
+                </div>
+                <div class="ck-problem">
+                    <div class="ck-problem-app" data-en="Translator apps" data-zh="翻译 app">Translator apps</div>
+                    <p class="ck-problem-quote" data-en="“Here's your sentence. Copy it.”" data-zh="「给你句子，复制就行。」">“Here's your sentence. Copy it.”</p>
+                    <p class="ck-problem-so" data-en="× Perfect answer, zero retention. I'd paste it, send it, and need the same phrase again a week later." data-zh="× 答案很完美，但什么都记不住。粘贴、发送，一周后同一句话还得再查一遍。"><strong>×</strong> Perfect answer, zero retention. I'd paste it, send it, and need the same phrase again a week later.</p>
+                </div>
+                <div class="ck-problem">
+                    <div class="ck-problem-app" data-en="Flashcard apps" data-zh="闪卡 app">Flashcard apps</div>
+                    <p class="ck-problem-quote" data-en="“Create a new card: front, back, tags…”" data-zh="「新建卡片：正面、背面、标签……」">“Create a new card: front, back, tags…”</p>
+                    <p class="ck-problem-so" data-en="× The memory science works. The card-making doesn't — it's a chore, so the deck stays empty." data-zh="× 记忆科学是管用的，做卡这一步不管用：太麻烦，所以卡组一直是空的。"><strong>×</strong> The memory science works. The card-making doesn't — it's a chore, so the deck stays empty.</p>
+                </div>
+            </div>
+
+            <div class="ck-insight">
+                <p data-en="The moment you fail to say something is the single best moment to learn it — you have the context, the motivation, and the exact sentence. Every existing tool threw that moment away. Chunks is built to catch it: ask once, and the phrases worth keeping become cards on their own." data-zh="说不出口的那一刻，恰恰是学会它的最好时机：语境、动机、原句都在手边。可现有的工具全把这一刻丢掉了。Chunks 就是为了接住它：你只管问，值得记的短语会自己变成卡片。">
+                    The moment you fail to say something is the single best moment to learn it — you have the context, the motivation, and the exact sentence. Every existing tool threw that moment away. Chunks is built to catch it: ask once, and the phrases worth keeping become cards on their own.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="project-section bg-dark">
+        <div class="project-container">
+            <h2 class="project-h2" data-en="Designing for daily practice" data-zh="为每天的练习而设计">Designing for daily practice</h2>
             <p class="project-lead" data-en="The design brief I gave myself: the app must cost less effort than not using it. Every detail below exists to remove a step, a decision, or a doubt." data-zh="我给自己定的要求只有一条：用这个 app，必须比不用它更省力。下面每一个细节，都是为了少一步操作、少一个决定，或者少一分犹豫。">
                 The design brief I gave myself: the app must cost less effort than not using it. Every detail below exists to remove a step, a decision, or a doubt.
             </p>
@@ -362,13 +301,9 @@
         </div>
     </section>
 
-    <!-- ─── Iterations ─── -->
     <section class="project-section bg-medium">
         <div class="project-container">
-            <div class="section-eyebrow" data-en="ITERATIONS" data-zh="迭代记录">ITERATIONS</div>
-            <h2 class="project-h2" data-en="What daily use changed." data-zh="每天用下来，改掉了什么。">
-                What daily use changed.
-            </h2>
+            <h2 class="project-h2" data-en="What daily use changed" data-zh="使用之后的调整">What daily use changed</h2>
             <p class="project-lead" data-en="I'm the only user, which is a weakness and a superpower: every decision got tested against real frustration within a day. These are the ones that flipped." data-zh="用户只有我一个，这既是短板也是优势：每个决定不出一天就会被真实的烦躁检验一遍。下面是被推翻的那些。">
                 I'm the only user, which is a weakness and a superpower: every decision got tested against real frustration within a day. These are the ones that flipped.
             </p>
@@ -411,13 +346,9 @@
         </div>
     </section>
 
-    <!-- ─── Under the hood ─── -->
     <section class="project-section bg-dark ck-hood">
         <div class="project-container">
-            <div class="section-eyebrow" data-en="UNDER THE HOOD" data-zh="技术实现">UNDER THE HOOD</div>
-            <h2 class="project-h2" data-en="Small enough to hold in one head." data-zh="小到一个脑子就装得下。">
-                Small enough to hold in one head.
-            </h2>
+            <h2 class="project-h2" data-en="How the app runs" data-zh="应用如何运行">How the app runs</h2>
             <p class="project-lead" data-en="Two clients, one thin backend. The PWA is three files of vanilla JS with no build step; the iOS app is SwiftUI + SwiftData. Both talk to a single Cloudflare Worker that proxies the AI, keeps the keys server-side, and syncs cards to D1 with last-write-wins. Tap a node for the reasoning." data-zh="两个客户端，一个很薄的后端。PWA 是三个原生 JS 文件，没有构建步骤；iOS 端是 SwiftUI + SwiftData。两边都连同一个 Cloudflare Worker，由它代理 AI、把密钥留在服务端，并按「最后写入者胜」把卡片同步到 D1。点一下节点，看我为什么这么选。">
                 Two clients, one thin backend. The PWA is three files of vanilla JS with no build step; the iOS app is SwiftUI + SwiftData. Both talk to a single Cloudflare Worker that proxies the AI, keeps the keys server-side, and syncs cards to D1 with last-write-wins. Tap a node for the reasoning.
             </p>
@@ -495,20 +426,23 @@
             </div>        </div>
     </section>
 
-    <section class="project-end">
-        <a href="../index.html#showcase" class="project-end-link">
-            <span class="arrow">←</span>
-            <span data-en="Back to all works" data-zh="返回全部作品">Back to all works</span>
-        </a>
-    </section>
-
+        <details class="case-details">
+            <summary data-en="Project details" data-zh="项目信息">Project details</summary>
+            <dl>
+                <div><dt data-en="Role" data-zh="角色">Role</dt><dd data-en="Design · Build · Daily user" data-zh="设计 · 开发 · 自己天天用">Design · Build · Daily user</dd></div>
+                <div><dt data-en="Platform" data-zh="平台">Platform</dt><dd data-en="iPhone PWA · native iOS in progress" data-zh="iPhone PWA · 原生 iOS 开发中">iPhone PWA · native iOS in progress</dd></div>
+                <div><dt data-en="Year" data-zh="年份">Year</dt><dd data-en="2026" data-zh="2026">2026</dd></div>
+                <div><dt data-en="Status" data-zh="状态">Status</dt><dd data-en="In daily use" data-zh="每天在用">In daily use</dd></div>
+            </dl>
+        </details>
+    </main>
+    <footer class="case-end">
+        <div class="case-end-links"><a href="../#showcase" data-en="All work" data-zh="全部作品">All work</a><button type="button" class="case-inline-link" data-chat-open data-en="AI Aiden" data-zh="AI Aiden">AI Aiden</button></div>
+        <a class="case-next" href="vivid.html"><span data-en="Next project" data-zh="下个项目">Next project</span><strong data-en="vividXperience" data-zh="vividXperience">vividXperience</strong></a>
+    </footer>
     <script src="../script.js"></script>
+    <script src="architecture.js"></script>
     <script src="chunks.js"></script>
     <script src="chunks-demo.js"></script>
-    <script>
-        document.body.classList.add('loaded');
-        const loaderEl = document.querySelector('.loader');
-        if (loaderEl) loaderEl.remove();
-    </script>
 </body>
 </html>

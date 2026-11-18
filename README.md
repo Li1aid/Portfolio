@@ -1,8 +1,8 @@
 # aidenyang.me
 
-Bilingual portfolio of **Xuejian (Aiden) Yang**, Design Engineer in Sydney — with an AI assistant that answers questions about the work.
+Bilingual portfolio of **Aiden Yang**, Design Engineer in Sydney — with an AI assistant that answers questions about the work.
 
-<img src="Assets/this-site.svg" width="720">
+<img src="Assets/portfolio-preview.jpg" width="720">
 
 **Live:** [aidenyang.me](https://aidenyang.me) · EN / 中文
 **Case study:** [aidenyang.me/projects/this-site.html](https://aidenyang.me/projects/this-site.html)
@@ -21,14 +21,15 @@ GitHub Pages (this repo)  ──►  static HTML / CSS / JS, no build step
 Cloudflare Worker (worker/) ──►  proxies the Anthropic API · logs chats to D1 · admin behind Cloudflare Access
 ```
 
-- **Front-end** — vanilla HTML/CSS/JS with GSAP for scroll animation and a canvas particle background.
+- **Front-end** — static HTML, local Instrument Sans, responsive WebP artwork and vanilla JavaScript.
 - **Chatbot** — `knowledge.md` is the single source of truth for what it may say; conversations are stored in D1 and purged after 30 days.
-- **Status badge** — the "open to work" pill reads `status.json`, editable from the Worker admin panel.
+- **Availability** — the contact section reads `status.json`, editable from the Worker admin panel.
 
 ## Layout
 
 ```
-index.html · style.css · script.js    homepage
+index.html · home.css                 homepage
+style.css · script.js                 shared styles, language and chat
 projects/                             one html/css/js set per case study
 Assets/                               posters and images
 knowledge.md                          chatbot knowledge base
@@ -38,7 +39,7 @@ sitemap.xml · robots.txt              SEO
 
 ## Develop
 
-Site: open `index.html` in a browser. That's it.
+Serve the repository root with `python3 -m http.server` and open the local address it prints.
 
 Worker:
 
@@ -61,4 +62,4 @@ npm run deploy    # production
 
 aidenyang5995@gmail.com · [LinkedIn](https://www.linkedin.com/in/aiden-yang-ty)
 
-© 2026 Xuejian (Aiden) Yang
+© 2026 Aiden Yang

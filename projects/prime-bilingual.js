@@ -3,7 +3,6 @@
 (function () {
     const nodes = {
         player: {
-            eyebrow: { en: 'NODE · PAGE', zh: '节点 · 页面' },
             title:   { en: 'Prime Video player', zh: 'Prime Video 播放器' },
             body: {
                 en: 'The unmodified official player. It requests its own TTML subtitle file exactly as always — the extension never blocks or edits that request, it only reads a clone of the response.',
@@ -16,7 +15,6 @@
             flows: ['arch-line-ttml']
         },
         hook: {
-            eyebrow: { en: 'NODE · PAGE WORLD', zh: '节点 · 页面主环境' },
             title:   { en: 'injected.js — the hook', zh: 'injected.js——钩子' },
             body: {
                 en: 'A tiny script injected into the page\'s main world that patches both window.fetch and XMLHttpRequest. Every response is sniffed by URL pattern, then by content (does it start like a TTML document?). Matches get posted to the content script via postMessage.',
@@ -29,7 +27,6 @@
             flows: ['arch-line-ttml', 'arch-line-msg']
         },
         content: {
-            eyebrow: { en: 'NODE · ISOLATED WORLD', zh: '节点 · 隔离环境' },
             title:   { en: 'content.js — parse & sync', zh: 'content.js——解析与同步' },
             body: {
                 en: 'Parses the TTML into timed cues (it handles four different timecode formats), asks the service worker for translations, then paints the overlay — re-synced every frame by binary search over the cue list against video.currentTime, with a delay you can tune live while the video plays.',
@@ -42,7 +39,6 @@
             flows: ['arch-line-msg', 'arch-line-tr', 'arch-line-render']
         },
         sw: {
-            eyebrow: { en: 'NODE · EXTENSION WORLD', zh: '节点 · 扩展环境' },
             title:   { en: 'Background service worker', zh: '后台 service worker' },
             body: {
                 en: 'Owns all network work: batches the episode 25 lines at a time, streams progress back to the player, and keeps a local translation cache keyed by a hash of the cue content, trimmed LRU-style at 50 episodes.',
@@ -55,7 +51,6 @@
             flows: ['arch-line-tr', 'arch-line-api']
         },
         claude: {
-            eyebrow: { en: 'NODE · LLM', zh: '节点 · 大模型' },
             title:   { en: 'Claude API', zh: 'Claude API' },
             body: {
                 en: 'Claude Haiku 4.5 by default, Sonnet or Opus selectable in the options page. Output is forced through a tool schema so subtitle punctuation can\'t break parsing, and prompt caching makes every batch after the first cheaper.',
@@ -68,7 +63,6 @@
             flows: ['arch-line-api']
         },
         overlay: {
-            eyebrow: { en: 'NODE · RENDER', zh: '节点 · 渲染' },
             title:   { en: 'The bilingual overlay', zh: '双语叠加层' },
             body: {
                 en: 'English on top in white, Chinese below in amber, triple text-shadow for legibility over any frame, sized with clamp() from laptop to TV-sized windows. Clicks pass straight through to the player controls.',
@@ -82,68 +76,5 @@
         }
     };
 
-    function currentLang() {
-        const active = document.querySelector('.lang-option.active');
-        return active && active.dataset.lang === 'zh' ? 'zh' : 'en';
-    }
-
-    function renderPanel(key) {
-        const panel = document.getElementById('arch-panel');
-        const content = panel.querySelector('.arch-panel-content');
-        const data = nodes[key];
-        const lang = currentLang();
-        if (!data) return;
-        content.innerHTML = `
-            <div class="arch-panel-eyebrow">${escapeHtml(data.eyebrow[lang] || data.eyebrow.en)}</div>
-            <h3 class="arch-panel-title">${escapeHtml(data.title[lang] || data.title.en)}</h3>
-            <p>${escapeHtml(data.body[lang] || data.body.en)}</p>
-            <div class="why-row">
-                <strong>${lang === 'zh' ? '为什么这样选' : 'Why this choice'}</strong>
-                <p>${escapeHtml(data.why[lang] || data.why.en)}</p>
-            </div>
-        `;
-        content.dataset.nodeDetail = key;
-    }
-
-    function highlightNode(key) {
-        const svg = document.getElementById('arch-svg');
-        if (!svg) return;
-        svg.classList.add('has-active');
-        svg.querySelectorAll('.arch-node').forEach(n => {
-            n.classList.toggle('active', n.dataset.node === key);
-        });
-        const flows = nodes[key]?.flows || [];
-        svg.querySelectorAll('.arch-line').forEach(l => {
-            const matches = flows.some(f => l.classList.contains(f));
-            l.classList.toggle('arch-active-flow', matches);
-        });
-    }
-
-    function escapeHtml(s) {
-        return String(s ?? '').replace(/[&<>"']/g, c => ({
-            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-        }[c]));
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const svg = document.getElementById('arch-svg');
-        if (!svg) return;
-        svg.querySelectorAll('.arch-node').forEach(node => {
-            node.addEventListener('click', () => {
-                const key = node.dataset.node;
-                renderPanel(key);
-                highlightNode(key);
-            });
-        });
-
-        const langToggle = document.getElementById('langToggle');
-        if (langToggle) {
-            langToggle.addEventListener('click', () => {
-                const active = document.querySelector('.arch-panel-content');
-                if (active && active.dataset.nodeDetail && active.dataset.nodeDetail !== 'default') {
-                    setTimeout(() => renderPanel(active.dataset.nodeDetail), 30);
-                }
-            });
-        }
-    });
+    window.mountProjectArchitecture(nodes);
 })();

@@ -4,164 +4,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../Assets/favicon.png" type="image/png">
 
     <!-- Primary SEO -->
-    <title>CoLab — Hybrid Learning Platform | Xuejian (Aiden) Yang, Sydney</title>
-    <meta name="description" content="CoLab — a hybrid learning platform built for international design students at the University of Sydney. UX/UI case study by Aiden Yang, Sydney-based designer.">
-    <meta name="keywords" content="CoLab, hybrid learning, education platform, UX case study, Aiden Yang, Sydney designer, USYD design project">
-    <meta name="author" content="Xuejian (Aiden) Yang · 杨雪健">
+    <title>CoLab | Aiden Yang</title>
+    <meta name="description" content="A hybrid learning platform for international design students. I led the team through research, prototyping, brand design and the website.">
+    <meta name="author" content="Aiden Yang">
     <link rel="canonical" href="https://aidenyang.me/projects/colab.html">
 
     <!-- Open Graph -->
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://aidenyang.me/projects/colab.html">
-    <meta property="og:title" content="CoLab — Hybrid Learning Platform | Aiden Yang">
-    <meta property="og:description" content="A hybrid learning platform for international design students. UX/UI case study by Sydney-based designer Aiden Yang.">
+    <meta property="og:title" content="CoLab | Aiden Yang">
+    <meta property="og:description" content="A hybrid learning platform for international design students. I led the team through research, prototyping, brand design and the website.">
     <meta property="og:image" content="https://aidenyang.me/Assets/1.jpg">
     <meta property="og:site_name" content="Aiden Yang Portfolio">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Press+Start+2P&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="project.css">
+    <link rel="stylesheet" href="case-layout.css">
 </head>
 
-<body class="project-page">
-    <!-- Animated Background -->
-    <canvas id="particles-canvas"></canvas>
-    <div class="grid-background"></div>
-
-    <!-- Custom Cursor -->
-    <div class="cursor">
-        <div class="cursor-glow"></div>
-    </div>
-    <div class="cursor-dot"></div>
-
-    <!-- Subpage Top Bar -->
-    <nav class="project-nav">
-        <a href="../index.html#showcase" class="project-nav-btn project-nav-back">
-            <span class="arrow">←</span>
-            <span data-en="Back to Works" data-zh="返回作品">Back to Works</span>
-        </a>
-        <button class="lang-toggle" id="langToggle">
-            <span class="lang-option active" data-lang="en">EN</span>
-            <span class="lang-divider">/</span>
-            <span class="lang-option" data-lang="zh">中</span>
-        </button>
-        <a href="../index.html" class="project-nav-btn project-nav-home">
-            <span data-en="Visit Main Site" data-zh="前往主站">Visit Main Site</span>
-            <span class="arrow">→</span>
-        </a>
+<body class="project-page case-page case-colab">
+    <a class="case-skip" href="#case-main" data-en="Skip to project" data-zh="跳至作品正文">Skip to project</a>
+    <nav class="project-nav" aria-label="Main navigation" data-aria-en="Main navigation" data-aria-zh="主导航">
+        <a class="case-name" href="../">Aiden Yang</a>
+        <div class="case-nav-tools">
+            <a href="../#showcase" data-en="Work" data-zh="作品">Work</a>
+            <button type="button" class="lang-toggle" id="langToggle" data-switch-language lang="zh-CN" aria-label="切换为中文">中文</button>
+        </div>
     </nav>
-
-    <!-- Hero -->
-    <section class="project-hero">
-        <div class="project-hero-inner">
-            <div class="project-tagline" data-en="EDUCATION PLATFORM · 2025" data-zh="教育平台 · 2025">EDUCATION PLATFORM · 2025</div>
-            <h1 class="project-title-xl">CoLab</h1>
-            <p class="project-subtitle" data-en="A learning experience as refreshing as a sip of Coke." data-zh="学习也可以像喝一口可乐那样清爽。">
-                A learning experience as refreshing as a sip of Coke.
-            </p>
-
-            <div class="project-meta-grid">
-                <div class="meta-cell">
-                    <div class="meta-label" data-en="ROLE" data-zh="角色">ROLE</div>
-                    <div class="meta-value" data-en="UI/UX · Frontend" data-zh="UI/UX · 前端">UI/UX · Frontend</div>
-                </div>
-                <div class="meta-cell">
-                    <div class="meta-label" data-en="YEAR" data-zh="年份">YEAR</div>
-                    <div class="meta-value">2025</div>
-                </div>
-                <div class="meta-cell">
-                    <div class="meta-label" data-en="TYPE" data-zh="类型">TYPE</div>
-                    <div class="meta-value" data-en="Hybrid Learning" data-zh="混合式学习">Hybrid Learning</div>
-                </div>
-                <div class="meta-cell">
-                    <div class="meta-label" data-en="TOOLS" data-zh="工具">TOOLS</div>
-                    <div class="meta-value">Figma · Web</div>
-                </div>
+    <main id="case-main" class="case-main">
+        <header class="case-intro">
+            <h1 class="case-title" data-en="CoLab" data-zh="CoLab">CoLab</h1>
+            <div class="case-intro-copy">
+                <p data-en="A hybrid learning platform for international design students. I led the team through research, prototyping, brand design and the website." data-zh="一个面向国际设计学生的混合学习平台。我带领团队完成了研究、原型、品牌设计和网站搭建。">A hybrid learning platform for international design students. I led the team through research, prototyping, brand design and the website.</p>
+                <div class="case-actions"><a class="case-inline-link" href="#demo-teamup" data-en="Try team matching" data-zh="体验组队">Try team matching</a>
+                <a class="case-inline-link" href="https://li1aid.github.io/CoLab/" target="_blank" rel="noopener" data-en="Open CoLab" data-zh="打开 CoLab">Open CoLab</a>
+                <a class="case-inline-link" href="https://2025.adpgradshow.com/project/R_9JqLhw1i5o8wWtX/" target="_blank" rel="noopener" data-en="Graduation exhibition" data-zh="毕业展">Graduation exhibition</a></div>
             </div>
-        </div>
-
-        <div class="project-cover">
-            <img src="../Assets/1.jpg" alt="CoLab cover">
-            <div class="project-cover-overlay"></div>
-        </div>
-    </section>
-
-    <!-- Overview -->
+        </header>
+        <figure class="case-cover">
+            <img src="../Assets/work/colab-1200.webp" srcset="../Assets/work/colab-480.webp 480w, ../Assets/work/colab-1200.webp 1200w" sizes="(max-width: 760px) 92vw, min(90vw, 1250px)" alt="Screens from the CoLab student platform" decoding="async">
+        </figure>
     <section class="project-section bg-medium">
         <div class="project-container">
-            <div class="section-eyebrow" data-en="OVERVIEW" data-zh="项目简介">OVERVIEW</div>
-            <h2 class="project-h2" data-en="What is CoLab?" data-zh="CoLab 是什么？">What is CoLab?</h2>
-            <p class="project-lead" data-en="CoLab is a hybrid learning platform for international design students, exhibited at the University of Sydney's graduation exhibition and used by the university as a reference. It pairs standardized online lectures and quizzes with an in-person tutorial space — letting students freely form skill-based teams, follow lectures at their own pace, and ask questions in real time through an embedded AI assistant and live chat." data-zh="CoLab 是一个面向国际设计学生的混合式学习平台，曾在悉尼大学毕业展展出，并被学校参考使用。我们把标准化的 lecture 和小测放到线上，再配合线下的 tutorial 空间：学生可以按技能自由组队，用自己的节奏听课，还能随时通过内置的 AI 助手和实时聊天提问。">
-                CoLab is a hybrid learning platform for international design students, exhibited at the University of Sydney's graduation exhibition and used by the university as a reference. It pairs standardized online lectures and quizzes with an in-person tutorial space — letting students freely form skill-based teams, follow lectures at their own pace, and ask questions in real time through an embedded AI assistant and live chat.
-            </p>
-        </div>
-    </section>
-
-    <!-- Key Features -->
-    <section class="project-section">
-        <div class="project-container">
-            <div class="section-eyebrow" data-en="KEY FEATURES" data-zh="核心功能">KEY FEATURES</div>
-            <h2 class="project-h2" data-en="Four pillars" data-zh="四个核心设计">Four pillars</h2>
-
-            <div class="features-grid">
-                <a href="#demo-teamup" class="feature-card">
-                    <div class="feature-num">01</div>
-                    <h3 class="feature-title" data-en="Free Team-Up" data-zh="自由组队">Free Team-Up</h3>
-                    <p class="feature-desc" data-en="Skill-based profiles let students find compatible teammates in the same course — no more random groups." data-zh="个人主页带技能标签，同一门课的同学能据此找到合拍的队友，不用再靠随机分组。">
-                        Skill-based profiles let students find compatible teammates in the same course — no more random groups.
-                    </p>
-                    <span class="feature-cta" data-en="Try the demo →" data-zh="试试看 →">Try the demo →</span>
-                </a>
-
-                <a href="#demo-lecture" class="feature-card">
-                    <div class="feature-num">02</div>
-                    <h3 class="feature-title" data-en="Standardized Online Lectures" data-zh="标准化的线上 lecture">Standardized Online Lectures</h3>
-                    <p class="feature-desc" data-en="Lecture content is delivered online with quiz-verified attendance — students can pace themselves, replay sections, and reduce language load." data-zh="Lecture 内容统一放到线上，用小测来确认出勤。学生可以按自己的节奏听，没听懂的地方反复回看，语言压力小很多。">
-                        Lecture content is delivered online with quiz-verified attendance — students can pace themselves, replay sections, and reduce language load.
-                    </p>
-                    <span class="feature-cta" data-en="Try the demo →" data-zh="试试看 →">Try the demo →</span>
-                </a>
-
-                <a href="#demo-quiz" class="feature-card">
-                    <div class="feature-num">03</div>
-                    <h3 class="feature-title" data-en="Quiz-verified Attendance" data-zh="小测确认出勤">Quiz-verified Attendance</h3>
-                    <p class="feature-desc" data-en="Lecture quizzes confirm participation while giving students immediate feedback on what they understood." data-zh="每节 lecture 后的小测既能确认你听了课，也能马上告诉你哪些地方真的听懂了。">
-                        Lecture quizzes confirm participation while giving students immediate feedback on what they understood.
-                    </p>
-                    <span class="feature-cta" data-en="Try the demo →" data-zh="试试看 →">Try the demo →</span>
-                </a>
-
-                <a href="#demo-tutorial" class="feature-card">
-                    <div class="feature-num">04</div>
-                    <h3 class="feature-title" data-en="In-class Tutorial Whiteboard" data-zh="Tutorial 课堂白板">In-class Tutorial Whiteboard</h3>
-                    <p class="feature-desc" data-en="During tutorials, every student sees richer content on their own screen, hovers terms for AI explanations, and joins a live chat — without interrupting the class." data-zh="Tutorial 上，每个人的屏幕里都有比投影更完整的内容：把鼠标停在术语上就能看到 AI 解释，有问题直接在实时聊天里问，不用打断老师。">
-                        During tutorials, every student sees richer content on their own screen, hovers terms for AI explanations, and joins a live chat — without interrupting the class.
-                    </p>
-                    <span class="feature-cta" data-en="Try the demo →" data-zh="试试看 →">Try the demo →</span>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Interactive Demos -->
-    <section class="project-section bg-medium">
-        <div class="project-container">
-            <div class="section-eyebrow" data-en="INTERACTIVE DEMOS" data-zh="交互演示">INTERACTIVE DEMOS</div>
-            <h2 class="project-h2" data-en="Try it yourself" data-zh="自己上手试试">Try it yourself</h2>
-            <p class="demos-hint" data-en="Click around — every panel below is live." data-zh="随便点点，下面每个面板都是能用的。">Click around — every panel below is live.</p>
+            <h2 class="project-h2" data-en="The student experience" data-zh="体验学生端">The student experience</h2>
+            <p class="demos-hint" data-en="Find a teammate, browse a lecture or take a short quiz." data-zh="寻找组员、浏览课程，或做一份随堂测验。">Find a teammate, browse a lecture or take a short quiz.</p>
 
             <div class="demos-stack">
 
                 <!-- DEMO 1: Team Up -->
                 <article class="demo-card" id="demo-teamup">
                     <header class="demo-head">
-                        <div class="demo-num">01</div>
                         <div class="demo-meta">
                             <h3 class="demo-title" data-en="Team Up" data-zh="组队">Team Up</h3>
                             <p class="demo-sub" data-en="Find compatible teammates by skill tags." data-zh="按技能标签找合拍的队友。">Find compatible teammates by skill tags.</p>
@@ -186,7 +80,6 @@
                 <!-- DEMO 2: Lecture Player -->
                 <article class="demo-card" id="demo-lecture">
                     <header class="demo-head">
-                        <div class="demo-num">02</div>
                         <div class="demo-meta">
                             <h3 class="demo-title" data-en="Online Lecture" data-zh="线上 Lecture">Online Lecture</h3>
                             <p class="demo-sub" data-en="Self-paced player with chapter jumps." data-zh="自己掌握节奏的播放器，可按章节跳转。">Self-paced player with chapter jumps.</p>
@@ -238,7 +131,6 @@
                 <!-- DEMO 3: Quiz -->
                 <article class="demo-card" id="demo-quiz">
                     <header class="demo-head">
-                        <div class="demo-num">03</div>
                         <div class="demo-meta">
                             <h3 class="demo-title" data-en="Lecture Quiz" data-zh="Lecture 小测">Lecture Quiz</h3>
                             <p class="demo-sub" data-en="Quiz-verified attendance — answer to continue." data-zh="用小测确认出勤，答对才能继续。">Quiz-verified attendance — answer to continue.</p>
@@ -264,7 +156,6 @@
                 <!-- DEMO 4: Tutorial Whiteboard -->
                 <article class="demo-card" id="demo-tutorial">
                     <header class="demo-head">
-                        <div class="demo-num">04</div>
                         <div class="demo-meta">
                             <h3 class="demo-title" data-en="In-class Tutorial Whiteboard" data-zh="Tutorial 课堂白板">In-class Tutorial Whiteboard</h3>
                             <p class="demo-sub" data-en="Hover any highlighted term to see an inline explanation." data-zh="把鼠标停在高亮的术语上，就能看到解释。">Hover any highlighted term to see an inline explanation.</p>
@@ -366,35 +257,66 @@
         </div>
     </section>
 
-    <!-- Live Site CTA -->
-    <section class="project-section bg-medium vivid-cta-section">
-        <div class="project-container vivid-cta-inner">
-            <div class="section-eyebrow" data-en="LIVE SITE" data-zh="正式网站">LIVE SITE</div>
-            <h2 class="project-h2" data-en="Visit the full CoLab website" data-zh="去看看 CoLab 正式网站">Visit the full CoLab website</h2>
-            <p class="vivid-cta-text" data-en="Explore the complete CoLab project — built with my graduation studio team." data-zh="完整的 CoLab 项目，是我和毕业 studio 的小组一起做出来的。">Explore the complete CoLab project — built with my graduation studio team.</p>
-            <a href="https://li1aid.github.io/Graduation-Studio/" target="_blank" rel="noopener" class="vivid-cta-btn">
-                <span data-en="Open CoLab" data-zh="打开 CoLab">Open CoLab</span>
-                <span class="vivid-cta-arrow">↗</span>
-            </a>
+    <section class="project-section bg-medium">
+        <div class="project-container">
+            <h2 class="project-h2" data-en="Learning together" data-zh="一起学习">Learning together</h2>
+            <p class="project-lead" data-en="CoLab is a hybrid learning platform for international design students, exhibited at the University of Sydney's graduation exhibition and used by the university as a reference. It pairs standardized online lectures and quizzes with an in-person tutorial space — letting students freely form skill-based teams, follow lectures at their own pace, and ask questions in real time through an embedded AI assistant and live chat." data-zh="CoLab 是一个面向国际设计学生的混合式学习平台，曾在悉尼大学毕业展展出，并被学校参考使用。我们把标准化的 lecture 和小测放到线上，再配合线下的 tutorial 空间：学生可以按技能自由组队，用自己的节奏听课，还能随时通过内置的 AI 助手和实时聊天提问。">
+                CoLab is a hybrid learning platform for international design students, exhibited at the University of Sydney's graduation exhibition and used by the university as a reference. It pairs standardized online lectures and quizzes with an in-person tutorial space — letting students freely form skill-based teams, follow lectures at their own pace, and ask questions in real time through an embedded AI assistant and live chat.
+            </p>
         </div>
     </section>
 
-    <!-- Bottom Nav -->
-    <section class="project-end">
-        <a href="../index.html#showcase" class="project-end-link">
-            <span class="arrow">←</span>
-            <span data-en="Back to all works" data-zh="返回全部作品">Back to all works</span>
-        </a>
+    <section class="project-section">
+        <div class="project-container">
+            <h2 class="project-h2" data-en="Designing the classroom" data-zh="课堂的设计">Designing the classroom</h2>
+
+            <div class="features-grid">
+                <a href="#demo-teamup" class="feature-card">
+                    <h3 class="feature-title" data-en="Free Team-Up" data-zh="自由组队">Free Team-Up</h3>
+                    <p class="feature-desc" data-en="Skill-based profiles let students find compatible teammates in the same course — no more random groups." data-zh="个人主页带技能标签，同一门课的同学能据此找到合拍的队友，不用再靠随机分组。">
+                        Skill-based profiles let students find compatible teammates in the same course — no more random groups.
+                    </p>
+                </a>
+
+                <a href="#demo-lecture" class="feature-card">
+                    <h3 class="feature-title" data-en="Standardized Online Lectures" data-zh="标准化的线上 lecture">Standardized Online Lectures</h3>
+                    <p class="feature-desc" data-en="Lecture content is delivered online with quiz-verified attendance — students can pace themselves, replay sections, and reduce language load." data-zh="Lecture 内容统一放到线上，用小测来确认出勤。学生可以按自己的节奏听，没听懂的地方反复回看，语言压力小很多。">
+                        Lecture content is delivered online with quiz-verified attendance — students can pace themselves, replay sections, and reduce language load.
+                    </p>
+                </a>
+
+                <a href="#demo-quiz" class="feature-card">
+                    <h3 class="feature-title" data-en="Quiz-verified Attendance" data-zh="小测确认出勤">Quiz-verified Attendance</h3>
+                    <p class="feature-desc" data-en="Lecture quizzes confirm participation while giving students immediate feedback on what they understood." data-zh="每节 lecture 后的小测既能确认你听了课，也能马上告诉你哪些地方真的听懂了。">
+                        Lecture quizzes confirm participation while giving students immediate feedback on what they understood.
+                    </p>
+                </a>
+
+                <a href="#demo-tutorial" class="feature-card">
+                    <h3 class="feature-title" data-en="In-class Tutorial Whiteboard" data-zh="Tutorial 课堂白板">In-class Tutorial Whiteboard</h3>
+                    <p class="feature-desc" data-en="During tutorials, every student sees richer content on their own screen, hovers terms for AI explanations, and joins a live chat — without interrupting the class." data-zh="Tutorial 上，每个人的屏幕里都有比投影更完整的内容：把鼠标停在术语上就能看到 AI 解释，有问题直接在实时聊天里问，不用打断老师。">
+                        During tutorials, every student sees richer content on their own screen, hovers terms for AI explanations, and joins a live chat — without interrupting the class.
+                    </p>
+                </a>
+            </div>
+        </div>
     </section>
 
+        <details class="case-details">
+            <summary data-en="Project details" data-zh="项目信息">Project details</summary>
+            <dl>
+                <div><dt data-en="Role" data-zh="角色">Role</dt><dd data-en="Team lead, UI/UX and frontend" data-zh="团队负责人、UI/UX 与前端">Team lead, UI/UX and frontend</dd></div>
+                <div><dt data-en="Year" data-zh="年份">Year</dt><dd data-en="2025" data-zh="2025">2025</dd></div>
+                <div><dt data-en="Type" data-zh="类型">Type</dt><dd data-en="Hybrid Learning" data-zh="混合式学习">Hybrid Learning</dd></div>
+                <div><dt data-en="Tools" data-zh="工具">Tools</dt><dd data-en="Figma · Web" data-zh="Figma · Web">Figma · Web</dd></div>
+            </dl>
+        </details>
+    </main>
+    <footer class="case-end">
+        <div class="case-end-links"><a href="../#showcase" data-en="All work" data-zh="全部作品">All work</a><button type="button" class="case-inline-link" data-chat-open data-en="AI Aiden" data-zh="AI Aiden">AI Aiden</button></div>
+        <a class="case-next" href="chunks.html"><span data-en="Next project" data-zh="下个项目">Next project</span><strong data-en="Chunks" data-zh="Chunks">Chunks</strong></a>
+    </footer>
     <script src="../script.js"></script>
     <script src="colab-demos.js"></script>
-    <script>
-        // Skip the loader logic from script.js for subpages — make sure body is visible.
-        document.body.classList.add('loaded');
-        const loaderEl = document.querySelector('.loader');
-        if (loaderEl) loaderEl.remove();
-    </script>
 </body>
-
 </html>

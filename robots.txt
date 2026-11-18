@@ -1,4 +1,4 @@
-# Xuejian Yang · 杨雪健 (Aiden) — https://aidenyang.me/
+# Aiden Yang — https://aidenyang.me/
 User-agent: *
 Allow: /
 

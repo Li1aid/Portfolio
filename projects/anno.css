@@ -177,7 +177,8 @@
     overflow: hidden;
 }
 @media (max-width: 900px) {
-    .anno-room { grid-template-columns: 1fr; }
+    .anno-room { grid-template-columns: minmax(0, 1fr); }
+    .anno-room > * { min-width: 0; }
 }
 
 .anno-room-bg {
@@ -445,6 +446,10 @@
 
 /* Lists / items inside the panel — different layouts per scene */
 .anno-pill-row {
+    width: 100%;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
     display: flex;
     align-items: center;
     gap: 0.8rem;
@@ -482,6 +487,7 @@
     font-weight: 500;
 }
 .anno-pill-time {
+    display: block;
     font-family: 'Orbitron', sans-serif;
     font-size: 0.7rem;
     color: rgba(255, 255, 255, 0.55);
@@ -880,4 +886,10 @@
     }
     .anno-journey-cell-2col { grid-column: span 2; }
     .anno-journey-empty { display: none; }
+}
+
+@media (max-width: 600px) {
+    .anno-dog-side { min-width: 0; max-width: 260px; }
+    .anno-panel { min-width: 0; }
+    .anno-bubble { max-width: 80%; }
 }

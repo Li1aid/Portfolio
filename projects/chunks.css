@@ -108,7 +108,7 @@
     backdrop-filter: blur(20px);
     border-bottom: 0.5px solid rgba(60,60,67,0.12);
 }
-.ck-navbar h1 {
+.ck-navbar h3 {
     margin: 0; font-size: 30px; font-weight: 700; letter-spacing: -0.02em; color: #000;
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', sans-serif;
 }
