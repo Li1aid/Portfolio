@@ -125,17 +125,25 @@
     document.querySelectorAll('.ck-step').forEach(s => s.addEventListener('click', () => switchTab(s.dataset.step)));
 
     // ── Translate
-    $$('.ck-chip').forEach((chip, i) => chip.addEventListener('click', () => {
-        input.value = SAMPLES[i].zh;
-        input.focus();
-        translateBtn.disabled = false;
-    }));
-    input.addEventListener('input', () => { translateBtn.disabled = !input.value.trim(); });
+    const sampleButtons = $$('.ck-chip');
+    let selectedSample;
+    sampleButtons.forEach((button, index) => {
+        button.setAttribute('aria-pressed', 'false');
+        button.addEventListener('click', () => {
+            selectedSample = SAMPLES[index];
+            input.value = selectedSample.zh;
+            sampleButtons.forEach(chip => chip.setAttribute('aria-pressed', String(chip === button)));
+            translateBtn.disabled = false;
+        });
+    });
 
-    function findSample(text) {
-        const t = text.trim();
-        return SAMPLES.find(s => s.zh === t) || SAMPLES.find(s => t.includes(s.zh.slice(0, 6))) || null;
+    function updateSamplePrompt() {
+        const zh = document.querySelector('.lang-option.active')?.dataset.lang === 'zh';
+        input.placeholder = zh ? '从下方选择一个例句' : 'Choose a sample sentence below';
+        input.setAttribute('aria-label', zh ? '已选例句' : 'Selected sample sentence');
     }
+    updateSamplePrompt();
+    document.addEventListener('portfolio:language', updateSamplePrompt);
 
     async function typeText(el, text, ms) {
         el.innerHTML = '<span class="cursor"></span>';
@@ -149,13 +157,10 @@
     }
 
     translateBtn.addEventListener('click', async () => {
-        if (busy) return;
-        const sample = findSample(input.value);
-        if (!sample) {
-            showToast('Demo has three sample sentences — tap one above');
-            return;
-        }
+        if (busy || !selectedSample) return;
+        const sample = selectedSample;
         busy = true;
+        sampleButtons.forEach(chip => { chip.disabled = true; });
         translateBtn.disabled = true;
         translateBtn.textContent = 'Translating…';
         result.classList.remove('hidden');
@@ -187,7 +192,8 @@
         });
         updateBadge();
         translateBtn.textContent = 'Translate';
-        translateBtn.disabled = !input.value.trim();
+        sampleButtons.forEach(chip => { chip.disabled = false; });
+        translateBtn.disabled = false;
         busy = false;
     });
 

@@ -65,44 +65,62 @@
        acknowledges. Voice prompts pre-canned for elderly speech.
        ========================================================= */
     const meds = [
-        { id: 'morning', icon: '☀', name: 'Morning meds', name_zh: '早上的药', time: '8:00 AM', taken: false },
-        { id: 'noon',    icon: '◐', name: 'Lunch meds',   name_zh: '中午的药', time: '12:30 PM', taken: false },
-        { id: 'evening', icon: '☾', name: 'Evening meds', name_zh: '晚上的药', time: '7:00 PM', taken: false },
+        { id: 'morning', icon: '☀', name: 'Morning meds', name_zh: '早上的药', time: '8:00 AM', status: 'pending' },
+        { id: 'noon',    icon: '◐', name: 'Lunch meds',   name_zh: '中午的药', time: '12:30 PM', status: 'pending' },
+        { id: 'evening', icon: '☾', name: 'Evening meds', name_zh: '晚上的药', time: '7:00 PM', status: 'pending' },
     ];
 
+    function local(en, zh) {
+        return document.querySelector('.lang-option.active')?.dataset.lang === 'zh' ? zh : en;
+    }
+
+    let eveningReminder = false;
     function renderMeds() {
         panelEyebrow.dataset.en = 'MEDICATION';
         panelEyebrow.dataset.zh = '用药';
-        panelEyebrow.textContent = 'MEDICATION';
-        panelTitle.textContent = '8:00 AM — Morning routine';
-        panelBody.innerHTML = '';
-        meds.forEach((m, i) => {
-            const row = document.createElement('div');
-            row.className = 'anno-pill-row' + (m.taken ? ' taken' : '');
+        panelEyebrow.textContent = local('MEDICATION', '用药');
+        panelTitle.textContent = local('8:00 AM — Morning routine', '上午 8:00 — 日常用药');
+        panelBody.replaceChildren();
+        const statusText = {
+            taken: local('TAKEN', '已服'), pending: local('PENDING', '待服'), skipped: local('SKIPPED', '已跳过')
+        };
+        meds.forEach(m => {
+            const row = document.createElement('button');
+            row.type = 'button';
+            row.className = 'anno-pill-row' + (m.status === 'taken' ? ' taken' : '');
+            row.setAttribute('aria-pressed', String(m.status === 'taken'));
             row.innerHTML = `
-                <div class="anno-pill-icon ${m.id}">${m.icon}</div>
-                <div class="anno-pill-info">
-                    <div class="anno-pill-name">${m.name}</div>
-                    <div class="anno-pill-time">${m.time}</div>
-                </div>
-                <div class="anno-pill-status">${m.taken ? 'TAKEN' : 'PENDING'}</div>
+                <span class="anno-pill-icon ${m.id}">${m.icon}</span>
+                <span class="anno-pill-info">
+                    <span class="anno-pill-name">${local(m.name, m.name_zh)}</span>
+                    <span class="anno-pill-time">${m.time}${m.id === 'evening' && eveningReminder ? local(' · Reminder set', ' · 已设提醒') : ''}</span>
+                </span>
+                <span class="anno-pill-status">${statusText[m.status]}</span>
             `;
             row.addEventListener('click', () => {
-                if (m.taken) return;
-                m.taken = true;
-                renderMeds();
-                say('Great job! Have a wonderful day.');
+                if (m.status === 'taken') return;
+                m.status = 'taken';
+                row.classList.add('taken');
+                row.setAttribute('aria-pressed', 'true');
+                row.querySelector('.anno-pill-status').textContent = statusText.taken;
+                say(local(`${m.name} marked as taken.`, `已记录服用${m.name_zh}。`));
                 setMode('happy');
-                setTimeout(() => setMode('idle'), 2500);
+                setTimeout(() => { if (currentScene === 'meds') setMode('idle'); }, 2500);
             });
             panelBody.appendChild(row);
         });
-        promptsBar.innerHTML = '';
-        ['Did I take my pills?', 'Remind me at 7 PM', 'Skip noon meds'].forEach(txt => {
+        promptsBar.replaceChildren();
+        const prompts = [
+            ['Did I take my pills?', '我早上吃过药了吗？'],
+            ['Remind me at 7 PM', '晚上七点提醒我'],
+            ['Skip noon meds', '跳过中午的药']
+        ];
+        prompts.forEach(([question, translation]) => {
             const b = document.createElement('button');
+            b.type = 'button';
             b.className = 'anno-voice-prompt';
-            b.textContent = '"' + txt + '"';
-            b.addEventListener('click', () => handleVoice(txt));
+            b.textContent = '"' + local(question, translation) + '"';
+            b.addEventListener('click', () => handleVoice(question));
             promptsBar.appendChild(b);
         });
     }
@@ -363,14 +381,30 @@
        prompt. Used by all scenes.
        ========================================================= */
     const voiceReplies = [
-        ['pill', 'You took your morning pills at 8:04 AM.'],
-        ['skip', 'OK, I will skip the noon meds today.'],
-        ['remind', 'Reminder set for 7 PM.'],
-        ['heart', 'Your heart rate is 74 — perfectly fine.'],
+        ['pill', () => meds[0].status === 'taken'
+            ? local('Your morning dose is marked as taken.', '早上的药已记录为已服用。')
+            : local('Your morning dose is still marked as pending.', '早上的药仍显示待服。')],
+        ['skip', () => {
+            const noon = meds.find(m => m.id === 'noon');
+            if (noon.status === 'taken') return local('Your lunch dose was already marked as taken.', '中午的药已记录为已服用。');
+            noon.status = 'skipped';
+            renderMeds();
+            return local('Lunch meds marked as skipped in this demo.', '演示中已标记跳过中午的药。');
+        }],
+        ['remind', () => {
+            eveningReminder = true;
+            renderMeds();
+            return local('Demo reminder set for 7 PM.', '演示中的提醒已设为晚上七点。');
+        }],
+        ['heart', () => local(`The current reading is ${screenBpm.textContent} bpm.`, `当前读数为每分钟 ${screenBpm.textContent} 次。`)],
         ['daughter', 'Calling Sarah now.'],
         ['ok', 'Glad you are okay.'],
         ['dispense', 'Dispensing now.'],
-        ['next dose', 'Next dose is at 12:30 PM.'],
+        ['next dose', () => {
+            const next = meds.find(m => m.status === 'pending');
+            return next ? local(`The next pending dose is at ${next.time}.`, `下一项待服时间是 ${next.time}。`)
+                : local('No doses are marked pending.', '目前没有待服项目。');
+        }],
         ['refill', '14 days of medication left.'],
         ['morning', 'Good morning! How did you sleep?'],
         ['data', 'Showing your daily summary.'],
@@ -381,7 +415,7 @@
     function handleVoice(text) {
         const t = text.toLowerCase();
         let reply = 'I heard you. Let me check.';
-        for (const [k, v] of voiceReplies) { if (t.includes(k)) { reply = v; break; } }
+        for (const [k, v] of voiceReplies) { if (t.includes(k)) { reply = typeof v === 'function' ? v() : v; break; } }
         say(reply);
         setMode('curious');
         setTimeout(() => setMode('idle'), 2200);
@@ -389,9 +423,8 @@
 
     if (mic) {
         mic.addEventListener('click', () => {
-            mic.classList.add('listening');
-            say('Listening...');
-            setTimeout(() => mic.classList.remove('listening'), 1600);
+            say(local('Choose a sample question below.', '请选择下方的示例问题。'));
+            promptsBar.querySelector('button')?.focus({ preventScroll: true });
         });
     }
 
@@ -432,6 +465,10 @@
         });
     });
 
+    document.addEventListener('portfolio:language', () => {
+        if (mic) mic.setAttribute('aria-label', local('Choose a sample question', '选择示例问题'));
+        if (currentScene === 'meds') renderMeds();
+    });
     // Initial paint
     switchScene('meds');
 })();

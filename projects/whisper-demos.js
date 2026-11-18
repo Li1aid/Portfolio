@@ -738,6 +738,8 @@
             },
         };
         let activePhase = 'generation';
+        const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
+        let frame = null;
         let cycleOn = false;
         let cycleTimer = null;
         const phaseOrder = ['generation', 'presentation', 'deconstruction'];
@@ -790,6 +792,7 @@
             hudFill.style.width = p.fill + '%';
             hudMeta.textContent = p.title_en;
             wallScenes.forEach(w => { w.style.opacity = p.sceneOpacity; });
+            if (motionPreference.matches && !cycleOn) showStillScene();
             // Reset per-wall timers so the new phase animates from t=0
             wallState.forEach(st => st.phaseT = 0);
             // When entering Generation from any other phase, push particles
@@ -809,6 +812,8 @@
 
         function startCycle() {
             cycleOn = true;
+            cycleBtn.setAttribute('aria-pressed', 'true');
+            syncAnimation();
             cycleBtn.classList.add('on');
             cycleState.textContent = 'ON';
             cycleState.dataset.en = 'ON';
@@ -821,6 +826,8 @@
         }
         function stopCycle() {
             cycleOn = false;
+            cycleBtn.setAttribute('aria-pressed', 'false');
+            syncAnimation();
             cycleBtn.classList.remove('on');
             cycleState.textContent = 'OFF';
             cycleState.dataset.en = 'OFF';
@@ -1114,7 +1121,7 @@
             }
         }
         window.addEventListener('resize', resizeFloor);
-        setTimeout(resizeFloor, 60);
+        setTimeout(() => { resizeFloor(); syncAnimation(); }, 60);
 
         let cursor = { x: -9999, y: -9999, t: 0 };
         let target = { x: -9999, y: -9999 };
@@ -1125,12 +1132,14 @@
             target.y = e.clientY - r.top;
             glowOn = true;
             floorGlow.classList.add('active');
+            if (motionPreference.matches && !cycleOn) { cursor.x = target.x; cursor.y = target.y; tickFloor(); }
             if (floorHint) floorHint.style.opacity = '0';
         });
         floor.addEventListener('pointerleave', () => {
             glowOn = false;
             floorGlow.classList.remove('active');
             target.x = -9999; target.y = -9999;
+            if (motionPreference.matches && !cycleOn) tickFloor();
             if (floorHint) floorHint.style.opacity = '';
         });
         floor.addEventListener('click', (e) => {
@@ -1163,7 +1172,7 @@
             const baseAlpha = activePhase === 'presentation' ? 0.55 : 0.85;
             for (let i = 0; i < blades.length; i++) {
                 const b = blades[i];
-                b.sw += b.speed;
+                if (!motionPreference.matches || cycleOn) b.sw += b.speed;
                 const sway = Math.sin(b.sw) * 1.6;
                 const tipX = b.x + sway;
                 const tipY = b.y - b.h;
@@ -1199,16 +1208,37 @@
             }
         }
 
-        // Animation loop
         let lastT = performance.now();
+        function showStillScene() {
+            wallParticles.forEach(canvas => canvas.ctx.clearRect(0, 0, canvas.width, canvas.height));
+            tickFloor();
+        }
+
         function loop(now) {
             const dt = Math.min(0.05, (now - lastT) / 1000);
             lastT = now;
             tickWalls(dt);
             tickFloor();
-            requestAnimationFrame(loop);
+            frame = requestAnimationFrame(loop);
         }
-        requestAnimationFrame(loop);
+
+        function syncAnimation() {
+            if (motionPreference.matches && !cycleOn) {
+                cancelAnimationFrame(frame);
+                frame = null;
+                showStillScene();
+            } else if (frame === null) {
+                lastT = performance.now();
+                frame = requestAnimationFrame(loop);
+            }
+        }
+        motionPreference.addEventListener('change', () => {
+            if (motionPreference.matches) stopCycle();
+            else syncAnimation();
+        });
+        window.addEventListener('resize', syncAnimation);
+        cycleBtn.setAttribute('aria-pressed', 'false');
+        syncAnimation();
 
         // Init
         paintScenes();

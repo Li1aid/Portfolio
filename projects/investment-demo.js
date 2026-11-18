@@ -11,13 +11,18 @@
     const SYM = { CNY: '¥', AUD: 'A$', HKD: 'HK$', USD: 'US$' };
 
     const holdings = [
-        { nameEn: 'Acme A-Share ETF',    nameZh: 'Acme A 股 ETF',    ticker: '510TEST',  marketEn: 'A-share',  marketZh: 'A 股',    ccy: 'CNY', qty: 8000, cost: 1.42,  price: 1.55,  vol: 0.012 },
-        { nameEn: 'Phoenix Industries',  nameZh: 'Phoenix 工业',     ticker: 'PHX.AX',   marketEn: 'ASX',      marketZh: '澳股',     ccy: 'AUD', qty: 240,  cost: 12.40, price: 13.18, vol: 0.018 },
-        { nameEn: 'Onyx Tech Group',     nameZh: 'Onyx 科技',        ticker: '0788.HK',  marketEn: 'HK',       marketZh: '港股',     ccy: 'HKD', qty: 1500, cost: 8.95,  price: 8.42,  vol: 0.022 },
-        { nameEn: 'Crimson Growth Fund', nameZh: 'Crimson 成长基金', ticker: '008812',   marketEn: 'CN fund',  marketZh: '内地基金', ccy: 'CNY', qty: 3500, cost: 2.18,  price: 2.31,  vol: 0.009 },
-        { nameEn: 'Aurum Physical Gold', nameZh: 'Aurum 实物黄金',   ticker: 'Au99.99',  marketEn: 'Gold',     marketZh: '实物金',   ccy: 'CNY', qty: 60,   cost: 612,   price: 638,   vol: 0.006 },
-        { nameEn: 'Beacon Resources',    nameZh: 'Beacon 资源',      ticker: 'BEA.AX',   marketEn: 'ASX',      marketZh: '澳股',     ccy: 'AUD', qty: 180,  cost: 5.20,  price: 4.93,  vol: 0.020 },
+        { nameEn: 'Acme A-Share ETF',    nameZh: 'Acme A 股 ETF',    ticker: '510TEST',  marketEn: 'A-share',  marketZh: 'A 股',    ccy: 'CNY', qty: 8000, cost: 1.42,  price: 1.55, close: 1.53,  vol: 0.012 },
+        { nameEn: 'Phoenix Industries',  nameZh: 'Phoenix 工业',     ticker: 'PHX.AX',   marketEn: 'ASX',      marketZh: '澳股',     ccy: 'AUD', qty: 240,  cost: 12.40, price: 13.18, close: 13.24, vol: 0.018 },
+        { nameEn: 'Onyx Tech Group',     nameZh: 'Onyx 科技',        ticker: '0788.HK',  marketEn: 'HK',       marketZh: '港股',     ccy: 'HKD', qty: 1500, cost: 8.95,  price: 8.42, close: 8.48,  vol: 0.022 },
+        { nameEn: 'Crimson Growth Fund', nameZh: 'Crimson 成长基金', ticker: '008812',   marketEn: 'CN fund',  marketZh: '内地基金', ccy: 'CNY', qty: 3500, cost: 2.18,  price: 2.31, close: 2.30,  vol: 0.009 },
+        { nameEn: 'Aurum Physical Gold', nameZh: 'Aurum 实物黄金',   ticker: 'Au99.99',  marketEn: 'Gold',     marketZh: '实物金',   ccy: 'CNY', qty: 60,   cost: 612,   price: 638, close: 635,   vol: 0.006 },
+        { nameEn: 'Beacon Resources',    nameZh: 'Beacon 资源',      ticker: 'BEA.AX',   marketEn: 'ASX',      marketZh: '澳股',     ccy: 'AUD', qty: 180,  cost: 5.20,  price: 4.93, close: 4.97,  vol: 0.020 },
     ];
+
+    let cashCny = 20000;
+    const openingEquityCny = cashCny + totalCostCny();
+    const dayOpening = { CNY: 0, AUD: 0 };
+    const dayTradeCash = { CNY: 0, AUD: 0 };
 
     let displayCcy = 'CNY';
     let refreshTimer = null;
@@ -29,6 +34,18 @@
         { dateKey: 'd2',     side: 'buy',  ticker: 'Au99.99', qty: 10,   price: 632 },
         { dateKey: 'today',  side: 'buy',  ticker: 'PHX.AX',  qty: 30,   price: 13.05 },
     ];
+
+    for (const h of holdings) {
+        if (h.ccy in dayOpening) dayOpening[h.ccy] += h.qty * h.close;
+    }
+    for (const trade of actionLog.filter(entry => entry.dateKey === 'today')) {
+        const h = holdings.find(row => row.ticker === trade.ticker);
+        if (!(h.ccy in dayOpening)) continue;
+        const change = trade.side === 'buy' ? trade.qty : -trade.qty;
+        dayOpening[h.ccy] -= change * h.close;
+        dayTradeCash[h.ccy] -= change * trade.price;
+    }
+    let lastTrade = null;
 
     // ── Bilingual strings ────────────────────────────────────────
     const STRINGS = {
@@ -59,8 +76,7 @@
     const $ = (id) => document.getElementById(id);
 
     function lang() {
-        const active = document.querySelector('.lang-option.active');
-        return active && active.dataset.lang === 'zh' ? 'zh' : 'en';
+        return document.querySelector('.lang-option.active')?.dataset.lang === 'zh' ? 'zh' : 'en';
     }
     function t(key) {
         const v = STRINGS[key];
@@ -86,27 +102,26 @@
     function totalCostCny() { return holdings.reduce((s, h) => s + h.qty * h.cost * FX[h.ccy], 0); }
 
     function renderTotals() {
-        const v = totalValCny();
-        const c = totalCostCny();
-        const pnl = v - c;
-        const pct = c ? (pnl / c) * 100 : 0;
-        $('demo-total').textContent = withSym(inDisplay(v));
+        const equity = totalValCny() + cashCny;
+        const costBasis = totalCostCny();
+        const pnl = equity - openingEquityCny;
+        const pct = pnl / openingEquityCny * 100;
+        $('demo-total').textContent = withSym(inDisplay(equity));
         $('demo-total-pnl').textContent =
-            `${t('cost')} ${withSym(inDisplay(c))} · ${t('pnl')} ${fmtSigned(inDisplay(pnl))} (${pct >= 0 ? '+' : ''}${pct.toFixed(2)}%)`;
-
-        const cny = holdings.filter(h => h.ccy === 'CNY')
-            .reduce((s, h) => s + h.qty * (h.price - h.cost) * 0.10, 0);
-        const aud = holdings.filter(h => h.ccy === 'AUD')
-            .reduce((s, h) => s + h.qty * (h.price - h.cost) * 0.06, 0);
-        setPnlCard('demo-pnl-cny', 'demo-pnl-cny-pct', cny, '¥');
-        setPnlCard('demo-pnl-aud', 'demo-pnl-aud-pct', aud, 'A$');
+            `${t('cost')} ${withSym(inDisplay(costBasis))} · ${t('pnl')} ${fmtSigned(inDisplay(pnl))} (${pct >= 0 ? '+' : ''}${pct.toFixed(2)}%)`;
+        $('demo-cash').textContent = `${lang() === 'zh' ? '可用现金' : 'Cash available'} ${withSym(inDisplay(cashCny))}`;
+        for (const ccy of ['CNY', 'AUD']) {
+            const marketValue = holdings.filter(h => h.ccy === ccy)
+                .reduce((sum, h) => sum + h.qty * h.price, 0);
+            const gain = marketValue + dayTradeCash[ccy] - dayOpening[ccy];
+            setPnlCard(ccy.toLowerCase(), gain, gain / dayOpening[ccy] * 100, SYM[ccy]);
+        }
     }
 
-    function setPnlCard(valId, pctId, pnl, sym) {
-        const el = $(valId), pe = $(pctId);
+    function setPnlCard(key, pnl, pct, sym) {
+        const el = $('demo-pnl-' + key), pe = $('demo-pnl-' + key + '-pct');
         const sign = pnl >= 0 ? '+' : '−';
         el.textContent = `${sign}${sym} ${fmt(Math.abs(pnl))}`;
-        const pct = pnl >= 0 ? (Math.random() * 0.6 + 0.2) : -(Math.random() * 0.5 + 0.15);
         pe.textContent = `${pct >= 0 ? '+' : ''}${pct.toFixed(2)}%`;
         const cls = pnl >= 0 ? 'pos' : 'neg';
         el.closest('.demo-card-pnl').classList.remove('pos', 'neg');
@@ -119,7 +134,7 @@
     function renderRows(flashIdx = -1) {
         const L = lang();
         $('demo-rows').innerHTML = holdings.map((h, i) => {
-            const dayPct = ((h.price - h.cost) / h.cost) * 100;
+            const dayPct = ((h.price - h.close) / h.close) * 100;
             const dayCls = dayPct >= 0 ? 'pos' : 'neg';
             const val = inDisplay(h.qty * h.price * FX[h.ccy]);
             const nm = L === 'zh' ? h.nameZh : h.nameEn;
@@ -198,7 +213,7 @@
     function tickPrices() {
         const i = Math.floor(Math.random() * holdings.length);
         const h = holdings[i];
-        const drift = (Math.random() - 0.48) * h.vol * h.cost;
+        const drift = (Math.random() - 0.48) * h.vol * h.price;
         h.price = Math.max(0.01, +(h.price + drift).toFixed(2));
         renderRows(i);
         renderTotals();
@@ -232,10 +247,29 @@
 
     function populateLogSymbolSelect() {
         const L = lang();
+        const previous = $('log-symbol').value;
         $('log-symbol').innerHTML = holdings.map(h => {
             const nm = L === 'zh' ? h.nameZh : h.nameEn;
             return `<option value="${h.ticker}">${h.ticker} · ${nm}</option>`;
         }).join('');
+        if (previous) $('log-symbol').value = previous;
+    }
+
+    function announceTrade() {
+        if (!lastTrade) return;
+        const {kind, ticker, qty, available} = lastTrade;
+        const zh = lang() === 'zh';
+        let message;
+        if (kind === 'cash') {
+            message = zh ? '模拟现金不足，请减少数量。' : 'Not enough demo cash. Try a smaller quantity.';
+        } else if (kind === 'shares') {
+            message = zh ? `可卖出 ${available} 股 ${ticker}。` : `You can sell up to ${available} shares of ${ticker}.`;
+        } else {
+            message = zh ? `${ticker} 当前持仓：${qty}。` : `New holding: ${qty.toLocaleString('en-US')} ${ticker}.`;
+        }
+        const status = $('demo-trade-status');
+        status.hidden = false;
+        status.textContent = message;
     }
 
     function attachLogForm() {
@@ -243,12 +277,28 @@
             e.preventDefault();
             const ticker = $('log-symbol').value;
             const side   = $('log-side').value;
-            const qty    = parseInt($('log-qty').value, 10) || 0;
-            const h = holdings.find(h => h.ticker === ticker);
-            if (!h || qty <= 0) return;
-            actionLog.push({ dateKey: 'now', side, ticker, qty, price: h.price });
-            $('log-qty').value = '100';
-            renderLog();
+            const qty = $('log-qty').valueAsNumber;
+            const h = holdings.find(row => row.ticker === ticker);
+            if (!h || !Number.isSafeInteger(qty) || qty <= 0) return;
+
+            const amountCny = qty * h.price * FX[h.ccy];
+            if (side === 'buy' && amountCny > cashCny + 0.000001) {
+                lastTrade = {kind: 'cash'};
+            } else if (side === 'sell' && qty > h.qty) {
+                lastTrade = {kind: 'shares', ticker, available: h.qty};
+            } else {
+                const change = side === 'buy' ? qty : -qty;
+                if (side === 'buy') h.cost = (h.qty * h.cost + amountCny / FX[h.ccy]) / (h.qty + qty);
+                h.qty += change;
+                cashCny -= change * h.price * FX[h.ccy];
+                if (h.ccy in dayTradeCash) dayTradeCash[h.ccy] -= change * h.price;
+                actionLog.push({ dateKey: 'now', side, ticker, qty, price: h.price });
+                lastTrade = {kind: 'success', ticker, qty: h.qty};
+                renderLog();
+                renderRows(holdings.indexOf(h));
+                renderTotals();
+            }
+            announceTrade();
         });
     }
 
@@ -259,6 +309,7 @@
         renderCalendar();
         renderLog();
         populateLogSymbolSelect();
+        announceTrade();
         $('demo-meta').textContent = t('priceUpdated');
     }
 
@@ -286,11 +337,7 @@
         }, { threshold: 0.15 });
         io.observe(root);
 
-        document.querySelectorAll('.lang-option').forEach(opt => {
-            opt.addEventListener('click', () => {
-                setTimeout(rerenderAll, 30);
-            });
-        });
+        document.addEventListener('portfolio:language', rerenderAll);
     }
 
     if (document.readyState === 'loading') {

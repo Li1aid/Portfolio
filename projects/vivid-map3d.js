@@ -898,6 +898,7 @@
         io.observe(container);
 
         const controller = {
+            selectLandmark: setSelected,
             start() { running = true; syncLoop(); },
             stop() { running = false; syncLoop(); },
             resetCamera() {

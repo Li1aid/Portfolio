@@ -181,6 +181,7 @@
                             <div class="demo-label" data-en="Total value" data-zh="总资产">Total value</div>
                             <div class="demo-total-amount" id="demo-total">¥ 0</div>
                             <div class="demo-total-pnl" id="demo-total-pnl">—</div>
+                            <div class="demo-total-pnl" id="demo-cash"></div>
                         </div>
                         <div class="demo-card demo-card-pnl pos">
                             <div class="demo-label" data-en="Today · CNY assets" data-zh="今日 · CNY 资产">Today · CNY assets</div>
@@ -200,18 +201,20 @@
                             <div class="demo-label" data-en="Holdings" data-zh="持仓">Holdings</div>
                             <span class="demo-hint" data-en="Auto-refresh every 4s here · every 5 min in the real app" data-zh="这里每 4 秒刷新一次 · 真实 app 是每 5 分钟">Auto-refresh every 4s here · every 5 min in the real app</span>
                         </div>
-                        <table class="demo-table">
-                            <thead>
-                                <tr>
-                                    <th data-en="Name" data-zh="标的">Name</th>
-                                    <th data-en="Qty" data-zh="数量">Qty</th>
-                                    <th data-en="Price" data-zh="现价">Price</th>
-                                    <th data-en="Day" data-zh="日内">Day</th>
-                                    <th data-en="Value" data-zh="市值">Value</th>
-                                </tr>
-                            </thead>
-                            <tbody id="demo-rows"></tbody>
-                        </table>
+                        <div class="holdings-scroll">
+                            <table class="demo-table">
+                                <thead>
+                                    <tr>
+                                        <th data-en="Name" data-zh="标的">Name</th>
+                                        <th data-en="Qty" data-zh="数量">Qty</th>
+                                        <th data-en="Price" data-zh="现价">Price</th>
+                                        <th data-en="Day" data-zh="日内">Day</th>
+                                        <th data-en="Value" data-zh="市值">Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="demo-rows"></tbody>
+                            </table>
+                        </div>
                     </section>
 
                     <!-- P&L calendar + Transactions ledger side-by-side -->
@@ -243,10 +246,11 @@
                                     </select>
                                 </label>
                                 <label><span data-en="Qty" data-zh="数量">Qty</span>
-                                    <input type="number" id="log-qty" min="1" step="1" value="100">
+                                    <input required type="number" id="log-qty" min="1" step="1" value="100">
                                 </label>
                                 <button type="submit" data-en="Log it" data-zh="记一笔">Log it</button>
                             </form>
+                            <p id="demo-trade-status" class="demo-meta" role="status" hidden></p>
                         </section>
                     </div>
 
@@ -407,6 +411,7 @@
     </section>
 
     <script src="../script.js"></script>
+    <script src="diagram-keyboard.js"></script>
     <script src="investment.js"></script>
     <script src="investment-demo.js"></script>
     <script>

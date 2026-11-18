@@ -582,3 +582,16 @@
     color: #888;
     font-family: ui-monospace, 'SF Mono', Menlo, monospace;
 }
+
+#invest-demo .holdings-scroll { max-width: 100%; overflow-x: auto; }
+@media (max-width: 1150px) {
+    #invest-demo .demo-panel { min-width: 0; }
+    #invest-demo .demo-panel-head { flex-wrap: wrap; gap: 4px; }
+    #invest-demo .demo-cal { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+    #invest-demo .demo-log-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    #invest-demo .demo-log-form :is(label, select, input) { min-width: 0; }
+}
+@media (max-width: 759px) {
+    #invest-demo { padding: 14px 12px 16px; }
+    #invest-demo .demo-panel { padding: 13px 10px; }
+}
