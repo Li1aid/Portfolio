@@ -58,4 +58,7 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://aidenyang.me/projects/demos.html</loc>
+  </url>
 </urlset>

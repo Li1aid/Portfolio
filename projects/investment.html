@@ -30,6 +30,9 @@
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="project.css">
     <link rel="stylesheet" href="this-site.css">
+    <link rel="stylesheet" href="product-demos.css">
+    <link rel="stylesheet" href="demo-gallery.css">
+    <script defer src="demo-reel.js"></script>
 </head>
 
 <body class="project-page">
@@ -84,9 +87,13 @@
             </div>
         </div>
 
-        <div class="project-cover">
+        <div class="project-cover" data-reel="investment">
             <img src="../Assets/investment-poster.svg" alt="Investment Assistant — poster">
             <div class="project-cover-overlay"></div>
+        </div>
+        <div class="case-demo-links">
+            <a class="case-demo-enter" href="#invest-demo"><span data-en="Try demo" data-zh="进入演示">Try demo</span> <span aria-hidden="true">↓</span></a>
+            <a href="demos.html#investment"><span data-en="All demos" data-zh="全部演示">All demos</span> <span aria-hidden="true">↗</span></a>
         </div>
     </section>
 
@@ -144,39 +151,26 @@
     <!-- ─── Live Demo (synthetic data) ─── -->
     <section class="project-section bg-medium">
         <div class="project-container">
-            <div class="section-eyebrow" data-en="DEMO" data-zh="演示">DEMO</div>
-            <h2 class="project-h2" data-en="Try it — synthetic data, real interactions." data-zh="试试看：数据是假的，交互是真的。">
-                Try it — synthetic data, real interactions.
-            </h2>
-            <p class="project-lead this-site-arch-intro" data-en="The dashboard below mirrors the real app's interactions. Holdings, prices and P&amp;L are all fabricated for this demo — but the currency switcher, ledger, calendar and live updates work like the original." data-zh="下面这个面板复刻了真实 app 的交互。持仓、价格、盈亏全是为演示编的，但币种切换、账本、日历和实时刷新，都和原版一样能用。">
-                The dashboard below mirrors the real app's interactions. Holdings, prices and P&amp;L are all fabricated for this demo — but the currency switcher, ledger, calendar and live updates work like the original.
-            </p>
-
-            <div class="demo-frame">
-                <div class="demo-chrome">
-                    <span class="demo-dot red"></span><span class="demo-dot yellow"></span><span class="demo-dot green"></span>
-                    <span class="demo-url">invest.aidenyang.me · demo</span>
-                </div>
-
+            <div class="demo-frame allocation-frame">
                 <div class="demo-app" id="invest-demo">
 
                     <!-- Header -->
                     <header class="demo-header">
                         <div>
-                            <h3 class="demo-title">Investment Assistant <span class="demo-subtitle" data-en="demo" data-zh="演示">demo</span></h3>
-                            <p class="demo-meta" id="demo-meta" data-en="Prices updated just now · 1 AUD = 4.72 CNY" data-zh="行情刚刚更新 · 1 AUD = 4.72 CNY">Prices updated just now · 1 AUD = 4.72 CNY</p>
+<h2 class="demo-title" data-en="Portfolio ledger" data-zh="投资账本">Portfolio ledger</h2>
+                            <p class="demo-meta" id="demo-meta" data-en="Simulated prices · 1 AUD = 4.72 CNY" data-zh="模拟行情 · 1 AUD = 4.72 CNY">Simulated prices · 1 AUD = 4.72 CNY</p>
                         </div>
                         <div class="demo-actions">
                             <div class="demo-ccy-switch" role="group" aria-label="display currency">
-                                <button data-ccy="CNY" class="demo-ccy active">CNY</button>
-                                <button data-ccy="AUD" class="demo-ccy">AUD</button>
+                                <button data-ccy="CNY" aria-pressed="true" class="demo-ccy active">CNY</button>
+                                <button data-ccy="AUD" aria-pressed="false" class="demo-ccy">AUD</button>
                             </div>
                             <button id="demo-refresh-btn" class="demo-btn-ghost" data-en="Refresh prices" data-zh="刷新行情">Refresh prices</button>
                         </div>
                     </header>
 
                     <!-- Totals -->
-                    <section class="demo-totals">
+                    <div class="demo-totals">
                         <div class="demo-card demo-card-total">
                             <div class="demo-label" data-en="Total value" data-zh="总资产">Total value</div>
                             <div class="demo-total-amount" id="demo-total">¥ 0</div>
@@ -193,7 +187,17 @@
                             <div class="demo-pnl-value neg" id="demo-pnl-aud">A$ 0</div>
                             <div class="demo-pnl-pct neg" id="demo-pnl-aud-pct">0.00%</div>
                         </div>
-                    </section>
+                    </div>
+
+
+                    <div class="alloc-chart" aria-labelledby="alloc-heading">
+                        <div class="alloc-summary">
+                            <h3 id="alloc-heading" data-en="Portfolio mix" data-zh="资产分布">Portfolio mix</h3>
+                            <div class="alloc-detail" id="alloc-detail"></div>
+                        </div>
+                        <div class="alloc-bars" id="alloc-bars" aria-hidden="true"></div>
+                        <div class="alloc-keys" id="alloc-keys" role="group" aria-labelledby="alloc-heading"></div>
+                    </div>
 
                     <!-- Holdings -->
                     <section class="demo-panel">
@@ -221,8 +225,7 @@
                     <div class="demo-two-col-equal">
                         <section class="demo-panel">
                             <div class="demo-panel-head">
-                                <div class="demo-label" data-en="P&amp;L calendar · this month" data-zh="盈亏日历 · 本月">P&amp;L calendar · this month</div>
-                                <span class="demo-hint" data-en="computed 15 min after US close" data-zh="美股收盘 15 分钟后计算">computed 15 min after US close</span>
+                                <div class="demo-label" data-en="P&amp;L calendar · sample month" data-zh="盈亏日历 · 示例月份">P&amp;L calendar · sample month</div>
                             </div>
                             <div class="demo-cal" id="demo-cal"></div>
                             <p class="demo-cal-foot" id="demo-cal-foot"></p>

@@ -16,6 +16,7 @@
     // -----------------------------------------------------------
     // CUBE
     // -----------------------------------------------------------
+    const local = (en, zh) => document.querySelector('.lang-option.active')?.dataset.lang === 'zh' ? zh : en;
     const cube = $('#whisper-cube-demo');
     if (cube) initCube();
 
@@ -25,8 +26,6 @@
         const hudFill = $('#whisper-hud-fill');
         const hudMeta = $('#whisper-hud-meta');
         const sceneGrid = $('#whisper-scene-grid');
-        const panelTitle = $('#whisper-panel-title');
-        const panelDesc = $('#whisper-panel-desc');
         const delayInput = $('#whisper-delay');
         const delayOut = $('#whisper-delay-out');
         const radiusInput = $('#whisper-radius');
@@ -40,680 +39,44 @@
         const wallScenes = $$('.whisper-wall-scene', cube);
         const wallParticles = $$('.whisper-wall-particles', cube);
 
-        /* ----------------------------------------------------------
-           SCENE LIBRARY
-           Each scene is rendered as a layered SVG panorama with a
-           viewBox of 0 0 600 360. The renderer slices a different
-           horizontal window for each of the three walls (L/C/R) so
-           the wall arrangement reads as one continuous landscape.
-           ---------------------------------------------------------- */
         const scenes = [
-            {
-                id: 'mountain', en: 'Mountain Dawn', zh: '山间黎明',
-                meta_en: 'Cool blue ridges, dawn glow on the snow line.',
-                meta_zh: '冷蓝色的山脊，雪线上泛着晨光。',
-                render: renderMountain,
-            },
-            {
-                id: 'forest', en: 'Forest Light', zh: '林间光',
-                meta_en: 'Warm shafts piercing a dense pine canopy.',
-                meta_zh: '暖光穿过密密的松林洒下来。',
-                render: renderForest,
-            },
-            {
-                id: 'shore', en: 'Shore Sunset', zh: '海滨日落',
-                meta_en: 'Orange-magenta gradients above a still sea.',
-                meta_zh: '平静海面上，橙色渐变成紫红。',
-                render: renderShore,
-            },
-            {
-                id: 'river', en: 'River Stones', zh: '溪石',
-                meta_en: 'Cool greys, scattered boulders in a stream.',
-                meta_zh: '冷灰色调，溪水里散着几块石头。',
-                render: renderRiver,
-            },
-            {
-                id: 'night', en: 'Starfield', zh: '星空',
-                meta_en: 'Deep indigo, scattered stars and a low horizon.',
-                meta_zh: '深靛蓝的夜空，零星的星点，低低的地平线。',
-                render: renderNight,
-            },
+            {id: 'mountain', en: 'Mountain sunrise', zh: '山间日出'},
+            {id: 'forest', en: 'Forest light', zh: '林间光'},
+            {id: 'shore', en: 'Lakeshore', zh: '湖畔晨光'},
+            {id: 'river', en: 'River stones', zh: '溪石'},
+            {id: 'night', en: 'Starfield', zh: '星空'}
         ];
         let activeScene = scenes[0];
+        const photo = scene => `../Assets/demo-scenes/whisper-${scene.id}.webp`;
+        const wallBounds = [[0, .22], [.22, .78], [.78, 1]];
 
-        // ------ Scene renderers ------
-        // Each returns a full SVG string that fills its container.
-        // `xShift` is a horizontal offset in viewBox units used to
-        // give each wall a different slice of the same panorama.
-        function svgWrap(inner, xShift = 0) {
-            // Wider viewBox + preserveAspectRatio slice so the SVG
-            // crops naturally to the wall aspect ratio.
-            return `
-                <svg viewBox="${xShift} 0 600 360" preserveAspectRatio="xMidYMid slice"
-                     xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
-                    ${inner}
-                </svg>
-            `;
-        }
-
-        function renderMountain(xShift) {
-            const inner = `
-                <defs>
-                    <linearGradient id="skyM" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0"   stop-color="#1a2746"/>
-                        <stop offset="0.5" stop-color="#3d4f7a"/>
-                        <stop offset="0.85" stop-color="#c98c6a"/>
-                        <stop offset="1"   stop-color="#f3b585"/>
-                    </linearGradient>
-                    <radialGradient id="sunM" cx="0.7" cy="0.78" r="0.18">
-                        <stop offset="0"   stop-color="#fff5d6" stop-opacity="0.9"/>
-                        <stop offset="1"   stop-color="#fff5d6" stop-opacity="0"/>
-                    </radialGradient>
-                </defs>
-                <rect x="-200" y="0" width="1200" height="360" fill="url(#skyM)"/>
-                <!-- Sun glow above horizon -->
-                <rect x="-200" y="0" width="1200" height="360" fill="url(#sunM)"/>
-                <!-- Distant snow ridge (lightest, furthest) -->
-                <path d="M -200 230
-                         L 40 175 L 110 200 L 180 150 L 260 195 L 330 140
-                         L 410 200 L 500 165 L 580 195 L 650 160 L 760 200
-                         L 1000 230 L 1000 360 L -200 360 Z"
-                      fill="#7a8baa" opacity="0.55"/>
-                <!-- Mid ridge -->
-                <path d="M -200 260
-                         L 60 220 L 140 250 L 220 200 L 300 240 L 380 195
-                         L 460 235 L 540 215 L 620 245 L 720 220 L 820 250
-                         L 1000 260 L 1000 360 L -200 360 Z"
-                      fill="#3a4866" opacity="0.85"/>
-                <!-- Front ridge (darkest, closest) -->
-                <path d="M -200 300
-                         L 50 270 L 120 290 L 200 250 L 290 285 L 370 260
-                         L 460 295 L 560 270 L 660 290 L 760 270 L 880 295
-                         L 1000 285 L 1000 360 L -200 360 Z"
-                      fill="#1a2236"/>
-                <!-- Snow caps on the back ridges -->
-                <g fill="#e6ecf5" opacity="0.85">
-                    <path d="M 170 158 L 180 150 L 192 168 L 184 168 L 180 162 L 176 168 Z"/>
-                    <path d="M 322 148 L 330 140 L 342 158 L 334 158 L 330 152 L 326 158 Z"/>
-                    <path d="M 645 168 L 650 160 L 660 175 L 654 175 L 650 169 L 646 175 Z"/>
-                </g>
-                <!-- Power line poles + wire (echoes the cover image) -->
-                <g stroke="#0a1019" stroke-width="1.5" fill="none" opacity="0.7">
-                    <line x1="160" y1="280" x2="160" y2="244"/>
-                    <line x1="380" y1="270" x2="380" y2="232"/>
-                    <line x1="610" y1="278" x2="610" y2="240"/>
-                    <path d="M 160 248 Q 270 260 380 236 Q 495 250 610 244"/>
-                    <path d="M 160 252 Q 270 268 380 242 Q 495 256 610 248"/>
-                </g>
-            `;
-            return svgWrap(inner, xShift);
-        }
-
-        function renderForest(xShift) {
-            // Pine forest with naturalistic *clustered* distribution:
-            //  – sparse, small trees on the back ridge
-            //  – dense mid clumps (thicker, taller) — the visual heart
-            //  – a few big hero trees in the foreground, intentionally
-            //    placed off-grid (not evenly spaced) for visual rhythm
-            const rng = mulberry32(7);
-
-            // Back layer: small sparse trees, only on a few sub-ranges
-            let backTrees = '';
-            const backClusters = [[20, 120], [180, 280], [380, 470], [520, 600]];
-            backClusters.forEach(([x0, x1]) => {
-                const n = 3 + Math.floor(rng() * 3);
-                for (let i = 0; i < n; i++) {
-                    const x = x0 + rng() * (x1 - x0);
-                    const h = 70 + rng() * 50;
-                    const w = 20 + rng() * 10;
-                    const baseY = 248 + rng() * 14;
-                    backTrees += pineTree(x, baseY, w, h, '#1a2a1c', 0.6);
+        // Trace high-contrast contours once per photograph so the particles
+        // assemble into the actual horizon, rock edges or canopy.
+        function loadContours(scene) {
+            if (scene.image) return;
+            const image = new Image();
+            scene.image = image;
+            image.onload = () => {
+                const sampler = document.createElement('canvas');
+                sampler.width = 260; sampler.height = 96;
+                const ctx = sampler.getContext('2d');
+                ctx.drawImage(image, 0, 0, sampler.width, sampler.height);
+                const {data} = ctx.getImageData(0, 0, 260, 96);
+                const contours = [];
+                for (let y = 1; y < 95; y += 2) {
+                    for (let x = 1; x < 259; x += 2) {
+                        const i = 4 * (260 * y + x);
+                        const dx = Math.abs(data[i+4] - data[i-4]);
+                        const dy = Math.abs(data[i+1040] - data[i-1040]);
+                        if (dx + dy > 23) contours.push([x / 260, y / 96]);
+                    }
                 }
-            });
-
-            // Mid layer: dense clumps (the bulk of the forest mass)
-            let midTrees = '';
-            const midClusters = [
-                { cx: 80,  spread: 60, n: 7 },
-                { cx: 230, spread: 90, n: 10 },
-                { cx: 410, spread: 70, n: 8 },
-                { cx: 540, spread: 50, n: 6 },
-            ];
-            midClusters.forEach(c => {
-                for (let i = 0; i < c.n; i++) {
-                    // Gaussian-ish offset toward cluster centre
-                    const r1 = (rng() + rng() + rng()) / 3 - 0.5;
-                    const x = c.cx + r1 * c.spread * 2;
-                    const h = 130 + rng() * 60;
-                    const w = 28 + rng() * 14;
-                    const baseY = 285 + rng() * 18;
-                    midTrees += pineTree(x, baseY, w, h, '#0f1c12', 0.95);
-                }
-            });
-
-            // Foreground: a handful of tall hero trees, clearly grouped
-            let frontTrees = '';
-            const heroPositions = [
-                { x: 50,  h: 230, w: 56 },
-                { x: 130, h: 180, w: 44 },
-                { x: 300, h: 250, w: 60 },
-                { x: 360, h: 200, w: 48 },
-                { x: 470, h: 220, w: 52 },
-                { x: 560, h: 200, w: 46 },
-            ];
-            heroPositions.forEach(p => {
-                const baseY = 360;
-                frontTrees += pineTree(p.x + (rng() - 0.5) * 8, baseY, p.w, p.h, '#06100a', 1);
-            });
-            const inner = `
-                <defs>
-                    <linearGradient id="skyF" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0"   stop-color="#1c2a18"/>
-                        <stop offset="0.5" stop-color="#46623d"/>
-                        <stop offset="1"   stop-color="#86a466"/>
-                    </linearGradient>
-                    <linearGradient id="shaftF" x1="0.5" y1="0" x2="0.5" y2="1">
-                        <stop offset="0"   stop-color="#fff1c2" stop-opacity="0.45"/>
-                        <stop offset="1"   stop-color="#fff1c2" stop-opacity="0"/>
-                    </linearGradient>
-                </defs>
-                <rect x="-200" y="0" width="1200" height="360" fill="url(#skyF)"/>
-                <!-- God-ray light shafts (3 angled beams) -->
-                <g opacity="0.7">
-                    <polygon points="220,0 280,0 360,360 240,360" fill="url(#shaftF)"/>
-                    <polygon points="380,0 430,0 460,360 360,360" fill="url(#shaftF)"/>
-                    <polygon points="500,0 540,0 600,360 480,360" fill="url(#shaftF)"/>
-                </g>
-                <!-- Far tree band -->
-                <g>${backTrees}</g>
-                <!-- Mid clumps (forest mass) -->
-                <g>${midTrees}</g>
-                <!-- Ground -->
-                <rect x="-200" y="320" width="1200" height="40" fill="#0a1109"/>
-                <!-- Foreground hero trees -->
-                <g>${frontTrees}</g>
-                <!-- Floor grass tufts -->
-                <g stroke="#3a5a2c" stroke-width="1.2" opacity="0.8">
-                    ${dashedGrass()}
-                </g>
-            `;
-            return svgWrap(inner, xShift);
-
-            function pineTree(x, baseY, w, h, fill, op) {
-                // Stack 4 triangles + trunk
-                const tiers = 4;
-                const tierH = h / tiers;
-                let g = `<g opacity="${op}" fill="${fill}">`;
-                g += `<rect x="${x + w/2 - 2}" y="${baseY - 6}" width="4" height="10" fill="#1a0f08"/>`;
-                for (let t = 0; t < tiers; t++) {
-                    const top = baseY - h + t * tierH * 0.7;
-                    const bottom = top + tierH;
-                    const halfW = w * (0.55 + t * 0.18);
-                    g += `<polygon points="${x},${bottom} ${x + halfW * 2},${bottom} ${x + halfW},${top}"/>`;
-                }
-                g += `</g>`;
-                return g;
-            }
-            function dashedGrass() {
-                let s = '';
-                for (let i = 0; i < 60; i++) {
-                    const x = -50 + rng() * 740;
-                    const y = 320 + rng() * 38;
-                    s += `<line x1="${x}" y1="${y}" x2="${x + (rng() - 0.5) * 4}" y2="${y - 5 - rng() * 4}"/>`;
-                }
-                return s;
-            }
-        }
-
-        function renderShore(xShift) {
-            const inner = `
-                <defs>
-                    <linearGradient id="skyS" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0"   stop-color="#1d1538"/>
-                        <stop offset="0.45" stop-color="#7a3a72"/>
-                        <stop offset="0.7"  stop-color="#e07550"/>
-                        <stop offset="1"    stop-color="#ffd494"/>
-                    </linearGradient>
-                    <linearGradient id="seaS" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0"   stop-color="#3a2a4a"/>
-                        <stop offset="0.4" stop-color="#21263a"/>
-                        <stop offset="1"   stop-color="#0c1424"/>
-                    </linearGradient>
-                    <radialGradient id="sunS" cx="0.5" cy="0.66" r="0.07">
-                        <stop offset="0"   stop-color="#fff7d8" stop-opacity="1"/>
-                        <stop offset="0.5" stop-color="#ffc88a" stop-opacity="0.85"/>
-                        <stop offset="1"   stop-color="#ffc88a" stop-opacity="0"/>
-                    </radialGradient>
-                </defs>
-                <rect x="-200" y="0" width="1200" height="240" fill="url(#skyS)"/>
-                <!-- Sun + halo -->
-                <rect x="-200" y="0" width="1200" height="240" fill="url(#sunS)"/>
-                <circle cx="300" cy="238" r="22" fill="#fff5d6"/>
-                <!-- Sea -->
-                <rect x="-200" y="240" width="1200" height="120" fill="url(#seaS)"/>
-                <!-- Sun reflection on water -->
-                <g fill="#fff5d6" opacity="0.55">
-                    <ellipse cx="300" cy="252" rx="40" ry="2.5"/>
-                    <ellipse cx="300" cy="262" rx="32" ry="1.8"/>
-                    <ellipse cx="300" cy="272" rx="22" ry="1.4"/>
-                    <ellipse cx="300" cy="282" rx="14" ry="1"/>
-                </g>
-                <!-- Distant headland silhouettes -->
-                <path d="M -200 240 L 80 218 L 150 230 L 200 222 L 260 234 L 300 230 L 330 234 L 400 220 L 480 232 L 560 226 L 1000 240 L 1000 250 L -200 250 Z"
-                      fill="#1a1228" opacity="0.85"/>
-                <!-- Right rocky outcrop -->
-                <path d="M 460 240 L 490 226 L 520 232 L 545 220 L 575 234 L 600 224 L 640 240 Z"
-                      fill="#0d0a18"/>
-                <!-- Subtle wave lines -->
-                <g stroke="#fff" stroke-width="0.6" opacity="0.18" fill="none">
-                    <path d="M -200 296 Q 0 292 200 296 T 600 296 T 1000 296"/>
-                    <path d="M -200 312 Q 0 308 200 312 T 600 312 T 1000 312"/>
-                    <path d="M -200 330 Q 0 326 200 330 T 600 330 T 1000 330"/>
-                </g>
-                <!-- Foreground beach grass -->
-                <g stroke="#1a1018" stroke-width="1" opacity="0.9">
-                    <line x1="40" y1="360" x2="46" y2="332"/>
-                    <line x1="56" y1="360" x2="60" y2="338"/>
-                    <line x1="72" y1="360" x2="68" y2="334"/>
-                    <line x1="520" y1="360" x2="524" y2="336"/>
-                    <line x1="540" y1="360" x2="538" y2="338"/>
-                    <line x1="560" y1="360" x2="566" y2="334"/>
-                </g>
-                <!-- Lone figure on the shore, silhouetted against the sun -->
-                <g fill="#0a0610">
-                    <!-- head -->
-                    <circle cx="298" cy="280" r="5"/>
-                    <!-- body / coat -->
-                    <path d="M 290 286 L 306 286 L 312 322 L 302 322 L 300 308 L 298 322 L 284 322 Z"/>
-                </g>
-            `;
-            return svgWrap(inner, xShift);
-        }
-
-        function renderRiver(xShift) {
-            const rng = mulberry32(11);
-            let stones = '';
-            for (let i = 0; i < 14; i++) {
-                const x = -30 + rng() * 660;
-                const y = 235 + rng() * 90;
-                const rx = 10 + rng() * 22;
-                const ry = 4 + rng() * 7;
-                const shade = ['#1a1f28', '#23303c', '#2a3744', '#141a22'][i % 4];
-                stones += `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="${shade}"/>`;
-                // Highlight on top
-                stones += `<ellipse cx="${x - rx*0.2}" cy="${y - ry*0.4}" rx="${rx*0.55}" ry="${ry*0.3}" fill="#fff" opacity="0.08"/>`;
-            }
-            const inner = `
-                <defs>
-                    <linearGradient id="skyR" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0"   stop-color="#2c3a48"/>
-                        <stop offset="1"   stop-color="#5a6c7c"/>
-                    </linearGradient>
-                    <linearGradient id="waterR" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0"   stop-color="#4a5d6f"/>
-                        <stop offset="0.5" stop-color="#2a3a48"/>
-                        <stop offset="1"   stop-color="#10171d"/>
-                    </linearGradient>
-                </defs>
-                <rect x="-200" y="0" width="1200" height="200" fill="url(#skyR)"/>
-                <!-- Far hills -->
-                <path d="M -200 200 L 60 165 L 160 180 L 240 158 L 360 178 L 460 162 L 580 182 L 1000 200 L 1000 215 L -200 215 Z"
-                      fill="#26323e" opacity="0.85"/>
-                <!-- Mid bank with trees -->
-                <rect x="-200" y="200" width="1200" height="30" fill="#161e26"/>
-                <g fill="#0d141a">
-                    <polygon points="40,200 48,168 56,200"/>
-                    <polygon points="120,202 130,170 140,202"/>
-                    <polygon points="220,200 232,164 244,200"/>
-                    <polygon points="350,202 362,168 374,202"/>
-                    <polygon points="480,200 490,170 500,200"/>
-                    <polygon points="580,202 592,166 604,202"/>
-                </g>
-                <!-- Water -->
-                <rect x="-200" y="225" width="1200" height="135" fill="url(#waterR)"/>
-                <!-- Vertical reflections (subtle) -->
-                <g stroke="#fff" stroke-width="0.5" opacity="0.07">
-                    ${verticalReflections()}
-                </g>
-                <!-- Stones in the water -->
-                <g>${stones}</g>
-                <!-- White-water highlights around stones -->
-                <g stroke="#fff" stroke-width="0.6" opacity="0.35" fill="none">
-                    <path d="M 80 250 Q 100 246 120 252"/>
-                    <path d="M 220 270 Q 240 266 260 272"/>
-                    <path d="M 380 286 Q 400 282 422 288"/>
-                </g>
-            `;
-            return svgWrap(inner, xShift);
-
-            function verticalReflections() {
-                let s = '';
-                for (let i = 0; i < 80; i++) {
-                    const x = -50 + rng() * 750;
-                    s += `<line x1="${x}" y1="226" x2="${x}" y2="${230 + rng() * 120}"/>`;
-                }
-                return s;
-            }
-        }
-
-        function renderNight(xShift) {
-            const rng = mulberry32(23);
-            let stars = '';
-            for (let i = 0; i < 90; i++) {
-                const x = -50 + rng() * 740;
-                const y = 10 + rng() * 230;
-                const r = 0.5 + rng() * 1.4;
-                const op = 0.4 + rng() * 0.6;
-                stars += `<circle cx="${x}" cy="${y}" r="${r}" fill="#fff" opacity="${op}"/>`;
-            }
-            // 4 brighter "highlight" stars with glow
-            let bigStars = '';
-            const bigPositions = [[120, 80], [340, 50], [490, 110], [580, 70]];
-            bigPositions.forEach(([x, y]) => {
-                bigStars += `
-                    <circle cx="${x}" cy="${y}" r="3" fill="#fff"/>
-                    <circle cx="${x}" cy="${y}" r="6" fill="#fff" opacity="0.25"/>
-                `;
-            });
-            const inner = `
-                <defs>
-                    <linearGradient id="skyN" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0"   stop-color="#02030d"/>
-                        <stop offset="0.6" stop-color="#0a1336"/>
-                        <stop offset="1"   stop-color="#1a2a52"/>
-                    </linearGradient>
-                    <radialGradient id="moonN" cx="0.78" cy="0.18" r="0.06">
-                        <stop offset="0"   stop-color="#fff8e0" stop-opacity="1"/>
-                        <stop offset="1"   stop-color="#fff8e0" stop-opacity="0"/>
-                    </radialGradient>
-                </defs>
-                <rect x="-200" y="0" width="1200" height="360" fill="url(#skyN)"/>
-                <!-- Soft moon halo -->
-                <rect x="-200" y="0" width="1200" height="360" fill="url(#moonN)"/>
-                <circle cx="468" cy="64" r="14" fill="#fff8e0"/>
-                <circle cx="465" cy="60" r="3" fill="#dcd8c0" opacity="0.6"/>
-                <circle cx="473" cy="68" r="2" fill="#dcd8c0" opacity="0.5"/>
-                <!-- Stars -->
-                <g>${stars}</g>
-                <g>${bigStars}</g>
-                <!-- Distant low ridge -->
-                <path d="M -200 290 L 60 270 L 140 282 L 240 264 L 340 280 L 440 268 L 540 282 L 1000 290 L 1000 360 L -200 360 Z"
-                      fill="#040714"/>
-                <!-- Foreground horizon line -->
-                <path d="M -200 320 L 1000 320 L 1000 360 L -200 360 Z"
-                      fill="#020410"/>
-                <!-- Tiny grass silhouettes -->
-                <g stroke="#02050e" stroke-width="1">
-                    <line x1="80" y1="320" x2="78" y2="306"/>
-                    <line x1="100" y1="320" x2="104" y2="304"/>
-                    <line x1="240" y1="320" x2="236" y2="308"/>
-                    <line x1="420" y1="320" x2="424" y2="306"/>
-                    <line x1="560" y1="320" x2="556" y2="304"/>
-                </g>
-            `;
-            return svgWrap(inner, xShift);
-        }
-
-        // Tiny seeded PRNG for stable scene layouts
-        function mulberry32(seed) {
-            let s = seed >>> 0;
-            return function () {
-                s = (s + 0x6D2B79F5) >>> 0;
-                let t = s;
-                t = Math.imul(t ^ (t >>> 15), t | 1);
-                t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-                return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+                scene.contours = contours;
+                if (scene === activeScene) rebuildWallTargets();
             };
+            image.src = photo(scene);
         }
 
-        /* ----------------------------------------------------------
-           SCENE SILHOUETTE TARGETS
-           For each scene we pre-compute a list of [x, y] points in
-           viewBox (0..600, 0..360) that trace the scene's key shapes:
-           mountains / forest trunks + canopies / waves + sun + person /
-           river banks + stones / star pattern + horizon.
-
-           Particles converge to these points during Generation (so the
-           silhouette literally appears from particles), then disperse
-           from them during Deconstruction. Each wall slices a window
-           of the same panorama via xShift, so each wall's particles
-           assemble that wall's portion of the landscape.
-           ---------------------------------------------------------- */
-
-        function buildTargetsMountain() {
-            // Three ridge lines (back→front), sampled densely
-            const back = [
-                [-200, 230], [40, 175], [110, 200], [180, 150], [260, 195],
-                [330, 140], [410, 200], [500, 165], [580, 195], [650, 160],
-                [760, 200], [1000, 230]
-            ];
-            const mid = [
-                [-200, 260], [60, 220], [140, 250], [220, 200], [300, 240],
-                [380, 195], [460, 235], [540, 215], [620, 245], [720, 220],
-                [820, 250], [1000, 260]
-            ];
-            const front = [
-                [-200, 300], [50, 270], [120, 290], [200, 250], [290, 285],
-                [370, 260], [460, 295], [560, 270], [660, 290], [760, 270],
-                [880, 295], [1000, 285]
-            ];
-            return [
-                ...samplePolyline(back, 1, 0.5),
-                ...samplePolyline(mid, 1.5, 0.7),
-                ...samplePolyline(front, 2, 1),
-                // Power-line wire echo
-                ...sampleArc(160, 248, 380, 236, 60, 1),
-                ...sampleArc(380, 236, 610, 244, 60, 1),
-            ];
-        }
-
-        function buildTargetsForest() {
-            // Sample the trunk + canopy outlines of the heroPositions
-            // and mid clumps so particles "build" the trees.
-            const pts = [];
-            const heroPositions = [
-                { x: 50,  h: 230, w: 56 },
-                { x: 130, h: 180, w: 44 },
-                { x: 300, h: 250, w: 60 },
-                { x: 360, h: 200, w: 48 },
-                { x: 470, h: 220, w: 52 },
-                { x: 560, h: 200, w: 46 },
-            ];
-            heroPositions.forEach(p => pushTreeOutline(pts, p.x, 360, p.w, p.h, 0.9));
-            // Mid clusters — fewer points each
-            const midClusters = [
-                { cx: 80, spread: 60, n: 7 },
-                { cx: 230, spread: 90, n: 10 },
-                { cx: 410, spread: 70, n: 8 },
-                { cx: 540, spread: 50, n: 6 },
-            ];
-            const rng = mulberry32(7);
-            midClusters.forEach(c => {
-                for (let i = 0; i < c.n; i++) {
-                    const r1 = (rng() + rng() + rng()) / 3 - 0.5;
-                    const x = c.cx + r1 * c.spread * 2;
-                    const baseY = 285 + rng() * 18;
-                    pushTreeOutline(pts, x, baseY, 28, 130, 0.4);
-                }
-            });
-            // Ground line
-            for (let x = -100; x <= 700; x += 16) pts.push([x, 320]);
-            return pts;
-        }
-        function pushTreeOutline(pts, x, baseY, w, h, density) {
-            // Trunk
-            const trunkSteps = Math.max(2, Math.floor(8 * density));
-            for (let s = 0; s < trunkSteps; s++) {
-                pts.push([x + w / 2, baseY - (s / trunkSteps) * 8]);
-            }
-            // Canopy: spaced points down each side of the triangle stack
-            const tiers = 4;
-            const tierH = h / tiers;
-            for (let t = 0; t < tiers; t++) {
-                const top = baseY - h + t * tierH * 0.7;
-                const bottom = top + tierH;
-                const halfW = w * (0.55 + t * 0.18);
-                const sideSteps = Math.max(3, Math.floor(7 * density));
-                for (let i = 0; i <= sideSteps; i++) {
-                    const k = i / sideSteps;
-                    pts.push([x + halfW * (1 - k),     top + k * (bottom - top)]);
-                    pts.push([x + halfW + halfW * k,   top + (1 - k) * 0 + k * (bottom - top)]);
-                }
-            }
-        }
-
-        function buildTargetsShore() {
-            const pts = [];
-            // Sun ring
-            const cx = 300, cy = 238, r = 22;
-            for (let a = 0; a < Math.PI * 2; a += Math.PI / 28) {
-                pts.push([cx + Math.cos(a) * r, cy + Math.sin(a) * r]);
-            }
-            // Horizon line + ripples
-            for (let x = -100; x <= 700; x += 8) pts.push([x, 240]);
-            for (let x = -100; x <= 700; x += 18) pts.push([x, 296 + Math.sin(x * 0.04) * 4]);
-            for (let x = -100; x <= 700; x += 18) pts.push([x, 312 + Math.sin(x * 0.04 + 1) * 4]);
-            // Headland silhouette
-            const headland = [
-                [-200, 240], [80, 218], [150, 230], [200, 222], [260, 234],
-                [300, 230], [330, 234], [400, 220], [480, 232], [560, 226],
-                [1000, 240]
-            ];
-            pts.push(...samplePolyline(headland, 1.5, 1));
-            // Right rocky outcrop
-            const rocks = [
-                [460, 240], [490, 226], [520, 232], [545, 220],
-                [575, 234], [600, 224], [640, 240]
-            ];
-            pts.push(...samplePolyline(rocks, 2, 1));
-            // Person silhouette outline
-            const px = 298, py = 280;
-            // Head circle
-            for (let a = 0; a < Math.PI * 2; a += Math.PI / 10) {
-                pts.push([px + Math.cos(a) * 5, py + Math.sin(a) * 5]);
-            }
-            // Body outline
-            const body = [
-                [px - 8, py + 6], [px + 8, py + 6], [px + 14, py + 42],
-                [px + 4, py + 42], [px + 2, py + 28], [px, py + 42],
-                [px - 14, py + 42], [px - 8, py + 6]
-            ];
-            pts.push(...samplePolyline(body, 1.4, 1));
-            return pts;
-        }
-
-        function buildTargetsRiver() {
-            const pts = [];
-            // Far ridge
-            const ridge = [
-                [-200, 200], [60, 165], [160, 180], [240, 158],
-                [360, 178], [460, 162], [580, 182], [1000, 200]
-            ];
-            pts.push(...samplePolyline(ridge, 1.5, 0.6));
-            // Bank line
-            for (let x = -100; x <= 700; x += 12) pts.push([x, 200]);
-            for (let x = -100; x <= 700; x += 12) pts.push([x, 225]);
-            // Mid-ground tree triangles (just their outlines, simplified)
-            const treeBases = [40, 120, 220, 350, 480, 580];
-            treeBases.forEach(tx => {
-                pts.push([tx - 8, 200], [tx, 168], [tx + 8, 200]);
-            });
-            // Stone clusters in the river — produced from the same RNG
-            // seed used in renderRiver so the targets line up with the
-            // rendered SVG stones.
-            const rng = mulberry32(11);
-            for (let i = 0; i < 14; i++) {
-                const x = -30 + rng() * 660;
-                const y = 235 + rng() * 90;
-                const rx = 10 + rng() * 22;
-                const ry = 4 + rng() * 7;
-                for (let a = 0; a < Math.PI * 2; a += Math.PI / 8) {
-                    pts.push([x + Math.cos(a) * rx, y + Math.sin(a) * ry]);
-                }
-            }
-            return pts;
-        }
-
-        function buildTargetsNight() {
-            const pts = [];
-            // Stars (re-derived from the same seed used to render them)
-            const rng = mulberry32(23);
-            for (let i = 0; i < 90; i++) {
-                const x = -50 + rng() * 740;
-                const y = 10 + rng() * 230;
-                pts.push([x, y]);
-            }
-            // Big stars
-            const big = [[120, 80], [340, 50], [490, 110], [580, 70]];
-            big.forEach(([x, y]) => {
-                pts.push([x, y]);
-                for (let a = 0; a < Math.PI * 2; a += Math.PI / 5) {
-                    pts.push([x + Math.cos(a) * 6, y + Math.sin(a) * 6]);
-                }
-            });
-            // Moon ring
-            const mx = 468, my = 64;
-            for (let a = 0; a < Math.PI * 2; a += Math.PI / 14) {
-                pts.push([mx + Math.cos(a) * 14, my + Math.sin(a) * 14]);
-            }
-            // Low ridge
-            const ridge = [
-                [-200, 290], [60, 270], [140, 282], [240, 264],
-                [340, 280], [440, 268], [540, 282], [1000, 290]
-            ];
-            pts.push(...samplePolyline(ridge, 2, 0.6));
-            for (let x = -100; x <= 700; x += 18) pts.push([x, 320]);
-            return pts;
-        }
-
-        // Linearly sample a polyline at ~step viewBox-unit intervals.
-        // density (0..1) thins/thickens.
-        function samplePolyline(pts, step = 1.5, density = 1) {
-            const out = [];
-            for (let i = 0; i < pts.length - 1; i++) {
-                const [x0, y0] = pts[i];
-                const [x1, y1] = pts[i + 1];
-                const len = Math.hypot(x1 - x0, y1 - y0);
-                const n = Math.max(1, Math.floor((len / 12) * density * (step)));
-                for (let k = 0; k <= n; k++) {
-                    const t = k / n;
-                    out.push([x0 + (x1 - x0) * t, y0 + (y1 - y0) * t]);
-                }
-            }
-            return out;
-        }
-        function sampleArc(x0, y0, x1, y1, midDrop, density) {
-            const out = [];
-            const n = Math.floor(20 * density);
-            for (let k = 0; k <= n; k++) {
-                const t = k / n;
-                const x = x0 + (x1 - x0) * t;
-                // Quadratic sag
-                const baseY = y0 + (y1 - y0) * t;
-                const sag = midDrop * 4 * t * (1 - t);
-                out.push([x, baseY + sag]);
-            }
-            return out;
-        }
-
-        // Map each scene id to its target builder
-        const sceneTargetBuilders = {
-            mountain: buildTargetsMountain,
-            forest:   buildTargetsForest,
-            shore:    buildTargetsShore,
-            river:    buildTargetsRiver,
-            night:    buildTargetsNight,
-        };
-
-        // Phases drive HUD, particle behaviour AND scene opacity.
-        //   generation   – particles fly in from edges and lock onto the
-        //                  scene's silhouette points; the scene SVG fades
-        //                  in beneath them as they settle.
-        //   presentation – particles dim out completely; only the SVG
-        //                  shows. The landscape "is".
-        //   deconstruction – particles re-spawn AT the silhouette points
-        //                    and drift outward as the SVG fades back to
-        //                    near-black.
         const phases = {
             generation: {
                 num: '01',
@@ -744,24 +107,34 @@
         let cycleTimer = null;
         const phaseOrder = ['generation', 'presentation', 'deconstruction'];
 
-        // Each wall gets a different horizontal slice of the same
-        // 600-wide panorama so the L/C/R arrangement reads as one
-        // continuous landscape (like the four screens of the Cube).
-        const wallShifts = [0, 200, 400];
-
+        const sketch = $('#whisper-sketch');
+        const sketchToggle = $('#whisper-sketch-toggle');
+        function showSketch(visible) {
+            sketch.hidden = !visible;
+            sketchToggle.setAttribute('aria-pressed', String(visible));
+            const label = sketchToggle.querySelector('span');
+            label.dataset.en = visible ? 'Return to projection' : 'Concept drawing';
+            label.dataset.zh = visible ? '返回投影' : '设计原图';
+            label.textContent = local(label.dataset.en, label.dataset.zh);
+        }
+        sketchToggle.addEventListener('click', () => showSketch(sketch.hidden));
         function paintScenes() {
             sceneGrid.innerHTML = '';
             scenes.forEach(s => {
                 const card = document.createElement('button');
                 card.className = 'whisper-scene-card' + (s.id === activeScene.id ? ' active' : '');
+                card.dataset.scene = s.id;
+                card.setAttribute('aria-pressed', String(s.id === activeScene.id));
                 // Thumbnail is the centre slice of the same panorama
                 card.innerHTML = `
-                    <div class="whisper-scene-thumb">${s.render(150)}</div>
-                    <span class="whisper-scene-name">${s.en}</span>
+                    <div class="whisper-scene-thumb"><img src="${photo(s)}" alt="" loading="lazy"></div>
+                    <span class="whisper-scene-name">${local(s.en, s.zh)}</span>
                 `;
                 card.addEventListener('click', () => {
                     activeScene = s;
+                    showSketch(false);
                     paintScenes();
+                    sceneGrid.querySelector(`[data-scene="${s.id}"]`).focus({preventScroll: true});
                     applyScene();
                 });
                 sceneGrid.appendChild(card);
@@ -769,9 +142,11 @@
         }
 
         function applyScene() {
-            wallScenes.forEach((w, i) => {
+            hudEyebrow.textContent = local(activeScene.en, activeScene.zh);
+            loadContours(activeScene);
+            wallScenes.forEach(w => {
                 w.className = 'whisper-wall-scene show';
-                w.innerHTML = activeScene.render(wallShifts[i] || 0);
+                w.style.backgroundImage = `url('${photo(activeScene)}')`;
                 w.style.opacity = phases[activePhase].sceneOpacity;
             });
             // Re-pick silhouette targets and re-seed particles from edges
@@ -779,18 +154,20 @@
             rebuildWallTargets();
             wallParticles.forEach(seedFromEdges);
             wallState.forEach(st => st.phaseT = 0);
-            // Re-render the underlying SVG with phase-appropriate opacity
-            wallScenes.forEach(w => { w.style.opacity = phases[activePhase].sceneOpacity; });
+
         }
 
         function applyPhase(name) {
             const prev = activePhase;
             activePhase = name;
-            phaseBtns.forEach(b => b.classList.toggle('active', b.dataset.phase === name));
+            phaseBtns.forEach(b => {
+                b.classList.toggle('active', b.dataset.phase === name);
+                b.setAttribute('aria-pressed', String(b.dataset.phase === name));
+            });
             const p = phases[name];
-            hudEyebrow.textContent = `PHASE ${p.num} · ${name.toUpperCase()}`;
+            hudEyebrow.textContent = local(activeScene.en, activeScene.zh);
             hudFill.style.width = p.fill + '%';
-            hudMeta.textContent = p.title_en;
+            hudMeta.textContent = local(p.title_en, p.title_zh);
             wallScenes.forEach(w => { w.style.opacity = p.sceneOpacity; });
             if (motionPreference.matches && !cycleOn) showStillScene();
             // Reset per-wall timers so the new phase animates from t=0
@@ -807,6 +184,7 @@
 
         phaseBtns.forEach(b => b.addEventListener('click', () => {
             stopCycle();
+            showSketch(false);
             applyPhase(b.dataset.phase);
         }));
 
@@ -815,7 +193,7 @@
             cycleBtn.setAttribute('aria-pressed', 'true');
             syncAnimation();
             cycleBtn.classList.add('on');
-            cycleState.textContent = 'ON';
+            cycleState.textContent = local('ON', '开启');
             cycleState.dataset.en = 'ON';
             cycleState.dataset.zh = '开启';
             let i = phaseOrder.indexOf(activePhase);
@@ -829,7 +207,7 @@
             cycleBtn.setAttribute('aria-pressed', 'false');
             syncAnimation();
             cycleBtn.classList.remove('on');
-            cycleState.textContent = 'OFF';
+            cycleState.textContent = local('OFF', '关闭');
             cycleState.dataset.en = 'OFF';
             cycleState.dataset.zh = '关闭';
             clearInterval(cycleTimer);
@@ -856,22 +234,9 @@
         /* -----------------------------------------------------------
            PARTICLE SYSTEM (silhouette-driven)
 
-           Each wall canvas keeps a fixed array of particles that map
-           1:1 to a sub-set of the active scene's silhouette target
-           points (sliced by the wall's xShift). Behaviour per phase:
-
-             assemble  → particle.x/y eases toward target; alpha rises
-                         as it lands. SVG underneath is faintly visible.
-             rest      → particles fade out (alpha → 0). SVG fully shows.
-             disperse  → particles snap back to target, then drift
-                         outward; alpha rises briefly then fades.
-
-           The canvas viewBox is logical (600×360); we compute a
-           letterbox transform to the actual canvas pixel size so
-           targets stay aligned with the SVG underneath at any size.
+           Assemble and disperse the contours of each wall's photograph.
            ----------------------------------------------------------- */
 
-        const VB_W = 600, VB_H = 360, WALL_VIEW_W = 200;
         const PARTICLES_PER_WALL = 220;
         // Local timing per wall, used to drive the assemble/disperse curve.
         // Reset on every phase switch.
@@ -882,7 +247,7 @@
             cv.particles = [];
             cv.targets = [];
             cv.bursts = [];
-            cv.shift = wallShifts[i] || 0;
+            cv.bounds = wallBounds[i];
             // Click anywhere on the wall → small ripple burst (still
             // useful as a "co-creation" gesture)
             cv.parent = cv.parentElement;
@@ -921,18 +286,8 @@
             wallState.forEach(st => st.phaseT = 0);
         }, 120);
 
-        // Convert (vbX, vbY) in the panorama space to canvas pixel
-        // coordinates for a given wall (which shows VB_W=200 wide
-        // window starting at xShift, scaled to fill the canvas).
-        function vbToCanvas(cv, vbX, vbY) {
-            const winX = vbX - cv.shift;          // 0..200 visible
-            const sx = cv.width / WALL_VIEW_W;
-            const sy = cv.height / VB_H;
-            // Use the larger scale so it fills the wall (slice mode)
-            const s = Math.max(sx, sy);
-            const offX = (cv.width  - WALL_VIEW_W * s) / 2;
-            const offY = (cv.height - VB_H * s) / 2;
-            return [offX + winX * s, offY + vbY * s];
+        function vbToCanvas(cv, x, y) {
+            return [(x - cv.bounds[0]) / (cv.bounds[1] - cv.bounds[0]) * cv.width, y * cv.height];
         }
 
         function spawnBurst(cv, x, y, n) {
@@ -950,19 +305,14 @@
 
         // Re-pick targets for every wall when the scene changes.
         function rebuildWallTargets() {
-            const builder = sceneTargetBuilders[activeScene.id];
-            if (!builder) return;
-            const allPts = builder();
+            const contours = activeScene.contours;
+            if (!contours) {
+                wallParticles.forEach(cv => { cv.targets = []; cv.particles = []; });
+                return;
+            }
             wallParticles.forEach((cv, wi) => {
-                // Keep only points inside this wall's window
-                const xMin = cv.shift - 20;
-                const xMax = cv.shift + WALL_VIEW_W + 20;
-                const local = allPts.filter(([x]) => x >= xMin && x <= xMax);
-                // Ensure we have something to lock onto even if the
-                // scene is sparse (e.g. starfield)
-                const targets = local.length > 30 ? local : allPts.slice();
-                // Pick a stable subset of size PARTICLES_PER_WALL
-                cv.targets = pickN(targets, PARTICLES_PER_WALL, wi * 17 + 3);
+                const points = contours.filter(([x]) => x >= cv.bounds[0] && x <= cv.bounds[1]);
+                cv.targets = points.length ? pickN(points, PARTICLES_PER_WALL, wi * 17 + 3) : [];
                 // Initialise particles, each bound to one target
                 cv.particles = cv.targets.map((t, idx) => ({
                     tx: t[0], ty: t[1],
@@ -1043,7 +393,7 @@
                         const closeness = Math.max(0, 1 - d / 80);
                         p.a += (closeness - p.a) * 0.08;
                     } else if (phase.mode === 'rest') {
-                        // Snap to target, fade out — the SVG carries the image
+                        // Snap to target, fade out — the photograph carries the image
                         const [tx, ty] = vbToCanvas(cv, p.tx, p.ty);
                         p.x += (tx - p.x) * 0.2;
                         p.y += (ty - p.y) * 0.2;
@@ -1222,8 +572,9 @@
             frame = requestAnimationFrame(loop);
         }
 
+        let roomVisible = true;
         function syncAnimation() {
-            if (motionPreference.matches && !cycleOn) {
+            if (!roomVisible || (motionPreference.matches && !cycleOn)) {
                 cancelAnimationFrame(frame);
                 frame = null;
                 showStillScene();
@@ -1231,6 +582,9 @@
                 lastT = performance.now();
                 frame = requestAnimationFrame(loop);
             }
+        }
+        if ('IntersectionObserver' in window) {
+            new IntersectionObserver(([entry]) => { roomVisible = entry.isIntersecting; syncAnimation(); }).observe(cube);
         }
         motionPreference.addEventListener('change', () => {
             if (motionPreference.matches) stopCycle();
@@ -1243,7 +597,12 @@
         // Init
         paintScenes();
         applyScene();
-        applyPhase('generation');
+        applyPhase('presentation');
+        document.addEventListener('portfolio:language', () => {
+            paintScenes();
+            hudEyebrow.textContent = local(activeScene.en, activeScene.zh);
+            hudMeta.textContent = local(phases[activePhase].title_en, phases[activePhase].title_zh);
+        });
         // Initial radius from input
         radiusInput.dispatchEvent(new Event('input'));
     }
@@ -1375,7 +734,7 @@
                                      key === 'rainbow' ? 'swatch-rainbow' :
                                      key === 'awareness' ? 'swatch-awareness' :
                                      'swatch-custom';
-                item.innerHTML = `<span class="whisper-phone-swatch ${swatchClass}"></span><span>${m.en}</span>`;
+                item.innerHTML = `<span class="whisper-phone-swatch ${swatchClass}"></span><span>${local(m.en,m.zh)}</span>`;
                 item.addEventListener('click', () => setMode(key));
                 phoneGrid.appendChild(item);
             });
@@ -1390,8 +749,8 @@
             });
             customRow.hidden = key !== 'custom';
             const m = modes[key];
-            phoneInfoTitle.textContent = m.en;
-            phoneInfoDesc.textContent = m.desc_en;
+            phoneInfoTitle.textContent = local(m.en,m.zh);
+            phoneInfoDesc.textContent = local(m.desc_en,m.desc_zh);
             paintFlowers();
         }
 
@@ -1479,5 +838,9 @@
         buildPhoneModes();
         setMode('rest');
         setPeople(0);
+        document.addEventListener('portfolio:language', () => {
+            buildPhoneModes();
+            setMode(mode);
+        });
     }
 })();

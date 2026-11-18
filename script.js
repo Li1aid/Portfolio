@@ -702,7 +702,7 @@ function animateFooter() {
 }
 
 function initSmoothScroll() {
-    const navLinks = document.querySelectorAll('a[href^="#"]');
+    const navLinks = document.querySelectorAll('a[href^="#"]:not(.case-demo-enter)');
 
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
@@ -1017,6 +1017,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (langToggle) {
         const savedLang = localStorage.getItem('preferredLang') || 'en';
         switchLanguage(savedLang);
+        langToggle.addEventListener('click', event => {
+            if (!event.target.closest('.lang-option')) switchLanguage(currentLang === 'en' ? 'zh' : 'en');
+        });
         langToggle.querySelectorAll('.lang-option').forEach(option => {
             option.addEventListener('click', () => {
                 const lang = option.getAttribute('data-lang');

@@ -24,6 +24,8 @@
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="project.css">
     <link rel="stylesheet" href="vivid.css">
+    <link rel="stylesheet" href="demo-gallery.css">
+    <script defer src="demo-reel.js"></script>
 </head>
 
 <body class="project-page vivid-page">
@@ -89,13 +91,17 @@
             </div>
         </div>
 
-        <div class="project-cover vivid-cover">
+        <div class="project-cover vivid-cover" data-reel="vivid">
             <img src="../Assets/vivid.png" alt="vividXperience cover">
             <div class="vivid-cover-overlay"></div>
             <div class="vivid-cover-marquee">
                 <span>VIVID SYDNEY · LIGHT · MUSIC · IDEAS · VIVID SYDNEY · LIGHT · MUSIC · IDEAS · </span>
                 <span aria-hidden="true">VIVID SYDNEY · LIGHT · MUSIC · IDEAS · VIVID SYDNEY · LIGHT · MUSIC · IDEAS · </span>
             </div>
+        </div>
+        <div class="case-demo-links">
+            <a class="case-demo-enter" href="#vivid-demo"><span data-en="Try demo" data-zh="进入演示">Try demo</span> <span aria-hidden="true">↓</span></a>
+            <a href="demos.html#vivid"><span data-en="All demos" data-zh="全部演示">All demos</span> <span aria-hidden="true">↗</span></a>
         </div>
     </section>
 
@@ -159,21 +165,26 @@
     <!-- Interactive Demo: Vision Pro Simulator -->
     <section class="project-section bg-medium" id="vivid-demo-section">
         <div class="project-container">
-            <div class="section-eyebrow" data-en="INTERACTIVE DEMO" data-zh="交互演示">INTERACTIVE DEMO</div>
-            <h2 class="project-h2" data-en="Step inside" data-zh="走进去看看">Step inside</h2>
-            <p class="demos-hint" data-en="A miniature Vision Pro view. Click anywhere inside to start." data-zh="这是一个缩小版的 Vision Pro 视野，点一下框里任意位置就能开始。">A miniature Vision Pro view. Click anywhere inside to start.</p>
-
+            <h2 class="project-h2" data-en="Vivid Sydney" data-zh="悉尼灯光节">Vivid Sydney</h2>
             <div class="vp-frame" id="vivid-demo">
-                <!-- Pre-launch poster -->
                 <div class="vp-poster" id="vp-poster">
-                    <div class="vp-poster-glow"></div>
-                    <div class="vp-poster-inner">
-                        <div class="vp-poster-eyebrow" data-en="POWERED BY VISION PRO" data-zh="基于 VISION PRO">POWERED BY VISION PRO</div>
-                        <h3 class="vp-poster-title">vividXperience</h3>
-                        <p class="vp-poster-sub" data-en="Click anywhere to enter the experience." data-zh="点击任意位置，进入体验。">Click anywhere to enter the experience.</p>
-                        <button class="vp-enter-btn" id="vp-enter">
-                            <span data-en="ENTER" data-zh="进入">ENTER</span>
-                            <span class="vp-enter-arrow">→</span>
+                    <div class="vp-harbour-photo">
+                        <img src="../Assets/demo-scenes/sydney-harbour.webp" width="1800" height="675" alt="" loading="lazy">
+                        <button type="button" class="vp-location vp-bridge-location" data-place="Harbour Bridge">
+                            <span data-en="Harbour Bridge" data-zh="海港大桥">Harbour Bridge</span>
+                        </button>
+                        <button type="button" class="vp-location vp-opera-location" data-place="Opera Light">
+                            <span data-en="Opera House" data-zh="歌剧院">Opera House</span>
+                        </button>
+                    </div>
+                    <div class="vp-landing-bar">
+                        <div>
+                            <h3 data-en="Sydney Harbour" data-zh="悉尼港">Sydney Harbour</h3>
+                            <p data-en="Choose a landmark to see its light show." data-zh="点选地标，进入它的灯光秀。">Choose a landmark to see its light show.</p>
+                        </div>
+                        <button type="button" class="vp-enter-btn" id="vp-enter">
+                            <span data-en="Open guide" data-zh="打开导览">Open guide</span>
+                            <span aria-hidden="true">↗</span>
                         </button>
                     </div>
                 </div>
@@ -184,23 +195,23 @@
                     <aside class="vp-sidebar">
                         <button class="vp-sb-item active" data-screen="home" aria-label="Home">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12l9-9 9 9"/><path d="M5 10v10a1 1 0 0 0 1 1h4v-7h4v7h4a1 1 0 0 0 1-1V10"/></svg>
-                            <span class="vp-sb-label">Home</span>
+                            <span class="vp-sb-label" data-en="Home" data-zh="首页">Home</span>
                         </button>
                         <button class="vp-sb-item" data-screen="map" aria-label="Map">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polygon points="1 6 8 3 16 6 23 3 23 18 16 21 8 18 1 21 1 6"/><line x1="8" y1="3" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="21"/></svg>
-                            <span class="vp-sb-label">Map</span>
+                            <span class="vp-sb-label" data-en="Map" data-zh="地图">Map</span>
                         </button>
                         <button class="vp-sb-item" data-screen="favs" aria-label="Favorites">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                            <span class="vp-sb-label">Album</span>
+                            <span class="vp-sb-label" data-en="Album" data-zh="相册">Album</span>
                         </button>
                         <button class="vp-sb-item" data-screen="notif" aria-label="Notifications">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                            <span class="vp-sb-label">Bell</span>
+                            <span class="vp-sb-label" data-en="Bell" data-zh="通知">Bell</span>
                         </button>
                         <button class="vp-sb-item" data-screen="settings" aria-label="Settings">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                            <span class="vp-sb-label">Settings</span>
+                            <span class="vp-sb-label" data-en="Settings" data-zh="设置">Settings</span>
                         </button>
                     </aside>
 
@@ -209,11 +220,7 @@
 
                         <!-- HOME -->
                         <section class="vp-screen vp-screen-home active" data-screen="home">
-                            <div class="vp-search">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                                <span class="vp-search-placeholder" data-en="What events do you want to explore?" data-zh="想去看看哪些活动？">What events do you want to explore?</span>
-                            </div>
-
+                            <h3 class="vp-home-heading" data-en="Explore the harbour" data-zh="探索悉尼港">Explore the harbour</h3>
                             <!-- Two major entry points: 3D Map (large) + Menu Grid (2x2) -->
                             <div class="vp-home-main">
                                 <button class="vp-home-map-entry" data-jump="map">
@@ -268,14 +275,6 @@
                                             <div class="vp-rec-name">Harbour Bridge</div>
                                         </button>
                                     </div>
-                                </div>
-                                <div class="vp-home-col vp-home-col-news">
-                                    <div class="vp-home-col-head" data-en="LATEST NEWS" data-zh="最新动态">LATEST NEWS</div>
-                                    <ul class="vp-news-list">
-                                        <li><span class="vp-news-dot"></span><span class="vp-news-title">Vivid 2024 opens with record drone show</span><span class="vp-news-date">2d</span></li>
-                                        <li><span class="vp-news-dot"></span><span class="vp-news-title">Opera House projection wins design award</span><span class="vp-news-date">3d</span></li>
-                                        <li><span class="vp-news-dot"></span><span class="vp-news-title">Harbour Bridge fireworks finale tonight</span><span class="vp-news-date">5d</span></li>
-                                    </ul>
                                 </div>
                             </div>
                         </section>
@@ -619,9 +618,9 @@
 
                             <!-- Scene-switch panel right side -->
                             <div class="vp-imm-scenes" id="vp-imm-scenes">
-                                <button class="vp-imm-scene active" data-scene="Drone Show">Drone Show</button>
-                                <button class="vp-imm-scene" data-scene="Opera Light">Opera Light</button>
-                                <button class="vp-imm-scene" data-scene="Harbour Bridge">Harbour Bridge</button>
+                                <button class="vp-imm-scene active" data-scene="Drone Show" data-en="Drone Show" data-zh="无人机表演">Drone Show</button>
+                                <button class="vp-imm-scene" data-scene="Opera Light" data-en="Opera Light" data-zh="歌剧院灯光秀">Opera Light</button>
+                                <button class="vp-imm-scene" data-scene="Harbour Bridge" data-en="Harbour Bridge" data-zh="海港大桥">Harbour Bridge</button>
                             </div>
 
                             <!-- Floating EXIT (top-right, only when controls visible) -->
@@ -664,6 +663,7 @@
                 </div>
 
             </div>
+            <p class="vp-photo-credit"><span data-en="Harbour photograph, 2015" data-zh="悉尼港摄影，2015">Harbour photograph, 2015</span> · <a href="https://commons.wikimedia.org/wiki/File:Sydney_Harbour_during_Vivid_Sydney_2015.jpg">Robert Montgomery</a> · <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a></p>
         </div>
     </section>
 

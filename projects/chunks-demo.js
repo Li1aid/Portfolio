@@ -4,6 +4,8 @@
    the same simplified SM-2 as the shipped app (nextSchedule in app.js). */
 
 (function () {
+    const chinese = () => document.querySelector('.lang-option.active')?.dataset.lang === 'zh';
+    const local = (en, zh) => chinese() ? zh : en;
     const DAY = 24 * 60 * 60 * 1000;
     const now = Date.now();
 
@@ -70,17 +72,17 @@
     function previewInterval(card, rate) { return nextSchedule({ ...card }, rate).interval; }
     function fmtInterval(ms) {
         const d = Math.round(ms / DAY);
-        if (d < 1) return 'today';
-        if (d < 30) return d + 'd';
-        return Math.round(d / 30) + 'mo';
+        if (d < 1) return local('today','今天');
+        if (d < 30) return local(d + 'd', d + ' 天');
+        return local(Math.round(d / 30) + 'mo',Math.round(d / 30) + ' 个月');
     }
     function fmtDue(card) {
         const diff = card.due - Date.now();
-        if (diff <= 0) return { text: 'Due now', cls: 'due' };
+        if (diff <= 0) return { text: local('Due now','现在复习'), cls: 'due' };
         const d = Math.ceil(diff / DAY);
-        if (d <= 3) return { text: 'Due in ' + d + 'd', cls: 'soon' };
-        if (card.reps >= 5) return { text: 'Mastered · ' + d + 'd', cls: 'mastered' };
-        return { text: 'Due in ' + d + 'd', cls: '' };
+        if (d <= 3) return { text: local('Due in ' + d + 'd', d + ' 天后复习'), cls: 'soon' };
+        if (card.reps >= 5) return { text: local('Mastered · ' + d + 'd', '已熟练 · ' + d + ' 天后复习'), cls: 'mastered' };
+        return { text: local('Due in ' + d + 'd', d + ' 天后复习'), cls: '' };
     }
     function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 
@@ -100,6 +102,15 @@
     const badge = $('#ck-badge');
 
     let busy = false;
+    const speaker = $('.ck-icon-btn');
+    if (!('speechSynthesis' in window)) speaker.hidden = true;
+    else speaker.addEventListener('click', () => {
+        if (!enOut.textContent || busy) return;
+        const speech = new SpeechSynthesisUtterance(enOut.textContent);
+        speech.lang = 'en-AU';
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(speech);
+    });
 
     function showToast(msg) {
         toast.textContent = msg;
@@ -114,15 +125,36 @@
         $$('.ck-panel').forEach(p => p.classList.toggle('active', p.id === 'ck-panel-' + name));
         if (name === 'library') renderLibrary();
         if (name === 'review') startReview();
-        setStep(name);
+        $$('.ck-tab').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.tab === name)));
     }
     $$('.ck-tab').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
 
-    // ── Step notes (right column) highlight
-    function setStep(name) {
-        document.querySelectorAll('.ck-step').forEach(s => s.classList.toggle('active', s.dataset.step === name));
+    // The printed sample and the phone both read from the current deck.
+    let paperIndex = 0;
+    let paperEnglish = false;
+    const paper = $('#ck-paper');
+    const paperCopy = $('#ck-paper-copy');
+    const paperHint = $('#ck-paper-hint');
+    function drawPaper() {
+        const item = cards[paperIndex % cards.length];
+        paper.setAttribute('aria-pressed', String(paperEnglish));
+        paperCopy.textContent = paperEnglish ? item.en : item.zh;
+        paperCopy.lang = paperEnglish ? 'en' : 'zh';
+        $('#ck-paper-index').textContent = String(paperIndex + 1).padStart(2, '0') + ' / ' + String(cards.length).padStart(2, '0');
+        paperHint.textContent = paperEnglish ? local('Flip to Chinese', '翻到中文') : local('Flip to English', '翻到英文');
+        $('#ck-paper-prev').setAttribute('aria-label', local('Previous card', '上一张卡片'));
+        $('#ck-paper-next').setAttribute('aria-label', local('Next card', '下一张卡片'));
     }
-    document.querySelectorAll('.ck-step').forEach(s => s.addEventListener('click', () => switchTab(s.dataset.step)));
+    paper.addEventListener('click', () => { paperEnglish = !paperEnglish; drawPaper(); });
+    function turnPaper(direction) {
+        paperIndex = (paperIndex + direction + cards.length) % cards.length;
+        paperEnglish = false;
+        drawPaper();
+    }
+    $('#ck-paper-prev').addEventListener('click', () => turnPaper(-1));
+    $('#ck-paper-next').addEventListener('click', () => turnPaper(1));
+    document.addEventListener('portfolio:language', drawPaper);
+    drawPaper();
 
     // ── Translate
     const sampleButtons = $$('.ck-chip');
@@ -139,6 +171,8 @@
 
     function updateSamplePrompt() {
         const zh = document.querySelector('.lang-option.active')?.dataset.lang === 'zh';
+        $('#ck-search').placeholder = local('Search','搜索');
+        $('.ck-icon-btn').setAttribute('aria-label', local('Read the English aloud','朗读英文'));
         input.placeholder = zh ? '从下方选择一个例句' : 'Choose a sample sentence below';
         input.setAttribute('aria-label', zh ? '已选例句' : 'Selected sample sentence');
     }
@@ -146,6 +180,7 @@
     document.addEventListener('portfolio:language', updateSamplePrompt);
 
     async function typeText(el, text, ms) {
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { el.textContent = text; return; }
         el.innerHTML = '<span class="cursor"></span>';
         let out = '';
         for (const ch of text) {
@@ -162,7 +197,7 @@
         busy = true;
         sampleButtons.forEach(chip => { chip.disabled = true; });
         translateBtn.disabled = true;
-        translateBtn.textContent = 'Translating…';
+        translateBtn.textContent = local('Translating…', '翻译中…');
         result.classList.remove('hidden');
         savedBar.classList.add('hidden');
         phrasesOut.innerHTML = '';
@@ -178,9 +213,10 @@
         // de-dupe on en
         const fresh = created.filter(c => !cards.some(x => x.en === c.en));
         cards = [...fresh, ...cards];
+        paperIndex = 0; paperEnglish = false; drawPaper();
 
         await new Promise(r => setTimeout(r, 250));
-        savedBar.textContent = fresh.length ? `${fresh.length} cards saved` : 'These chunks are already in your deck';
+        savedBar.textContent = fresh.length ? local(`${fresh.length} cards saved`, `已保存 ${fresh.length} 张卡片`) : local('These chunks are already in your deck', '这些语块已经在卡组中');
         savedBar.classList.remove('hidden');
 
         sample.phrases.forEach((p, i) => {
@@ -191,7 +227,7 @@
             phrasesOut.appendChild(div);
         });
         updateBadge();
-        translateBtn.textContent = 'Translate';
+        translateBtn.textContent = local('Translate', '翻译');
         sampleButtons.forEach(chip => { chip.disabled = false; });
         translateBtn.disabled = false;
         busy = false;
@@ -205,19 +241,20 @@
         const visible = cards
             .filter(c => !q || c.en.toLowerCase().includes(q) || c.zh.includes(q))
             .sort((a, b) => b.createdAt - a.createdAt);
-        if (!visible.length) { libList.innerHTML = '<div class="ck-empty">No matching cards</div>'; return; }
+        if (!visible.length) { libList.innerHTML = `<div class="ck-empty">${local('No matching cards','没有符合条件的卡片')}</div>`; return; }
         libList.innerHTML = visible.map(c => {
             const d = fmtDue(c);
             return `<div class="ck-item${c.isNew ? ' new' : ''}">
                 <div class="ck-item-body">
                     <div class="ck-item-en">${esc(c.en)}</div>
                     <div class="ck-item-zh">${esc(c.zh)}</div>
-                    <div class="ck-item-meta ${d.cls}">${c.isNew ? 'New · just now' : d.text}</div>
+                    <div class="ck-item-meta ${d.cls}">${c.isNew ? local('New · just now', '刚刚添加') : d.text}</div>
                 </div>
             </div>`;
         }).join('');
     }
     libSearch.addEventListener('input', renderLibrary);
+    document.addEventListener('portfolio:language', renderLibrary);
 
     // ── Review
     const dueNum = $('#ck-due'), newNum = $('#ck-new'), totalNum = $('#ck-total');
@@ -248,6 +285,7 @@
         const c = queue[idx];
         flipped = false;
         flash.classList.remove('flipped');
+        flash.setAttribute('aria-pressed', 'false');
         rates.classList.remove('on');
         cardZh.textContent = c.zh;
         cardEn.textContent = c.en;
@@ -260,18 +298,20 @@
     flash.addEventListener('click', () => {
         flipped = !flipped;
         flash.classList.toggle('flipped', flipped);
-        if (flipped) rates.classList.add('on');
+        flash.setAttribute('aria-pressed', String(flipped));
+        rates.classList.toggle('on', flipped);
     });
     $$('.ck-rate').forEach(btn => btn.addEventListener('click', () => {
         if (!flipped) return;
+        flipped = false;
         const c = queue[idx];
         Object.assign(c, nextSchedule(c, btn.dataset.rate));
         c.isNew = false;
-        showToast(`Next review in ${fmtInterval(c.interval)}`);
+        showToast(local(`Next review in ${fmtInterval(c.interval)}`, `${fmtInterval(c.interval)}后复习`));
         idx++;
         updateStats(); updateBadge();
         if (idx >= queue.length) { reviewWrap.classList.add('hidden'); doneEl.classList.remove('hidden'); return; }
-        setTimeout(showCard, 180);
+        showCard();
     }));
     $('#ck-restart').addEventListener('click', () => switchTab('translate'));
 
@@ -285,5 +325,5 @@
     // init
     translateBtn.disabled = true;
     updateBadge();
-    setStep('translate');
+    switchTab('translate');
 })();

@@ -29,6 +29,9 @@
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="project.css">
     <link rel="stylesheet" href="this-site.css">
+    <link rel="stylesheet" href="product-demos.css">
+    <link rel="stylesheet" href="demo-gallery.css">
+    <script defer src="demo-reel.js"></script>
 </head>
 
 <body class="project-page">
@@ -88,11 +91,36 @@
             </div>
         </div>
 
-        <div class="project-cover this-site-cover">
+        <div class="project-cover this-site-cover" data-reel="this-site">
             <img src="../Assets/this-site.svg" alt="Architecture diagram — one chat request, end-to-end">
             <div class="project-cover-overlay"></div>
         </div>
+        <div class="case-demo-links">
+            <a class="case-demo-enter" href="#portfolio-trace"><span data-en="Try demo" data-zh="进入演示">Try demo</span> <span aria-hidden="true">↓</span></a>
+            <a href="demos.html#this-site"><span data-en="All demos" data-zh="全部演示">All demos</span> <span aria-hidden="true">↗</span></a>
+        </div>
     </section>
+
+    <section class="product-stage" id="portfolio-trace" aria-labelledby="trace-heading">
+        <div class="chat-desk">
+            <div class="trace-portrait">
+                <img src="../Assets/product-demo/aiden.webp" width="540" height="675" loading="lazy" alt="">
+                <h2 id="trace-heading">AI Aiden</h2>
+            </div>
+            <div class="trace-compose">
+                <label for="trace-question" data-en="Ask about my work" data-zh="问问我的作品">Ask about my work</label>
+                <textarea id="trace-question" rows="3" maxlength="600">How does the research dashboard choose which papers to show?</textarea>
+                <div class="trace-actions">
+                    <button type="button" id="trace-open"><span  data-en="Open in chat" data-zh="在聊天中打开">Open in chat</span> <span aria-hidden="true">↗</span></button>
+                    <button type="button" id="trace-next"><span  data-en="Another question" data-zh="换个问题">Another question</span> <span aria-hidden="true">↻</span></button>
+                </div>
+                <ol class="trace-route" aria-label="Chat request">
+                    <li aria-current="step"><span  data-en="Draft" data-zh="起草">Draft</span></li><li><span  data-en="Send to worker" data-zh="发送至 Worker">Send to worker</span></li><li><span  data-en="Back in chat" data-zh="回到聊天">Back in chat</span></li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
 
     <!-- ─── Architecture (interactive) ─── -->
     <section class="project-section bg-medium">
@@ -214,6 +242,7 @@
     <script src="../script.js"></script>
     <script src="diagram-keyboard.js"></script>
     <script src="this-site.js"></script>
+    <script src="product-demos.js"></script>
     <script>
         document.body.classList.add('loaded');
         const loaderEl = document.querySelector('.loader');

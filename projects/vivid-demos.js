@@ -13,37 +13,16 @@
     /* ---------- Vision Pro shell controller ---------- */
 
     let currentScreen = 'home';
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
     function setScreen(name) {
-        const previous = currentScreen;
         currentScreen = name;
 
-        const useGsap = typeof window.gsap !== 'undefined';
-        $$('.vp-screen').forEach(s => {
-            const isTarget = s.dataset.screen === name;
-            const wasActive = s.dataset.screen === previous;
-            if (isTarget && (name !== previous || !s.classList.contains('active'))) {
-                s.classList.add('active');
-                if (useGsap) {
-                    gsap.killTweensOf(s);
-                    gsap.fromTo(s,
-                        { opacity: 0, scale: 1.04 },
-                        { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' }
-                    );
-                }
-            } else if (!isTarget && s.classList.contains('active')) {
-                if (useGsap && wasActive) {
-                    gsap.killTweensOf(s);
-                    gsap.to(s, {
-                        opacity: 0, scale: 0.96, duration: 0.3, ease: 'power2.in',
-                        onComplete: () => s.classList.remove('active'),
-                    });
-                } else {
-                    s.classList.remove('active');
-                }
-            }
+        $$('.vp-screen').forEach(screen => {
+            const active = screen.dataset.screen === name;
+            screen.classList.toggle('active', active);
+            screen.inert = !active;
         });
-
         $$('.vp-sb-item').forEach(b => b.classList.toggle('active', b.dataset.screen === name));
 
         // Lifecycle hooks
@@ -60,17 +39,24 @@
         const shell = $('#vp-shell');
         if (!poster || !enter || !shell) return;
 
-        function launch() {
+        shell.inert = true;
+        function launch(scene) {
             poster.classList.add('hidden');
+            poster.inert = true;
             shell.classList.add('active');
+            shell.inert = false;
             shell.setAttribute('aria-hidden', 'false');
-            setScreen('home');
+            setScreen(scene ? 'immersive' : 'home');
+            if (scene) {
+                switchImmersiveScene(scene);
+                showImmersiveControls();
+                $('#vp-imm-exit')?.focus({preventScroll: true});
+            } else {
+                $('.vp-sb-item[data-screen="home"]')?.focus({preventScroll: true});
+            }
         }
-
-        enter.addEventListener('click', launch);
-        poster.addEventListener('click', (e) => {
-            if (e.target === poster || e.currentTarget === poster) launch();
-        });
+        enter.addEventListener('click', () => launch());
+        poster.querySelectorAll('[data-place]').forEach(button => button.addEventListener('click', () => launch(button.dataset.place)));
     }
 
     function initSidebar() {
@@ -281,7 +267,12 @@
             bg.style.animation = 'none';
             requestAnimationFrame(() => { bg.style.animation = ''; });
         }
-        if (title) title.textContent = scene;
+        if (title) {
+            const button = Array.from($$('.vp-imm-scene')).find(item => item.dataset.scene === scene);
+            title.dataset.en = scene;
+            title.dataset.zh = button?.dataset.zh || scene;
+            title.textContent = document.body.classList.contains('lang-zh') ? title.dataset.zh : scene;
+        }
         $$('.vp-imm-scene').forEach(s => s.classList.toggle('active', s.dataset.scene === scene));
 
         // Lifecycle per scene
@@ -689,6 +680,7 @@
         let idx = 0;
         applyDroneShape(droneShapeOrder[idx]);
         if (droneSwarmTimer) clearInterval(droneSwarmTimer);
+        if (reducedMotion.matches) return;
         droneSwarmTimer = setInterval(() => {
             if (!droneAutoEnabled) return;
             idx = (idx + 1) % droneShapeOrder.length;
@@ -790,7 +782,7 @@
     }
 
     function startBridgeFireworks() {
-        if (fireworksRunning) return;
+        if (fireworksRunning || reducedMotion.matches) return;
         fireworksRunning = true;
         // Launch fireworks at irregular intervals
         function loop() {
@@ -879,6 +871,10 @@
     }
 
     /* ---------- Init ---------- */
+
+    reducedMotion.addEventListener('change', () => {
+        if (reducedMotion.matches) stopAllSceneEffects();
+    });
 
     function init() {
         initShell();

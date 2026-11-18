@@ -27,6 +27,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="project.css">
+    <link rel="stylesheet" href="colab-studio.css">
+    <link rel="stylesheet" href="demo-gallery.css">
+    <script defer src="demo-reel.js"></script>
 </head>
 
 <body class="project-page">
@@ -86,9 +89,13 @@
             </div>
         </div>
 
-        <div class="project-cover">
+        <div class="project-cover" data-reel="colab">
             <img src="../Assets/1.jpg" alt="CoLab cover">
             <div class="project-cover-overlay"></div>
+        </div>
+        <div class="case-demo-links">
+            <a class="case-demo-enter" href="#demo-teamup"><span data-en="Try demo" data-zh="进入演示">Try demo</span> <span aria-hidden="true">↓</span></a>
+            <a href="demos.html#colab"><span data-en="All demos" data-zh="全部演示">All demos</span> <span aria-hidden="true">↗</span></a>
         </div>
     </section>
 
@@ -152,41 +159,44 @@
     <!-- Interactive Demos -->
     <section class="project-section bg-medium">
         <div class="project-container">
-            <div class="section-eyebrow" data-en="INTERACTIVE DEMOS" data-zh="交互演示">INTERACTIVE DEMOS</div>
-            <h2 class="project-h2" data-en="Try it yourself" data-zh="自己上手试试">Try it yourself</h2>
-            <p class="demos-hint" data-en="Click around — every panel below is live." data-zh="随便点点，下面每个面板都是能用的。">Click around — every panel below is live.</p>
-
-            <div class="demos-stack">
-
-                <!-- DEMO 1: Team Up -->
+            <div class="demos-stack colab-studio">
                 <article class="demo-card" id="demo-teamup">
-                    <header class="demo-head">
-                        <div class="demo-num">01</div>
-                        <div class="demo-meta">
-                            <h3 class="demo-title" data-en="Team Up" data-zh="组队">Team Up</h3>
-                            <p class="demo-sub" data-en="Find compatible teammates by skill tags." data-zh="按技能标签找合拍的队友。">Find compatible teammates by skill tags.</p>
+                    <header class="colab-team-header">
+                        <div>
+                            <h2 data-en="Team up." data-zh="一起组队。">Team up.</h2>
+                            <p data-en="Find a teammate for your next studio project." data-zh="给下一个设计项目找个队友。">Find a teammate for your next studio project.</p>
+                        </div>
+                        <div class="colab-cast" aria-hidden="true">
+                            <img src="../Assets/demo-scenes/colab-1.webp" alt="" width="166" height="180" loading="lazy">
+                            <img src="../Assets/demo-scenes/colab-8.webp" alt="" width="150" height="188" loading="lazy">
+                            <img src="../Assets/demo-scenes/colab-3.webp" alt="" width="158" height="178" loading="lazy">
                         </div>
                     </header>
-
                     <div class="demo-body">
-                        <div class="teamup-tabs">
-                            <button class="teamup-tab active" data-tab="all" data-en="Card List" data-zh="卡片列表">Card List</button>
-                            <button class="teamup-tab" data-tab="saved" data-en="Saved" data-zh="已收藏">Saved</button>
-                            <button class="teamup-tab" data-tab="myteam" data-en="My Team" data-zh="我的小组">My Team</button>
+                        <div class="colab-directory-bar">
+                            <div class="teamup-tabs" aria-label="Profiles">
+                                <button class="teamup-tab active" data-tab="all" data-en="Directory" data-zh="找队友">Directory</button>
+                                <button class="teamup-tab" data-tab="saved" data-en="Saved" data-zh="已收藏">Saved</button>
+                                <button class="teamup-tab" data-tab="myteam" data-en="My team" data-zh="我的小组">My team</button>
+                            </div>
+                            <label class="colab-skill">
+                                <span data-en="Skill" data-zh="技能">Skill</span>
+                                <select id="teamup-skill">
+                                    <option value="" data-en="All skills" data-zh="全部技能">All skills</option>
+                                </select>
+                            </label>
                         </div>
-
                         <div class="teamup-grid" id="teamup-grid">
                             <!-- cards injected by JS -->
                         </div>
 
-                        <div class="teamup-status" id="teamup-status" data-en="0 connected" data-zh="0 位队友">0 connected</div>
+                        <p class="teamup-status" id="teamup-status" aria-live="polite"></p>
                     </div>
                 </article>
 
                 <!-- DEMO 2: Lecture Player -->
                 <article class="demo-card" id="demo-lecture">
                     <header class="demo-head">
-                        <div class="demo-num">02</div>
                         <div class="demo-meta">
                             <h3 class="demo-title" data-en="Online Lecture" data-zh="线上 Lecture">Online Lecture</h3>
                             <p class="demo-sub" data-en="Self-paced player with chapter jumps." data-zh="自己掌握节奏的播放器，可按章节跳转。">Self-paced player with chapter jumps.</p>
@@ -196,7 +206,8 @@
                     <div class="demo-body">
                         <div class="lecture-player">
                             <div class="lecture-stage">
-                                <div class="lecture-stage-title">Grid Systems in Interaction Design</div>
+                                <div class="lecture-stage-title" data-en="Grid systems" data-zh="网格系统">Grid systems</div>
+                                <div class="lecture-specimen" aria-hidden="true"><span>Aa</span><i></i><i></i><i></i><i></i></div>
                                 <div class="lecture-stage-chapter" id="lecture-chapter">— Why grids?</div>
                                 <div class="lecture-playstate" id="lecture-playstate">
                                     <svg class="play-icon-svg" viewBox="0 0 24 24" aria-hidden="true">
@@ -225,11 +236,11 @@
                             </div>
 
                             <div class="lecture-chapters">
-                                <button class="chapter-chip" data-time="45" data-label="Why grids?">00:45 · Why grids?</button>
-                                <button class="chapter-chip" data-time="185" data-label="Column systems">03:05 · Column systems</button>
-                                <button class="chapter-chip" data-time="332" data-label="Baseline rhythm">05:32 · Baseline rhythm</button>
-                                <button class="chapter-chip" data-time="550" data-label="Responsive balance">09:10 · Responsive balance</button>
-                                <button class="chapter-chip" data-time="680" data-label="Breaking conventions">11:20 · Breaking conventions</button>
+                                <button class="chapter-chip" data-time="45" data-label="Why grids?" data-chapter-zh="为什么用网格？" data-en="00:45 · Why grids?" data-zh="00:45 · 为什么用网格？">00:45 · Why grids?</button>
+                                <button class="chapter-chip" data-time="185" data-label="Column systems" data-chapter-zh="分栏系统" data-en="03:05 · Column systems" data-zh="03:05 · 分栏系统">03:05 · Column systems</button>
+                                <button class="chapter-chip" data-time="332" data-label="Baseline rhythm" data-chapter-zh="基线节奏" data-en="05:32 · Baseline rhythm" data-zh="05:32 · 基线节奏">05:32 · Baseline rhythm</button>
+                                <button class="chapter-chip" data-time="550" data-label="Responsive balance" data-chapter-zh="响应式布局" data-en="09:10 · Responsive balance" data-zh="09:10 · 响应式布局">09:10 · Responsive balance</button>
+                                <button class="chapter-chip" data-time="680" data-label="Breaking conventions" data-chapter-zh="打破网格" data-en="11:20 · Breaking conventions" data-zh="11:20 · 打破网格">11:20 · Breaking conventions</button>
                             </div>
                         </div>
                     </div>
@@ -238,7 +249,6 @@
                 <!-- DEMO 3: Quiz -->
                 <article class="demo-card" id="demo-quiz">
                     <header class="demo-head">
-                        <div class="demo-num">03</div>
                         <div class="demo-meta">
                             <h3 class="demo-title" data-en="Lecture Quiz" data-zh="Lecture 小测">Lecture Quiz</h3>
                             <p class="demo-sub" data-en="Quiz-verified attendance — answer to continue." data-zh="用小测确认出勤，答对才能继续。">Quiz-verified attendance — answer to continue.</p>
@@ -264,7 +274,6 @@
                 <!-- DEMO 4: Tutorial Whiteboard -->
                 <article class="demo-card" id="demo-tutorial">
                     <header class="demo-head">
-                        <div class="demo-num">04</div>
                         <div class="demo-meta">
                             <h3 class="demo-title" data-en="In-class Tutorial Whiteboard" data-zh="Tutorial 课堂白板">In-class Tutorial Whiteboard</h3>
                             <p class="demo-sub" data-en="Hover any highlighted term to see an inline explanation." data-zh="把鼠标停在高亮的术语上，就能看到解释。">Hover any highlighted term to see an inline explanation.</p>

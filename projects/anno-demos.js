@@ -1,474 +1,347 @@
-/* ===========================================================
-   ANNO — Interactive demo controller
-   Five scenes (Medication / Health Anomaly / Dispenser /
-   Emotion / Privacy) sharing one robot-dog stage. Each scene
-   swaps the right-hand panel + bottom voice prompts + mode flag
-   driving the dog's CSS animations.
-   =========================================================== */
-(function () {
+(() => {
     'use strict';
 
-    const $ = (s, r = document) => r.querySelector(s);
-    const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-
-    const stage   = $('#anno-demo')?.closest('.anno-stage');
-    const dogStage = $('.anno-stage');
-    const bubble  = $('#anno-bubble');
-    const bubbleText = $('#anno-bubble-text');
-    const panelEyebrow = $('#anno-panel-eyebrow');
-    const panelTitle = $('#anno-panel-title');
-    const panelBody = $('#anno-panel-body');
-    const promptsBar = $('#anno-voice-prompts');
-    const mic = $('#anno-voice-mic');
-    const screenBpm = $('#anno-screen-bpm');
-    const screenBp  = $('#anno-screen-bp');
+    const stage = document.getElementById('anno-demo');
     if (!stage) return;
-
-    let bubbleTimer = null;
-    function say(text, ms = 3500) {
-        if (!bubble) return;
-        bubbleText.textContent = text;
-        bubble.classList.remove('show');
-        // Force reflow so the show class re-triggers the transition.
-        void bubble.offsetWidth;
-        bubble.classList.add('show');
-        clearTimeout(bubbleTimer);
-        bubbleTimer = setTimeout(() => {
-            bubble.classList.remove('show');
-        }, ms);
-    }
-
-    const mouth = $('#anno-mouth');
-    // Mouth-line coordinates for the new snout (x ≈ 68-92, y ≈ 122).
-    const mouthPaths = {
-        idle:    'M 68 100 Q 80 103 92 100',
-        happy:   'M 66 98  Q 80 108 94 98',
-        curious: 'M 70 100 L 92 100',
-        alert:   'M 68 104 Q 80 97  92 104',
-        sleep:   'M 70 101 Q 80 103 92 101',
-    };
-    function setMode(mode) {
-        dogStage.setAttribute('data-anno-mode', mode);
-        if (mouth && mouthPaths[mode]) mouth.setAttribute('d', mouthPaths[mode]);
-    }
-
-    function setBpm(n) {
-        if (screenBpm) screenBpm.textContent = String(n);
-    }
-    function setBp(s) {
-        if (screenBp) screenBp.textContent = s;
-    }
-
-    /* =========================================================
-       SCENE: MEDICATION
-       Three pill rows; clicking a pill marks it taken and Anno
-       acknowledges. Voice prompts pre-canned for elderly speech.
-       ========================================================= */
+    const find = selector => stage.querySelector(selector);
+    const body = find('#anno-panel-body');
+    const questions = find('#anno-voice-prompts');
+    const title = find('#anno-panel-title');
+    const transcript = find('#anno-bubble-text');
+    let language = document.querySelector('.lang-option.active')?.dataset.lang || 'en';
+    const local = (en, zh) => language === 'zh' ? zh : en;
+    let scene = 'meds';
+    let reply = null;
+    let voiceTimer;
+    let sosTimer;
+    let dispenseTimer;
+    let health = 'ready';
+    let seconds = 10;
+    let tray = 'closed';
+    let viewer = 'user';
+    let mood = 'calm';
+    let reminder = false;
+    const consent = { family: false, doctor: false };
     const meds = [
-        { id: 'morning', icon: '☀', name: 'Morning meds', name_zh: '早上的药', time: '8:00 AM', status: 'pending' },
-        { id: 'noon',    icon: '◐', name: 'Lunch meds',   name_zh: '中午的药', time: '12:30 PM', status: 'pending' },
-        { id: 'evening', icon: '☾', name: 'Evening meds', name_zh: '晚上的药', time: '7:00 PM', status: 'pending' },
+        { label: ['Morning dose', '早上的药'], time: '08:00', status: 'pending' },
+        { label: ['Lunch dose', '中午的药'], time: '12:30', status: 'pending' },
+        { label: ['Evening dose', '晚上的药'], time: '19:00', status: 'pending' },
     ];
-
-    function local(en, zh) {
-        return document.querySelector('.lang-option.active')?.dataset.lang === 'zh' ? zh : en;
-    }
-
-    let eveningReminder = false;
-    function renderMeds() {
-        panelEyebrow.dataset.en = 'MEDICATION';
-        panelEyebrow.dataset.zh = '用药';
-        panelEyebrow.textContent = local('MEDICATION', '用药');
-        panelTitle.textContent = local('8:00 AM — Morning routine', '上午 8:00 — 日常用药');
-        panelBody.replaceChildren();
-        const statusText = {
-            taken: local('TAKEN', '已服'), pending: local('PENDING', '待服'), skipped: local('SKIPPED', '已跳过')
-        };
-        meds.forEach(m => {
-            const row = document.createElement('button');
-            row.type = 'button';
-            row.className = 'anno-pill-row' + (m.status === 'taken' ? ' taken' : '');
-            row.setAttribute('aria-pressed', String(m.status === 'taken'));
-            row.innerHTML = `
-                <span class="anno-pill-icon ${m.id}">${m.icon}</span>
-                <span class="anno-pill-info">
-                    <span class="anno-pill-name">${local(m.name, m.name_zh)}</span>
-                    <span class="anno-pill-time">${m.time}${m.id === 'evening' && eveningReminder ? local(' · Reminder set', ' · 已设提醒') : ''}</span>
-                </span>
-                <span class="anno-pill-status">${statusText[m.status]}</span>
-            `;
-            row.addEventListener('click', () => {
-                if (m.status === 'taken') return;
-                m.status = 'taken';
-                row.classList.add('taken');
-                row.setAttribute('aria-pressed', 'true');
-                row.querySelector('.anno-pill-status').textContent = statusText.taken;
-                say(local(`${m.name} marked as taken.`, `已记录服用${m.name_zh}。`));
-                setMode('happy');
-                setTimeout(() => { if (currentScene === 'meds') setMode('idle'); }, 2500);
-            });
-            panelBody.appendChild(row);
-        });
-        promptsBar.replaceChildren();
-        const prompts = [
-            ['Did I take my pills?', '我早上吃过药了吗？'],
-            ['Remind me at 7 PM', '晚上七点提醒我'],
-            ['Skip noon meds', '跳过中午的药']
-        ];
-        prompts.forEach(([question, translation]) => {
-            const b = document.createElement('button');
-            b.type = 'button';
-            b.className = 'anno-voice-prompt';
-            b.textContent = '"' + local(question, translation) + '"';
-            b.addEventListener('click', () => handleVoice(question));
-            promptsBar.appendChild(b);
-        });
-    }
-
-    /* =========================================================
-       SCENE: HEALTH ANOMALY + SOS
-       BPM jumps. Anno asks if the user is OK. If no response in
-       countdown, SOS is triggered. Cancel button stops it.
-       ========================================================= */
-    let sosTimer = null;
-    let sosCount = 10;
-
-    function renderHealth() {
-        clearInterval(sosTimer);
-        sosCount = 10;
-        panelEyebrow.dataset.en = 'ANOMALY DETECTED';
-        panelEyebrow.dataset.zh = '发现异常';
-        panelEyebrow.textContent = 'ANOMALY DETECTED';
-        panelTitle.textContent = 'Heart rate spike — checking in';
-        setBpm(132);
-        setBp('158/96');
-        setMode('alert');
-        say('Are you feeling alright? Tap any button if yes.');
-
-        panelBody.innerHTML = `
-            <div class="anno-vital">
-                <div class="anno-vital-cell alert">
-                    <div class="anno-vital-label">Heart</div>
-                    <div class="anno-vital-value">132<span class="anno-vital-unit">bpm</span></div>
-                </div>
-                <div class="anno-vital-cell">
-                    <div class="anno-vital-label">Temp</div>
-                    <div class="anno-vital-value">37.8<span class="anno-vital-unit">°C</span></div>
-                </div>
-                <div class="anno-vital-cell">
-                    <div class="anno-vital-label">Activity</div>
-                    <div class="anno-vital-value">low</div>
-                </div>
-            </div>
-            <div class="anno-sos" id="anno-sos">
-                <div class="anno-sos-num" id="anno-sos-num">${sosCount}</div>
-                <div class="anno-sos-text">No response detected. SOS will call your emergency contacts.</div>
-                <button class="anno-sos-cancel" id="anno-sos-cancel">I'M OK</button>
-            </div>
-        `;
-        const sosNum = $('#anno-sos-num');
-        const cancel = $('#anno-sos-cancel');
-        sosTimer = setInterval(() => {
-            sosCount--;
-            if (sosNum) sosNum.textContent = sosCount;
-            if (sosCount <= 0) {
-                clearInterval(sosTimer);
-                say('Calling family and clinic now.');
-                if (sosNum) sosNum.textContent = '!';
-                cancel.textContent = 'CALLED';
-                cancel.disabled = true;
-            }
-        }, 1000);
-        cancel.addEventListener('click', () => {
-            clearInterval(sosTimer);
-            setMode('happy');
-            setBpm(86);
-            setBp('124/82');
-            say('Glad you are okay. Resting now.');
-            $('#anno-sos').remove();
-        });
-
-        promptsBar.innerHTML = '';
-        ['I am okay', 'Call my daughter', 'Show me my heart rate'].forEach(txt => {
-            const b = document.createElement('button');
-            b.className = 'anno-voice-prompt';
-            b.textContent = '"' + txt + '"';
-            b.addEventListener('click', () => {
-                if (txt === 'I am okay') cancel.click();
-                else handleVoice(txt);
-            });
-            promptsBar.appendChild(b);
-        });
-    }
-
-    /* =========================================================
-       SCENE: DISPENSER
-       Animated pill-pop sequence: Anno bows, screen shows
-       loading dots, dispenser "opens" (on the side panel).
-       ========================================================= */
-    function renderDispenser() {
-        panelEyebrow.dataset.en = 'DISPENSER';
-        panelEyebrow.dataset.zh = '药盒';
-        panelEyebrow.textContent = 'DISPENSER';
-        panelTitle.textContent = 'Preparing your morning dose';
-        setMode('idle');
-        setBpm(72);
-        setBp('118/78');
-        panelBody.innerHTML = `
-            <p>Anno's belly compartment dispenses pre-sorted doses on schedule. Prescriptions sync from the GP, so the right pills are loaded automatically.</p>
-            <div class="anno-vital">
-                <div class="anno-vital-cell">
-                    <div class="anno-vital-label">Today</div>
-                    <div class="anno-vital-value">3<span class="anno-vital-unit">doses</span></div>
-                </div>
-                <div class="anno-vital-cell">
-                    <div class="anno-vital-label">Refill in</div>
-                    <div class="anno-vital-value">14<span class="anno-vital-unit">days</span></div>
-                </div>
-                <div class="anno-vital-cell">
-                    <div class="anno-vital-label">GP Sync</div>
-                    <div class="anno-vital-value" style="color:#5dffa3">OK</div>
-                </div>
-            </div>
-            <button class="anno-sos-cancel" id="anno-dispense" style="margin-top: 0.4rem; align-self: flex-start; background: linear-gradient(135deg, var(--anno-violet), var(--anno-mint)); color: #0e1320; border: none;">DISPENSE NOW</button>
-        `;
-        $('#anno-dispense').addEventListener('click', () => {
-            setMode('curious');
-            say('Dispensing now. Please open my belly compartment.');
-            setTimeout(() => {
-                setMode('happy');
-                say('Done. Take with water.');
-            }, 2200);
-        });
-        promptsBar.innerHTML = '';
-        ['Dispense morning meds', 'When is my next dose?', 'Refill status'].forEach(txt => {
-            const b = document.createElement('button');
-            b.className = 'anno-voice-prompt';
-            b.textContent = '"' + txt + '"';
-            b.addEventListener('click', () => handleVoice(txt));
-            promptsBar.appendChild(b);
-        });
-    }
-
-    /* =========================================================
-       SCENE: EMOTION
-       4 emotion buttons toggle the dog's animation mode and
-       speech bubble — proves "tool to companion".
-       ========================================================= */
-    const emotions = [
-        { key: 'idle',    emoji: '🙂', label: 'Calm',    msg: 'Just here with you.' },
-        { key: 'happy',   emoji: '😊', label: 'Happy',   msg: 'Yay! Tail wagging mode.' },
-        { key: 'curious', emoji: '🤨', label: 'Curious', msg: 'Hmm, what is that?' },
-        { key: 'alert',   emoji: '😟', label: 'Worried', msg: 'Something feels off — check on me.' },
-    ];
-
-    function renderEmotion() {
-        panelEyebrow.dataset.en = 'EMOTIONAL FEEDBACK';
-        panelEyebrow.dataset.zh = '情绪反馈';
-        panelEyebrow.textContent = 'EMOTIONAL FEEDBACK';
-        panelTitle.textContent = 'How is Anno feeling today?';
-        setBpm(72);
-        setBp('118/78');
-        setMode('idle');
-        panelBody.innerHTML = `
-            <p>Anno's body language mirrors your health state. Tap a mood to see how it shifts — tail speed, head angle, eye colour and screen pulse all change.</p>
-            <div class="anno-emo-grid" id="anno-emo-grid"></div>
-        `;
-        const grid = $('#anno-emo-grid');
-        emotions.forEach((e, i) => {
-            const b = document.createElement('button');
-            b.className = 'anno-emo-btn' + (i === 0 ? ' active' : '');
-            b.innerHTML = `<span class="anno-emo-emoji">${e.emoji}</span><span class="anno-emo-label">${e.label}</span>`;
-            b.addEventListener('click', () => {
-                $$('.anno-emo-btn').forEach(x => x.classList.remove('active'));
-                b.classList.add('active');
-                setMode(e.key);
-                say(e.msg);
-                if (e.key === 'alert') { setBpm(132); setBp('158/96'); }
-                else if (e.key === 'happy') { setBpm(82); setBp('120/80'); }
-                else { setBpm(72); setBp('118/78'); }
-            });
-            grid.appendChild(b);
-        });
-        promptsBar.innerHTML = '';
-        ['Good morning Anno', 'Are you OK?', 'Come here'].forEach(txt => {
-            const b = document.createElement('button');
-            b.className = 'anno-voice-prompt';
-            b.textContent = '"' + txt + '"';
-            b.addEventListener('click', () => handleVoice(txt));
-            promptsBar.appendChild(b);
-        });
-    }
-
-    /* =========================================================
-       SCENE: PRIVACY
-       Three-tab view: User / Family / Doctor — same data,
-       different visibility levels.
-       ========================================================= */
-    const privacyData = {
-        user: [
-            { k: 'Heart rate (24h avg)', v: '74 bpm' },
-            { k: 'Sleep (last night)',   v: '6h 42m' },
-            { k: 'Steps today',          v: '2,140' },
-            { k: 'Mood log',             v: 'Calm' },
-            { k: 'Medication adherence', v: '94%' },
-            { k: 'Blood pressure',       v: '118/78' },
-        ],
-        family: [
-            { k: 'Critical alerts',     v: 'None today' },
-            { k: 'Missed medication',   v: 'None' },
-            { k: 'Last activity',       v: '12 min ago' },
-            { k: 'Heart rate (24h avg)', redacted: true },
-            { k: 'Sleep details',       redacted: true },
-            { k: 'Mood log',            redacted: true },
-        ],
-        doctor: [
-            { k: 'Critical alerts',      v: 'None today' },
-            { k: 'Heart rate (24h avg)', v: '74 bpm' },
-            { k: 'Blood pressure',       v: '118/78' },
-            { k: 'Medication adherence', v: '94%' },
-            { k: 'Mood log',             redacted: true },
-            { k: 'Last activity',        redacted: true },
-        ],
+    const moods = {
+        calm:    { label: ['Calm', '平静'], reply: ['I’ll sit here with you.', '我在这儿陪你坐会儿。'] },
+        happy:   { label: ['Happy', '开心'], reply: ['It’s good to see you. Shall we spend some time together?', '见到你真好。我们一起待会儿吧？'] },
+        curious: { label: ['Curious', '好奇'], reply: ['What’s that by the window?', '窗边那个是什么呀？'] },
+        worried: { label: ['Concerned', '担心'], reply: ['You seem quiet today. How are you feeling?', '你今天有点安静，还好吗？'] },
     };
-
-    function renderPrivacy(view = 'user') {
-        panelEyebrow.dataset.en = 'PRIVACY VIEWS';
-        panelEyebrow.dataset.zh = '隐私视角';
-        panelEyebrow.textContent = 'PRIVACY VIEWS';
-        panelTitle.textContent = 'Same data, different lenses';
-        setMode('idle');
-
-        panelBody.innerHTML = `
-            <div class="anno-privacy-tabs" id="anno-privacy-tabs">
-                <button class="anno-privacy-tab" data-view="user">You</button>
-                <button class="anno-privacy-tab" data-view="family">Family</button>
-                <button class="anno-privacy-tab" data-view="doctor">Doctor</button>
-            </div>
-            <div id="anno-privacy-list"></div>
-        `;
-        const list = $('#anno-privacy-list');
-        const tabs = $$('.anno-privacy-tab');
-        function paint(v) {
-            tabs.forEach(t => t.classList.toggle('active', t.dataset.view === v));
-            list.innerHTML = '';
-            privacyData[v].forEach(row => {
-                const div = document.createElement('div');
-                div.className = 'anno-privacy-row';
-                if (row.redacted) {
-                    div.innerHTML = `<span class="anno-privacy-key">${row.k}</span><span class="anno-privacy-redacted">private</span>`;
-                } else {
-                    div.innerHTML = `<span class="anno-privacy-key">${row.k}</span><span class="anno-privacy-val">${row.v}</span>`;
-                }
-                list.appendChild(div);
-            });
-        }
-        tabs.forEach(t => t.addEventListener('click', () => paint(t.dataset.view)));
-        paint(view);
-
-        promptsBar.innerHTML = '';
-        ['Show my data', 'What does my family see?', 'Send report to doctor'].forEach(txt => {
-            const b = document.createElement('button');
-            b.className = 'anno-voice-prompt';
-            b.textContent = '"' + txt + '"';
-            b.addEventListener('click', () => handleVoice(txt));
-            promptsBar.appendChild(b);
-        });
-    }
-
-    /* =========================================================
-       Voice handler — fakes natural-language reply for any
-       prompt. Used by all scenes.
-       ========================================================= */
-    const voiceReplies = [
-        ['pill', () => meds[0].status === 'taken'
-            ? local('Your morning dose is marked as taken.', '早上的药已记录为已服用。')
-            : local('Your morning dose is still marked as pending.', '早上的药仍显示待服。')],
-        ['skip', () => {
-            const noon = meds.find(m => m.id === 'noon');
-            if (noon.status === 'taken') return local('Your lunch dose was already marked as taken.', '中午的药已记录为已服用。');
-            noon.status = 'skipped';
-            renderMeds();
-            return local('Lunch meds marked as skipped in this demo.', '演示中已标记跳过中午的药。');
-        }],
-        ['remind', () => {
-            eveningReminder = true;
-            renderMeds();
-            return local('Demo reminder set for 7 PM.', '演示中的提醒已设为晚上七点。');
-        }],
-        ['heart', () => local(`The current reading is ${screenBpm.textContent} bpm.`, `当前读数为每分钟 ${screenBpm.textContent} 次。`)],
-        ['daughter', 'Calling Sarah now.'],
-        ['ok', 'Glad you are okay.'],
-        ['dispense', 'Dispensing now.'],
-        ['next dose', () => {
-            const next = meds.find(m => m.status === 'pending');
-            return next ? local(`The next pending dose is at ${next.time}.`, `下一项待服时间是 ${next.time}。`)
-                : local('No doses are marked pending.', '目前没有待服项目。');
-        }],
-        ['refill', '14 days of medication left.'],
-        ['morning', 'Good morning! How did you sleep?'],
-        ['data', 'Showing your daily summary.'],
-        ['family', 'They only see critical alerts.'],
-        ['doctor', 'Sending your weekly report to Dr. Lee.'],
-        ['come', 'On my way.'],
-    ];
-    function handleVoice(text) {
-        const t = text.toLowerCase();
-        let reply = 'I heard you. Let me check.';
-        for (const [k, v] of voiceReplies) { if (t.includes(k)) { reply = typeof v === 'function' ? v() : v; break; } }
-        say(reply);
-        setMode('curious');
-        setTimeout(() => setMode('idle'), 2200);
-    }
-
-    if (mic) {
-        mic.addEventListener('click', () => {
-            say(local('Choose a sample question below.', '请选择下方的示例问题。'));
-            promptsBar.querySelector('button')?.focus({ preventScroll: true });
-        });
-    }
-
-    /* =========================================================
-       Scene router
-       ========================================================= */
+    const viewers = { user: ['You', '本人'], family: ['Family', '家人'], doctor: ['Doctor', '医生'] };
     const scenes = {
-        meds:      renderMeds,
-        health:    renderHealth,
-        dispenser: renderDispenser,
-        emotion:   renderEmotion,
-        privacy:   renderPrivacy,
+        meds: {
+            title: ['Today’s medication', '今天的用药'],
+            line: ['Good morning. Have you taken your morning dose?', '早上好，早上的药吃过了吗？'],
+            prompts: [['morning', 'Did I take my pills?', '我早上吃过药了吗？'], ['remind', 'Remind me at 7 pm', '晚上七点提醒我'], ['skip', 'Skip my lunch dose', '跳过中午的药']],
+        },
+        dispenser: {
+            title: ['Medication drawer', '取药抽屉'],
+            line: ['Your morning dose is in my side compartment.', '早上的药在我侧边的小抽屉里。'],
+            prompts: [['dispense', 'Open the drawer', '打开药盒'], ['next', 'When is my next dose?', '下一次几点吃药？'], ['refill', 'When is the next refill?', '还有多久需要补药？']],
+        },
+        health: {
+            title: ['A change in heart rate', '心率变化'],
+            line: ['Your heart rate has gone up. How are you feeling?', '你的心率比刚才高。现在感觉怎么样？'],
+            prompts: [['okay', 'I’m okay', '我没事'], ['alert', 'Preview a family alert', '预览家人提醒'], ['pulse', 'What’s my heart rate?', '我的心率是多少？']],
+        },
+        emotion: {
+            title: ['Companion responses', '陪伴时的回应'],
+            line: moods.calm.reply,
+            prompts: [['hello', 'Good afternoon, Anno', 'Anno，下午好'], ['how', 'How are you?', '你还好吗？'], ['come', 'Come sit with me', '来陪我坐坐']],
+        },
+        privacy: {
+            title: ['Who can see what?', '谁能看到这些记录？'],
+            line: ['You choose who can see your health records.', '自己的健康记录，由你决定给谁看。'],
+            prompts: [['user', 'Show my records', '看我的记录'], ['family', 'What can my family see?', '家人能看到什么？'], ['doctor', 'Preview my doctor’s view', '预览医生看到的记录']],
+        },
     };
-    let currentScene = 'meds';
 
-    function switchScene(name) {
-        if (!scenes[name]) return;
-        currentScene = name;
-        $$('.anno-scene-btn').forEach(b => b.classList.toggle('active', b.dataset.scene === name));
-        clearInterval(sosTimer);
-        // Reset vitals before each scene paints its own
-        setBpm(72);
-        setBp('118/78');
-        scenes[name]();
+    function speak(line, animate = true) {
+        reply = line;
+        transcript.textContent = local(...line);
+        if (animate) {
+            clearTimeout(voiceTimer);
+            stage.removeAttribute('data-speaking');
+            void transcript.offsetWidth;
+            stage.setAttribute('data-speaking', '');
+            voiceTimer = setTimeout(() => stage.removeAttribute('data-speaking'), 1900);
+        }
     }
 
-    $$('.anno-scene-btn').forEach(b => {
-        b.addEventListener('click', () => switchScene(b.dataset.scene));
-    });
-
-    // Feature cards that link to demo
-    $$('.anno-feature[data-jump]').forEach(card => {
-        card.addEventListener('click', (e) => {
-            const target = card.dataset.jump;
-            if (!target) return;
-            // Let the anchor #anno-demo do the scroll, then switch scene
-            setTimeout(() => switchScene(target), 250);
+    function medication() {
+        const rows = meds.map((med, i) => {
+            const taken = med.status === 'taken';
+            const status = taken ? local('Taken', '已服用')
+                : med.status === 'skipped' ? local('Skipped', '已跳过')
+                : i === 2 && reminder ? local('Reminder set', '已设提醒') : '';
+            return `<button type="button" class="anno-pill-row" data-action="dose" data-value="${i}" data-state="${med.status}" aria-pressed="${taken}">
+                <span class="anno-med-check" aria-hidden="true">${taken ? '✓' : ''}</span>
+                <span>${local(...med.label)}${status ? `<small class="anno-med-status">${status}</small>` : ''}</span>
+                <time class="anno-med-time">${med.time}</time>
+            </button>`;
         });
+        return `<div class="anno-dose-list">${rows.join('')}</div><p class="anno-sub">${local('Tap a dose to mark it as taken.', '点一下，记录哪次药已经吃过。')}</p>`;
+    }
+
+    function drawer() {
+        const step = { closed: 0, opening: 1, open: 2 }[tray];
+        const labels = [
+            ['Ready to open', '可以取药'], ['Opening…', '正在打开…'], ['Drawer open', '抽屉已打开'],
+        ];
+        const action = tray === 'open' ? local('Close drawer', '关上抽屉') : local('Open drawer', '打开抽屉');
+        return `<div class="anno-dose-box">
+            <p class="anno-sub">${local('The side compartment holds the next pre-sorted dose. Try opening it.', '侧边抽屉里放着预先分好的药。试着打开它。')}</p>
+            <div class="anno-tray"><strong>${local(...labels[step])}</strong><small class="anno-med-time">08:00</small></div>
+            <div class="anno-dispenser-track" aria-hidden="true">${[0,1,2].map(i => `<i class="${i <= step ? 'on' : ''}"></i>`).join('')}</div>
+            <button type="button" class="anno-action" id="anno-dispense" data-action="tray" ${tray === 'opening' ? 'disabled' : ''}>${tray === 'opening' ? local(...labels[1]) : action}</button>
+        </div>`;
+    }
+
+    function checkIn() {
+        const text = {
+            ready: ['Try a ten-second check-in with a sample reading.', '用这组示例读数试一次十秒确认。'],
+            running: ['Tap “I’m okay” before the sample alert appears.', '在演示提醒出现前，可以点「我没事」。'],
+            okay: ['Check-in complete. The alert was dismissed.', '已确认平安，提醒已解除。'],
+            alert: ['This is the alert a contact would see. No call was made.', '这是联系人会看到的提醒预览，演示不会呼叫任何人。'],
+        }[health];
+        const button = health === 'running' ? local('I’m okay', '我没事')
+            : health === 'ready' ? local('Start check-in', '开始确认') : local('Try again', '再试一次');
+        return `<div class="anno-heart"><strong>${health === 'okay' ? '86' : '132'}</strong><small>bpm</small><canvas width="270" height="72" aria-hidden="true"></canvas></div>
+            <p class="anno-sub">${local(...text)}</p>
+            <div class="anno-health-action">
+                <button type="button" class="anno-action" id="anno-sos-cancel" data-action="health">${button}</button>
+                ${health === 'running' ? `<span class="anno-count"><span id="anno-sos-num">${seconds}</span> s</span>` : ''}
+            </div>`;
+    }
+
+    function plotPulse() {
+        const ctx = find('.anno-heart canvas')?.getContext('2d');
+        if (!ctx) return;
+        const values = health === 'okay'
+            ? [38,41,36,39,37,40,38,34,36,37,39,38,39,36,38,35,38,40,37,38]
+            : [50,49,51,47,48,43,46,41,42,37,40,36,32,34,24,25,20,24,15,19];
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = '#394955';
+        [18,38,58].forEach(y => { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(270,y); ctx.stroke(); });
+        ctx.beginPath();
+        values.forEach((v,i) => i ? ctx.lineTo(8 + i*13.3, v) : ctx.moveTo(8, v));
+        ctx.lineWidth = 2.8; ctx.lineJoin = 'round'; ctx.strokeStyle = '#f6b7a1'; ctx.stroke();
+        ctx.beginPath(); ctx.arc(8 + (values.length-1)*13.3, values[values.length-1], 4, 0, Math.PI*2);
+        ctx.fillStyle = '#f6b7a1'; ctx.fill();
+    }
+
+    function companion() {
+        return `<p class="anno-sub">${local('Choose a mood to read Anno’s response.', '选一个心情，看看 Anno 会怎么回应。')}</p>
+            <div class="anno-moods">${Object.entries(moods).map(([key, item]) =>
+                `<button type="button" data-action="mood" data-value="${key}" aria-pressed="${mood === key}">${local(...item.label)}</button>`).join('')}</div>`;
+    }
+
+    function privacy() {
+        const privateValue = local('Private', '不共享');
+        const owner = viewer === 'user';
+        const hasAccess = owner || consent[viewer];
+        const history = [
+            [local('Heart rate', '心率'), hasAccess ? '74 bpm' : privateValue],
+            [local('Medication log', '用药记录'), hasAccess ? local(`${meds.filter(m => m.status === 'taken').length} of 3 taken`, `已服 ${meds.filter(m => m.status === 'taken').length} / 3 次`) : privateValue],
+            [local('Mood journal', '心情日记'), owner ? local(...moods[mood].label) : privateValue],
+        ];
+        return `<div class="anno-segment">${Object.entries(viewers).map(([key, label]) =>
+            `<button type="button" data-action="viewer" data-value="${key}" class="anno-privacy-tab" aria-pressed="${viewer === key}">${local(...label)}</button>`).join('')}</div>
+            <dl class="anno-records">${history.map(([key, val]) => `<div><dt>${key}</dt><dd>${val}</dd></div>`).join('')}</dl>
+            ${owner ? '' : `<label class="anno-consent"><input type="checkbox" id="anno-consent" ${hasAccess ? 'checked' : ''}> ${viewer === 'family' ? local('Share health summary with family', '与家人共享健康摘要') : local('Share health summary with doctor', '与医生共享健康摘要')}</label>`}`;
+    }
+
+    const panels = { meds: medication, dispenser: drawer, health: checkIn, emotion: companion, privacy };
+    function paintPanel() {
+        const focused = document.activeElement;
+        const restoreFocus = body.contains(focused);
+        const action = focused?.dataset.action, value = focused?.dataset.value, id = focused?.id;
+        body.innerHTML = panels[scene]();
+        if (scene === 'health') plotPulse();
+        if (restoreFocus) {
+            const target = id ? document.getElementById(id)
+                : [...body.querySelectorAll('[data-action]')].find(el => el.dataset.action === action && el.dataset.value === value);
+            target?.focus({ preventScroll: true });
+        }
+    }
+
+    function paint() {
+        stage.dataset.scene = scene;
+        const photo = find('.anno-photo img');
+        const companion = scene === 'emotion';
+        const source = companion ? '../Assets/demo-scenes/anno-companion.webp' : '../Assets/3.jpg';
+        if (photo.getAttribute('src') !== source) photo.src = source;
+        photo.alt = companion
+            ? local('An older woman reaches towards Anno in her living room.', '一位老人在客厅里伸手与 Anno 互动。')
+            : local('The original white Anno robot with a screen on its side.', '白色 Anno 机器狗的原始设计，机身侧面设有屏幕。');
+        stage.dataset.mood = mood;
+        find('#anno-scenes').setAttribute('aria-label', local('Scenes by time of day', '按时间选择场景'));
+        stage.querySelectorAll('.anno-scene-btn').forEach(button => {
+            const selected = button.dataset.scene === scene;
+            button.classList.toggle('active', selected);
+            button.setAttribute('aria-pressed', String(selected));
+        });
+        title.textContent = local(...scenes[scene].title);
+        questions.innerHTML = scenes[scene].prompts.map(([key, en, zh]) =>
+            `<button type="button" class="anno-voice-prompt" data-prompt="${key}">${local(en,zh)}</button>`
+        ).join('');
+        paintPanel();
+    }
+
+    function stopTimers() {
+        clearInterval(sosTimer);
+        clearTimeout(dispenseTimer);
+        if (health === 'running') health = 'ready';
+        if (tray === 'opening') tray = 'closed';
+    }
+
+    function switchScene(next) {
+        if (!Object.hasOwn(scenes, next)) return;
+        if (scene !== next) stopTimers();
+        scene = next;
+        find('.anno-questions').open = false;
+        paint();
+        const line = scene === 'emotion' ? moods[mood].reply
+            : scene === 'health' && health === 'okay' ? ['Glad you’re okay.', '知道你平安，我就放心了。']
+            : scene === 'health' && health === 'alert' ? ['This is a preview of the family alert.', '这是家人提醒的预览。']
+            : scene === 'dispenser' && tray === 'open' ? ['The drawer is open.', '抽屉已经打开了。']
+            : scenes[scene].line;
+        speak(line);
+    }
+
+    function setHealth(next) {
+        clearInterval(sosTimer);
+        health = next;
+        paintPanel();
+        speak(next === 'okay' ? ['Glad you’re okay.', '知道你平安，我就放心了。']
+            : ['Here’s the sample family alert. No one has been contacted.', '这是给家人的提醒预览，没有实际联系任何人。']);
+    }
+
+    function startHealth() {
+        if (health === 'running') return setHealth('okay');
+        clearInterval(sosTimer);
+        health = 'running';
+        seconds = 10;
+        paintPanel();
+        speak(['Are you okay? You can dismiss the alert.', '你还好吗？如果没事，可以解除这条提醒。']);
+        sosTimer = setInterval(() => {
+            seconds -= 1;
+            if (seconds <= 0) return setHealth('alert');
+            find('#anno-sos-num').textContent = String(seconds);
+        }, 1000);
+    }
+
+    function openTray() {
+        if (tray === 'opening') return;
+        tray = 'opening';
+        paintPanel();
+        speak(['Opening the medication drawer.', '正在打开药盒。']);
+        dispenseTimer = setTimeout(() => {
+            tray = 'open';
+            paintPanel();
+            speak(['The drawer is open. Your morning dose is ready.', '药盒打开了，早上的药已经备好。']);
+        }, 1100);
+    }
+
+    function chooseViewer(key) {
+        viewer = key;
+        paintPanel();
+        const lines = {
+            user: ['These are your own records.', '这是你本人的记录。'],
+            family: ['Here’s what your family can see.', '这是家人能看到的内容。'],
+            doctor: ['Here’s what your doctor can see.', '这是医生能看到的内容。'],
+        };
+        speak(lines[key]);
+    }
+
+    function answer(key) {
+        switch (key) {
+            case 'morning': return speak(meds[0].status === 'taken'
+                ? ['Your morning dose is marked as taken.', '早上的药已经记为已服。'] : ['Your morning dose hasn’t been marked as taken.', '还没有早上服药的记录。']);
+            case 'remind':
+                reminder = true; paintPanel();
+                return speak(['Your reminder is set for seven this evening in this demo.', '演示里的提醒已设在今晚七点。']);
+            case 'skip':
+                if (meds[1].status === 'taken') return speak(['Your lunch dose is already marked as taken.', '中午的药已经记为已服。']);
+                meds[1].status = 'skipped'; paintPanel();
+                return speak(['I’ve marked the lunch dose as skipped.', '已记下中午这次跳过。']);
+            case 'dispense':
+                if (tray === 'open') return speak(['The drawer is already open.', '药盒已经打开了。']);
+                return openTray();
+            case 'next': {
+                const next = meds.find(m => m.status === 'pending');
+                return speak(next ? [`Your next pending dose is at ${next.time}.`, `下一次待服时间是 ${next.time}。`] : ['Your schedule has no pending doses.', '今天没有待服项目。']);
+            }
+            case 'refill': return speak(['The sample supply has fourteen days left.', '演示药盒的余量还够十四天。']);
+            case 'okay': return setHealth('okay');
+            case 'alert': return setHealth('alert');
+            case 'pulse': return speak(health === 'okay' ? ['The sample reading is 86 beats per minute.', '示例读数为每分钟 86 次。'] : ['The sample reading is 132 beats per minute.', '示例读数为每分钟 132 次。']);
+            case 'hello': return speak(['Good afternoon. How has your day been?', '下午好，今天过得怎么样？']);
+            case 'how': return speak(moods[mood].reply);
+            case 'come': return speak(['Of course. I’ll keep you company.', '好，我来陪你。']);
+            case 'user': case 'family': case 'doctor': return chooseViewer(key);
+        }
+    }
+
+    stage.addEventListener('click', event => {
+        const button = event.target.closest('button');
+        if (!button) return;
+        if (button.dataset.scene) return switchScene(button.dataset.scene);
+        if (button.dataset.prompt) return answer(button.dataset.prompt);
+        const value = button.dataset.value;
+        switch (button.dataset.action) {
+            case 'dose': {
+                const med = meds[Number(value)];
+                med.status = med.status === 'taken' ? 'pending' : 'taken';
+                paintPanel();
+                return speak(med.status === 'taken'
+                    ? [`${med.label[0]} marked as taken.`, `${med.label[1]}已记为已服。`]
+                    : [`${med.label[0]} marked as pending.`, `${med.label[1]}已恢复为待服。`]);
+            }
+            case 'health': return startHealth();
+            case 'tray':
+                if (tray !== 'open') return openTray();
+                tray = 'closed'; paintPanel(); return speak(['The drawer is closed.', '药盒已关好。']);
+            case 'mood':
+                mood = value; stage.dataset.mood = value; paintPanel(); return speak(moods[mood].reply);
+            case 'viewer': return chooseViewer(value);
+        }
     });
 
-    document.addEventListener('portfolio:language', () => {
-        if (mic) mic.setAttribute('aria-label', local('Choose a sample question', '选择示例问题'));
-        if (currentScene === 'meds') renderMeds();
+    stage.addEventListener('change', event => {
+        if (event.target.id !== 'anno-consent') return;
+        consent[viewer] = event.target.checked;
+        paintPanel();
+        speak(consent[viewer] ? ['They can now see your health summary. Your mood journal stays private.', '现在对方可以看到健康摘要。心情日记只对你本人开放。']
+            : ['Your health summary is private again.', '已收回授权，健康摘要不再共享。']);
     });
-    // Initial paint
-    switchScene('meds');
+    document.querySelectorAll('.anno-feature[data-jump]').forEach(link => {
+        link.addEventListener('click', () => switchScene(link.dataset.jump));
+    });
+    document.addEventListener('portfolio:language', event => {
+        language = event.detail.lang;
+        paint();
+        if (reply) speak(reply, false);
+    });
+    window.addEventListener('pagehide', stopTimers);
+    window.addEventListener('pageshow', event => {
+        if (event.persisted) switchScene(scene);
+    });
+    const initialScene = new URLSearchParams(location.search).get('scene');
+    switchScene(Object.hasOwn(scenes, initialScene) ? initialScene : 'meds');
+    if ('IntersectionObserver' in window) {
+        const firstLook = new IntersectionObserver(entries => {
+            if (!entries.some(entry => entry.isIntersecting)) return;
+            stage.classList.add('anno-in-view');
+            if (reply) speak(reply);
+            firstLook.disconnect();
+        }, { threshold: 0.25 });
+        firstLook.observe(stage);
+    }
 })();

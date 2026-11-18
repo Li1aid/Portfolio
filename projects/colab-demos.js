@@ -24,114 +24,97 @@
         isMe: true,
     };
 
-    function renderEmptyTeamupState(grid, message) {
-        const empty = document.createElement('div');
-        empty.style.gridColumn = '1 / -1';
-        empty.style.color = 'var(--text-grey)';
-        empty.style.fontFamily = 'Rajdhani, sans-serif';
-        empty.style.fontSize = '0.95rem';
-        empty.style.padding = '2rem 0';
-        empty.style.textAlign = 'center';
-        empty.textContent = message;
-        grid.appendChild(empty);
-    }
-
-    function buildTeamupCard(person, opts) {
-        const { idx = -1, connected = false, isMe = false, onConnect = null } = opts || {};
-        const card = document.createElement('div');
-        card.className = 'teamup-card';
-        if (connected) card.classList.add('connected');
-        if (isMe) card.classList.add('is-me');
-
-        const tagsHTML = person.tags.map(t => `<span class="teamup-tag">${t}</span>`).join('');
-        const meBadge = isMe ? '<span class="teamup-me-badge">YOU</span>' : '';
-        const buttonHTML = isMe
-            ? ''
-            : `<button class="teamup-connect" type="button">${connected ? 'Connected ✓' : 'Connect'}</button>`;
-
-        card.innerHTML = `
-            <div class="teamup-card-head">
-                <div class="teamup-avatar">${person.initials}</div>
-                <div>
-                    <div class="teamup-name">${person.name}${meBadge}</div>
-                    <div class="teamup-role">${person.role}</div>
-                </div>
-            </div>
-            <div class="teamup-tags">${tagsHTML}</div>
-            ${buttonHTML}
-        `;
-
-        if (!isMe && onConnect) {
-            card.querySelector('.teamup-connect').addEventListener('click', () => onConnect(idx));
-        }
-        return card;
-    }
+    const teamAvatars = [1, 8, 2, 3, 7, 9];
+    const termsZh = {
+        Visualization: '可视化', Storytelling: '叙事', Critical: '批判性思考',
+        'Open-Minded': '开放思维', 'Detail-Oriented': '注重细节', Leader: '团队组织',
+        Communication: '沟通', Adventurous: '乐于探索', Detail: '细节打磨',
+        Strategist: '策略', Prototyping: '原型设计', Innovator: '创意',
+        Methodical: '规划', Researcher: '研究', 'Data Viz': '数据可视化', IA: '信息架构',
+        'AIGC Creator': 'AIGC 创作', Vibecoding: 'AI 辅助编程'
+    };
+    const chinese = () => document.querySelector('.lang-option.active')?.dataset.lang === 'zh';
+    const local = (en, zh) => chinese() ? zh : en;
+    const skillLabel = text => chinese() ? termsZh[text] || text : text;
 
     function initTeamUp() {
         const grid = document.getElementById('teamup-grid');
         const status = document.getElementById('teamup-status');
+        const skillSelect = document.getElementById('teamup-skill');
         const tabs = document.querySelectorAll('.teamup-tab');
         if (!grid) return;
 
         const connected = new Set();
+        const saved = new Set();
         let activeFilter = 'all';
+        const skills = [...new Set(teamUpData.flatMap(person => person.tags))].sort();
+        skills.forEach(skill => skillSelect.add(new Option(skillLabel(skill), skill)));
 
-        function toggleConnect(idx) {
-            if (connected.has(idx)) connected.delete(idx);
-            else connected.add(idx);
-            updateStatus();
-            render(activeFilter);
-        }
-
-        function render(filter) {
-            activeFilter = filter;
-            grid.innerHTML = '';
-
-            if (filter === 'myteam') {
-                grid.appendChild(buildTeamupCard(myProfile, { isMe: true }));
-                if (connected.size > 0) {
-                    teamUpData.forEach((p, i) => {
-                        if (connected.has(i)) {
-                            grid.appendChild(buildTeamupCard(p, { idx: i, connected: true, onConnect: toggleConnect }));
-                        }
-                    });
-                }
-                return;
-            }
-
-            if (filter === 'saved') {
-                if (connected.size === 0) {
-                    renderEmptyTeamupState(grid, 'No saved teammates yet — connect with someone in Card List first.');
-                    return;
-                }
-                teamUpData.forEach((p, i) => {
-                    if (connected.has(i)) {
-                        grid.appendChild(buildTeamupCard(p, { idx: i, connected: true, onConnect: toggleConnect }));
-                    }
-                });
-                return;
-            }
-
-            // 'all' (Card List)
-            teamUpData.forEach((p, i) => {
-                grid.appendChild(buildTeamupCard(p, { idx: i, connected: connected.has(i), onConnect: toggleConnect }));
+        function render(focusTarget) {
+            const people = teamUpData.map((person, id) => ({...person, id, avatar: teamAvatars[id]}));
+            if (activeFilter === 'myteam') people.unshift({...myProfile, id: -1});
+            const matches = people.filter(person => {
+                const inTab = activeFilter === 'all' ||
+                    (activeFilter === 'saved' && saved.has(person.id)) ||
+                    (activeFilter === 'myteam' && (person.isMe || connected.has(person.id)));
+                return inTab && (!skillSelect.value || person.tags.includes(skillSelect.value));
             });
-        }
-
-        function updateStatus() {
-            status.textContent = connected.size + ' connected';
-        }
-
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                tabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                render(tab.dataset.tab);
+            tabs.forEach(tab => {
+                const selected = tab.dataset.tab === activeFilter;
+                tab.classList.toggle('active', selected);
+                tab.setAttribute('aria-pressed', selected);
             });
+            grid.replaceChildren();
+            matches.forEach(person => {
+                const card = document.createElement('div');
+                card.className = 'teamup-card';
+                const avatar = person.isMe ? 'AY' : `<img loading="lazy" src="../Assets/demo-scenes/colab-${person.avatar}.webp" alt="">`;
+                card.innerHTML = `
+                    <div class="teamup-card-head">
+                        <div class="teamup-avatar">${avatar}</div>
+                        <div><div class="teamup-name">${person.name}</div><div class="teamup-role">${person.role.split(' · ').map(skillLabel).join(' · ')}</div></div>
+                    </div>
+                    <div class="teamup-tags">${person.tags.map(tag => `<span class="teamup-tag">${skillLabel(tag)}</span>`).join('')}</div>`;
+                if (!person.isMe) {
+                    const actions = document.createElement('div');
+                    actions.className = 'colab-actions';
+                    const member = connected.has(person.id);
+                    const bookmarked = saved.has(person.id);
+                    actions.innerHTML = `
+                        <button type="button" class="teamup-connect" data-id="${person.id}" aria-pressed="${member}">${member ? local('Connected ✓', '已组队 ✓') : local('Connect', '组队')}</button>
+                        <button type="button" class="teamup-save" data-id="${person.id}" aria-pressed="${bookmarked}" aria-label="${local('Save profile', '收藏资料')} · ${person.name}">
+                            <svg viewBox="0 0 20 20" aria-hidden="true" fill="${bookmarked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.5"><path d="M5.3 3.2h9.4v14l-4.7-3.1-4.7 3.1z"/></svg>
+                        </button>`;
+                    card.append(actions);
+                }
+                grid.append(card);
+            });
+            if (!matches.length) {
+                const empty = document.createElement('p');
+                empty.className = 'colab-empty';
+                empty.textContent = skillSelect.value ? local('No profiles match this skill.', '没有匹配这项技能的资料。') :
+                    local('Save a profile using its bookmark.', '点资料上的书签即可收藏。');
+                grid.append(empty);
+            }
+            status.textContent = local(`${connected.size} connected · ${saved.size} saved`, `${connected.size} 位队友 · 已收藏 ${saved.size} 人`);
+            if (focusTarget) (grid.querySelector(focusTarget) || document.querySelector('.teamup-tab.active')).focus({preventScroll: true});
+        }
+        grid.addEventListener('click', event => {
+            const button = event.target.closest('button[data-id]');
+            if (!button) return;
+            const set = button.classList.contains('teamup-save') ? saved : connected;
+            const id = Number(button.dataset.id);
+            if (set.has(id)) set.delete(id);
+            else set.add(id);
+            render(`.${button.className}[data-id="${id}"]`);
         });
-
-        render('all');
-        updateStatus();
+        tabs.forEach(tab => tab.addEventListener('click', () => { activeFilter = tab.dataset.tab; render(); }));
+        skillSelect.addEventListener('change', () => render());
+        document.addEventListener('portfolio:language', () => {
+            Array.from(skillSelect.options).slice(1).forEach(option => option.textContent = skillLabel(option.value));
+            render();
+        });
+        render();
     }
 
     // ----- Demo 2: Lecture Player -----
@@ -177,12 +160,13 @@
             for (const it of items) {
                 if (current >= it.t) active = it;
             }
+            stage.dataset.slide = String(Math.max(0, items.indexOf(active)));
             chips.forEach(c => c.classList.remove('active'));
             if (active) {
                 active.el.classList.add('active');
-                chapter.textContent = '— ' + active.label;
+                chapter.textContent = local(active.label, active.el.dataset.chapterZh);
             } else {
-                chapter.textContent = '— Intro';
+                chapter.textContent = local('Introduction','导论');
             }
         }
 
@@ -229,6 +213,7 @@
             updateUI();
         });
 
+        document.addEventListener('portfolio:language', updateUI);
         playstate.classList.add('show');
         updateUI();
     }
@@ -280,46 +265,47 @@
         const nextBtn = document.getElementById('quiz-next');
         if (!card) return;
 
+        const questionsZh = [
+            {q: '交互设计中，网格的主要作用是什么？', options: ['让页面对称','通过结构引导注意力','规定单列布局','取代设计师'], explain: '网格通过对齐和间距建立视觉节奏与层次。'},
+            {q: '哪种工具用于统一文字的垂直节奏？', options: ['字间距','基线网格','外边距','堆叠顺序'], explain: '基线网格让各行文字保持一致的垂直间距。'},
+            {q: '在十二栏响应式网格中，断点通常会改变什么？', options: ['栏数与栏间距','正文字体','浏览器引擎','页面标题'], explain: '不同屏宽下可以调整栏数和栏间距。'}
+        ];
         let idx = 0;
-        let answered = false;
-
+        let selected = null;
         function render() {
-            const q = quizQuestions[idx];
+            const source = quizQuestions[idx];
+            const q = chinese() ? questionsZh[idx] : source;
             qNum.textContent = String(idx + 1);
             qEl.textContent = q.q;
-            opts.innerHTML = '';
-            fb.textContent = '';
-            fb.className = 'quiz-feedback';
-            nextBtn.disabled = true;
-            answered = false;
-
-            q.options.forEach((opt, i) => {
-                const btn = document.createElement('button');
-                btn.className = 'quiz-option';
-                btn.type = 'button';
-                btn.innerHTML = `<span class="quiz-option-letter">${String.fromCharCode(65 + i)}</span>${opt}`;
-                btn.addEventListener('click', () => {
-                    if (answered) return;
-                    answered = true;
-                    const isCorrect = i === q.correct;
-                    btn.classList.add(isCorrect ? 'correct' : 'wrong');
-                    if (!isCorrect) {
-                        opts.children[q.correct].classList.add('correct');
-                    }
-                    Array.from(opts.children).forEach(c => c.disabled = true);
-                    fb.textContent = (isCorrect ? '✓ Correct. ' : '✗ Not quite. ') + q.explain;
-                    fb.classList.add(isCorrect ? 'correct' : 'wrong');
-                    nextBtn.disabled = false;
+            opts.replaceChildren();
+            nextBtn.disabled = selected === null;
+            const right = selected === source.correct;
+            fb.textContent = selected === null ? '' :
+                (right ? local('Correct. ', '答对了。') : local('Not quite. ', '再看一下。')) + q.explain;
+            fb.className = 'quiz-feedback' + (selected === null ? '' : right ? ' correct' : ' wrong');
+            q.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'quiz-option';
+                button.type = 'button';
+                button.disabled = selected !== null;
+                if (selected !== null && index === source.correct) button.classList.add('correct');
+                else if (index === selected) button.classList.add('wrong');
+                button.innerHTML = `<span class="quiz-option-letter">${String.fromCharCode(65 + index)}</span>${option}`;
+                button.addEventListener('click', () => {
+                    selected = index;
+                    render();
+                    nextBtn.focus({preventScroll: true});
                 });
-                opts.appendChild(btn);
+                opts.appendChild(button);
             });
         }
-
         nextBtn.addEventListener('click', () => {
             idx = (idx + 1) % quizQuestions.length;
+            selected = null;
             render();
+            opts.firstElementChild.focus({preventScroll: true});
         });
-
+        document.addEventListener('portfolio:language', render);
         render();
     }
 

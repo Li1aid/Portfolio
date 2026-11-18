@@ -97,654 +97,153 @@
     .anno-features-grid { grid-template-columns: 1fr; }
 }
 
-/* ============================================================
-   ============ INTERACTIVE DEMO STAGE ========================
-   ============================================================ */
-
+/* Five moments in the day, each on the same product display. */
+.anno-demo-intro { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; }
+.anno-demo-intro .project-h2 { margin: 0; }
+.anno-demo-intro > span { color: #a4afbc; font-size: .78rem; }
 .anno-stage {
-    margin-top: 2rem;
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0)),
-        rgba(15, 18, 28, 0.55);
-    border: 1px solid var(--anno-glass-bd);
-    border-radius: 20px;
-    padding: 1.4rem;
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-}
-
-/* ----- Scene picker (top) ----- */
-.anno-scenes {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-    padding: 0.4rem;
-    margin-bottom: 1.4rem;
-    background: rgba(0, 0, 0, 0.35);
-    border: 1px solid var(--anno-glass-bd);
-    border-radius: 999px;
-}
-.anno-scene-btn {
-    flex: 1 1 auto;
-    min-width: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.55rem;
-    padding: 0.55rem 1rem;
-    background: transparent;
-    border: 1px solid transparent;
-    border-radius: 999px;
-    color: rgba(255, 255, 255, 0.65);
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.25s var(--ease-smooth);
-}
-.anno-scene-btn:hover {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.05);
-}
-.anno-scene-btn.active {
-    color: #fff;
-    background: linear-gradient(135deg, rgba(167, 139, 255, 0.35), rgba(122, 255, 240, 0.25));
-    border-color: rgba(167, 139, 255, 0.55);
-    box-shadow: 0 0 18px rgba(167, 139, 255, 0.45);
-}
-.anno-scene-num {
-    font-size: 0.6rem;
-    opacity: 0.7;
-}
-.anno-scene-name {
-    font-weight: 600;
-}
-
-@media (max-width: 720px) {
-    .anno-scenes { border-radius: 16px; }
-    .anno-scene-btn { flex-basis: calc(50% - 0.6rem); }
-}
-
-/* ----- Main room ----- */
-.anno-room {
-    position: relative;
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 1.2rem;
-    min-height: 460px;
-    border-radius: 16px;
+    --ink: #eef3f5;
+    --quiet: #a9b9c8;
+    --line: rgba(178, 201, 216, .19);
+    --accent: #a8d8d9;
+    --photo-scale: 1;
+    --photo-x: 48%;
+    --photo-y: 54%;
+    scroll-margin-top: 100px;
     overflow: hidden;
-}
-@media (max-width: 900px) {
-    .anno-room { grid-template-columns: minmax(0, 1fr); }
-    .anno-room > * { min-width: 0; }
-}
-
-.anno-room-bg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    border-radius: 16px;
-    overflow: hidden;
-}
-.anno-room-wall {
-    position: absolute;
-    inset: 0;
-    background:
-        linear-gradient(180deg, #2a3a58 0%, #1a253c 60%, #11192c 100%);
-}
-.anno-room-rug {
-    position: absolute;
-    bottom: -10%;
-    left: -5%;
-    right: -5%;
-    height: 55%;
-    background:
-        radial-gradient(ellipse at center top, rgba(167, 139, 255, 0.18), transparent 70%),
-        linear-gradient(180deg, rgba(255, 200, 100, 0.18), rgba(255, 200, 100, 0.04));
-    border-radius: 50%;
-    transform: perspective(800px) rotateX(60deg);
-    transform-origin: center top;
-    filter: blur(6px);
-}
-.anno-room-light {
-    position: absolute;
-    top: -20%;
-    left: 30%;
-    width: 60%;
-    height: 60%;
-    background: radial-gradient(circle, rgba(255, 220, 150, 0.15), transparent 70%);
-    filter: blur(40px);
-}
-
-/* ----- Anno dog (SVG container) ----- */
-.anno-dog-wrap {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    gap: 1rem;
-    padding: 2.4rem 1rem 1rem;
-    flex-wrap: wrap;
-}
-.anno-dog {
-    height: auto;
-    filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.45));
-}
-/* Both views now share the same viewBox aspect ratio (≈1.5:1) so they
-   render at identical visual size when given equal width. */
-.anno-dog-side,
-.anno-dog-front {
-    flex: 1 1 0;
-    width: 100%;
-    max-width: 360px;
-    min-width: 220px;
-    height: auto;
-}
-
-/* View labels above each SVG, aligned 50/50 */
-.anno-view-labels {
-    position: absolute;
-    top: 0.4rem;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: space-around;
-    pointer-events: none;
-    padding: 0 8%;
-}
-.anno-view-label {
-    flex: 1 1 0;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.62rem;
-    letter-spacing: 0.32em;
-    color: rgba(255, 255, 255, 0.45);
-    text-transform: uppercase;
-    text-align: center;
-}
-
-@media (max-width: 700px) {
-    .anno-dog-front { display: none; }
-    .anno-view-labels { display: none; }
-}
-
-/* ----- Dog animations ----- */
-@keyframes annoTailWag {
-    0%, 100% { transform: rotate(-6deg); }
-    50%      { transform: rotate(14deg); }
-}
-@keyframes annoBodyBreathe {
-    0%, 100% { transform: scale(1); }
-    50%      { transform: scale(1.012); }
-}
-@keyframes annoHeadTilt {
-    0%, 100% { transform: rotate(0deg); }
-    50%      { transform: rotate(-6deg); }
-}
-@keyframes annoEyeBlink {
-    0%, 92%, 100% { transform: scaleY(1); }
-    95%, 99%      { transform: scaleY(0.1); }
-}
-@keyframes annoBubblePop {
-    0%   { opacity: 0; transform: translateY(6px) scale(0.92); }
-    100% { opacity: 1; transform: translateY(0) scale(1); }
-}
-@keyframes annoBpmPulse {
-    /* Reserved for genuine "alarm" pulses on UI elements, not the heart. */
-    0%, 100% { transform: scale(1); }
-    50%      { transform: scale(1.06); }
-}
-@keyframes annoHeartGlow {
-    /* Calm heartbeat: gentle opacity dip + 4% breath. No jumping. */
-    0%, 100% { transform: scale(1);    opacity: 1;   }
-    50%      { transform: scale(1.04); opacity: 0.78;}
-}
-@keyframes annoWristbandPulse {
-    0%, 100% { opacity: 1; r: 2; }
-    50%      { opacity: 0.5; r: 3.2; }
-}
-@keyframes annoLegWiggle {
-    0%, 100% { transform: rotate(0deg); }
-    50%      { transform: rotate(2deg); }
-}
-
-/* Default chill state — animation origins use transform-box: fill-box
-   so they're relative to each element's own box, not the SVG origin.
-   This keeps tail wag, head tilt, eye blink, and heart pulse aligned
-   regardless of how we lay the SVG out. */
-.anno-tail {
-    transform-origin: right center;
-    transform-box: fill-box;
-    animation: annoTailWag 1.6s ease-in-out infinite;
-}
-.anno-body {
-    transform-origin: center;
-    transform-box: fill-box;
-    animation: annoBodyBreathe 3.6s ease-in-out infinite;
-}
-.anno-head {
-    /* Pivot at the neck/shoulder mount where the head meets the body. */
-    transform-origin: 162px 144px;
-    transition: transform 0.6s var(--ease-smooth);
-}
-.anno-eye {
-    transform-origin: center;
-    transform-box: fill-box;
-    animation: annoEyeBlink 4.2s infinite;
-}
-.anno-screen-heart {
-    transform-origin: center;
-    transform-box: fill-box;
-    /* Subtle gentle pulse — opacity instead of scale so the icon doesn't
-       leap off the screen. */
-    animation: annoHeartGlow 1.1s ease-in-out infinite;
-}
-.anno-wristband-pulse {
-    transform-origin: center;
-    transform-box: fill-box;
-    animation: annoWristbandPulse 1.4s ease-in-out infinite;
-}
-
-/* Speech bubble — HTML overlay above the dog. Wraps long messages,
-   stays clipped to a sensible max-width, never collides with the body. */
-.anno-bubble {
-    position: absolute;
-    top: 6%;
-    left: 50%;
-    transform: translate(-30%, 0) scale(0.95);
-    max-width: 78%;
-    min-width: 140px;
-    padding: 0.7rem 1rem;
-    background: rgba(14, 19, 32, 0.95);
-    border: 1px solid #3b4358;
-    border-radius: 18px;
-    color: #fff;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.92rem;
-    line-height: 1.4;
-    text-align: center;
-    word-break: break-word;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.4s var(--ease-smooth), transform 0.4s var(--ease-smooth);
-    z-index: 4;
-}
-.anno-bubble.show {
-    opacity: 1;
-    transform: translate(-30%, 0) scale(1);
-}
-.anno-bubble-tail {
-    position: absolute;
-    bottom: -8px;
-    left: 60%;
-    width: 14px;
-    height: 14px;
-    background: rgba(14, 19, 32, 0.95);
-    border-right: 1px solid #3b4358;
-    border-bottom: 1px solid #3b4358;
-    transform: rotate(45deg);
-}
-
-/* Scene-specific dog states (toggled by JS via data-anno-mode on .anno-stage) */
-.anno-stage[data-anno-mode="alert"] .anno-tail   { animation: none; transform: rotate(-2deg); }
-.anno-stage[data-anno-mode="alert"] .anno-head   { transform: rotate(-8deg); }
-.anno-stage[data-anno-mode="alert"] .anno-eye    { fill: var(--anno-coral); animation: annoBpmPulse 0.7s ease-in-out infinite; }
-.anno-stage[data-anno-mode="alert"] .anno-screen-heart { animation: annoHeartGlow 0.45s ease-in-out infinite; fill: var(--anno-coral); }
-
-.anno-stage[data-anno-mode="happy"] .anno-tail   { animation-duration: 0.7s; }
-.anno-stage[data-anno-mode="happy"] .anno-head   { transform: rotate(-3deg); }
-
-.anno-stage[data-anno-mode="sleep"] .anno-tail   { animation-duration: 4s; }
-.anno-stage[data-anno-mode="sleep"] .anno-eye    { transform: scaleY(0.18); transform-origin: center; transform-box: fill-box; animation: none; }
-.anno-stage[data-anno-mode="sleep"] .anno-head   { transform: rotate(2deg) translateY(2px); }
-
-.anno-stage[data-anno-mode="curious"] .anno-head { transform: rotate(-10deg); }
-.anno-stage[data-anno-mode="curious"] .anno-tail { animation-duration: 2.4s; }
-
-/* ----- Side panel (right) ----- */
-.anno-panel {
-    position: relative;
-    z-index: 2;
-    background: rgba(10, 14, 22, 0.7);
-    border: 1px solid var(--anno-glass-bd);
+    color: var(--ink);
+    background: #101a23;
+    border: 1px solid #34414b;
     border-radius: 14px;
-    padding: 1.4rem 1.4rem 1.6rem;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    display: flex;
-    flex-direction: column;
-    gap: 0.9rem;
+    font-family: 'Montserrat', system-ui, sans-serif;
+    font-size: .94rem;
+    line-height: 1.45;
 }
-.anno-panel-eyebrow {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.65rem;
-    letter-spacing: 0.32em;
-    color: var(--anno-mint);
-    text-transform: uppercase;
+.anno-stage *, .anno-stage *::before, .anno-stage *::after { box-sizing: border-box; }
+.anno-stage button, .anno-stage summary { font: inherit; color: inherit; cursor: pointer; }
+.anno-stage button { border: 0; background: none; }
+.anno-stage :is(button, summary):focus-visible { outline: 2px solid #d6f8f2; outline-offset: -3px; }
+.anno-stage button:disabled { cursor: default; }
+.anno-stage[data-scene="dispenser"] { --photo-scale: 1.37; --photo-x: 69%; --photo-y: 61%; }
+.anno-stage[data-scene="health"] { --photo-scale: 1.2; --photo-x: 64%; --accent: #f6b7a1; }
+.anno-stage[data-scene="emotion"] { --photo-scale: 1.38; --photo-x: 24%; --photo-y: 26%; }
+.anno-stage[data-scene="emotion"][data-mood="happy"] { --photo-scale: 1.24; --photo-y: 45%; --accent: #efce98; }
+.anno-stage[data-scene="emotion"][data-mood="curious"] { --photo-scale: 1.5; --photo-x: 30%; --accent: #a8d1e9; }
+.anno-stage[data-scene="emotion"][data-mood="worried"] { --photo-scale: 1.3; --photo-y: 20%; --accent: #e7b0a5; }
+.anno-stage[data-scene="privacy"] { --photo-scale: 1.49; --photo-x: 65%; --photo-y: 44%; --accent: #c6c2ea; }
+.anno-scenes { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); background: #111b24; }
+.anno-scene-btn {
+    position: relative; display: grid; gap: .36rem; align-content: center;
+    text-align: left; padding: 1.15rem clamp(.7rem, 2vw, 2rem); color: var(--quiet) !important;
+    border-bottom: 1px solid var(--line) !important;
+    transition: color .2s, background .2s;
 }
-.anno-panel-title {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1.4rem;
-    font-weight: 600;
-    line-height: 1.25;
-    color: #fff;
-    margin: 0;
+.anno-scene-btn time, .anno-med-time, .anno-numeric {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-variant-numeric: tabular-nums;
 }
-.anno-panel-body {
-    color: rgba(255, 255, 255, 0.78);
-    font-size: 0.92rem;
-    line-height: 1.6;
+.anno-scene-btn time { font-size: .67rem; letter-spacing: .07em; }
+.anno-scene-btn > span { font-size: .86rem; font-weight: 550; }
+.anno-scene-btn:hover, .anno-scene-btn.active { background: #1c2b36; color: var(--ink) !important; }
+.anno-scene-btn::after { content: ''; position: absolute; inset: auto 0 -1px; height: 2px; background: var(--accent); opacity: 0; }
+.anno-scene-btn.active::after { opacity: 1; }
+.anno-workspace { display: grid; grid-template-columns: minmax(0, 1.39fr) minmax(0, 1fr); }
+.anno-product {
+    min-width: 0; margin: 0; display: flex; flex-direction: column; background: #0c1822;
+    border-right: 1px solid var(--line); overflow: hidden;
 }
-.anno-panel-body p {
-    margin: 0 0 0.8rem;
+.anno-photo { position: relative; aspect-ratio: 1.84; flex: 1 0 auto; overflow: hidden; min-height: 210px; }
+.anno-photo img {
+    display: block; width: 100%; height: 100%; position: absolute; inset: 0;
+    object-fit: cover; object-position: 49% 45%;
+    transform-origin: var(--photo-x) var(--photo-y); transform: scale(var(--photo-scale));
+    transition: transform 1.2s cubic-bezier(.2,.75,.22,1), transform-origin 1.2s;
 }
-.anno-panel-body p:last-child { margin-bottom: 0; }
-
-/* Lists / items inside the panel — different layouts per scene */
-.anno-pill-row {
-    width: 100%;
-    text-align: left;
-    color: inherit;
-    font: inherit;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    padding: 0.7rem 0.9rem;
-    margin-bottom: 0.5rem;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 10px;
-    transition: all 0.3s var(--ease-smooth);
+.anno-in-view .anno-photo img { animation: anno-arrival 2.4s cubic-bezier(.2,.7,.3,1) both; }
+@keyframes anno-arrival { from { scale: 1.045; } to { scale: 1; } }
+.anno-photo::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to top, rgba(12,24,34,.58), transparent 21%); }
+.anno-transcript { margin: 0; padding: 1.35rem clamp(1.35rem, 3vw, 2.75rem) 1.7rem; }
+.anno-speaker { display: flex; align-items: center; gap: .7rem; font-size: .78rem; color: var(--accent); font-weight: 600; }
+.anno-wave { display: flex; align-items: center; gap: 2px; height: 17px; }
+.anno-wave i { display: block; width: 2px; height: 7px; border-radius: 3px; background: currentColor; }
+.anno-wave i:nth-child(2), .anno-wave i:nth-child(4) { height: 12px; }
+.anno-wave i:nth-child(3) { height: 17px; }
+.anno-stage[data-speaking] .anno-wave i { animation: anno-voice .46s ease-in-out 4 alternate; }
+.anno-stage[data-speaking] .anno-wave i:nth-child(2n) { animation-delay: -.16s; }
+.anno-stage[data-speaking] .anno-wave i:nth-child(3n) { animation-delay: -.27s; }
+@keyframes anno-voice { to { transform: scaleY(.32); } }
+.anno-transcript p { margin: .55rem 0 0; color: #f1f4f4; font-size: clamp(1.12rem,1.7vw,1.57rem); font-weight: 450; letter-spacing: -.026em; line-height: 1.4; }
+.anno-panel { display: flex; flex-direction: column; min-width: 0; padding: clamp(1.5rem, 3.2vw, 3rem); background: #14212b; }
+.anno-panel h3 { font: 500 clamp(1.45rem,2.3vw,2.2rem)/1.15 'Montserrat', system-ui, sans-serif; margin: 0 0 1.3rem; letter-spacing: -.045em; color: var(--ink); }
+.anno-panel p { margin: 0; }
+.anno-sub { font-size: .88rem; color: var(--quiet); line-height: 1.55; }
+.anno-dose-list { display: grid; }
+.anno-dose-list > button {
+    display: grid; grid-template-columns: 19px 1fr auto; align-items: center; gap: .7rem;
+    padding: .95rem 0; text-align: left; border-bottom: 1px solid var(--line);
 }
-.anno-pill-row.taken {
-    border-color: rgba(122, 255, 240, 0.45);
-    background: rgba(122, 255, 240, 0.08);
+.anno-dose-list > button:first-child { border-top: 1px solid var(--line); }
+.anno-med-check { display: grid; place-items: center; width: 17px; height: 17px; border: 1px solid #78909d; border-radius: 50%; }
+.anno-pill-row[data-state="taken"] .anno-med-check { background: var(--accent); color: #14212b; border-color: var(--accent); }
+.anno-dose-list > button:not(:disabled):hover .anno-med-check { box-shadow: inset 0 0 0 3px #14212b; background: var(--accent); }
+.anno-med-time { font-size: .72rem; color: var(--quiet); }
+.anno-med-status { display: block; color: var(--accent); font-size: .69rem; margin-top: .15rem; }
+.anno-dose-list + .anno-sub { margin-top:.8rem; }
+.anno-questions { margin-top: auto; padding-top: 1.3rem; }
+.anno-questions summary { display: inline-flex; align-items: center; gap: .75rem; min-height: 40px; color: var(--accent); font-weight: 550; font-size: .83rem; list-style: none; }
+.anno-questions summary::-webkit-details-marker { display: none; }
+.anno-plus { position: relative; width: 10px; height: 10px; }
+.anno-plus::before, .anno-plus::after { content: ''; position: absolute; width: 10px; height: 1px; top: 50%; background: currentColor; }
+.anno-plus::after { transform: rotate(90deg); }
+.anno-questions[open] .anno-plus::after { transform: none; }
+#anno-voice-prompts { display: flex; flex-wrap: wrap; gap: .4rem; margin-top:.3rem; }
+#anno-voice-prompts button, .anno-segment button, .anno-moods button {
+    padding: .55rem .75rem; font-size: .8rem; border: 1px solid var(--line); border-radius: 5px;
 }
-.anno-pill-icon {
-    width: 32px; height: 32px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
-    flex-shrink: 0;
+.anno-stage .anno-action { background: var(--accent); border-radius: 5px; color: #11202a; padding: .62rem 1rem; min-height: 42px; font-size: .85rem; font-weight: 650; }
+.anno-action:disabled { background: #263c48; color: #bacbd3; }
+#anno-voice-prompts button:hover, .anno-moods button:hover, .anno-segment button:hover { background: #263946; }
+.anno-dose-box { display: grid; gap: 1.3rem; justify-items: start; }
+.anno-dispenser-track { display: grid; width: 100%; grid-template-columns: repeat(3, 1fr); gap: 3px; margin: .5rem 0 .2rem; }
+.anno-dispenser-track i { height: 4px; background: #3b4a56; }
+.anno-dispenser-track i.on { background: var(--accent); }
+.anno-tray { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; width: 100%; }
+.anno-tray strong { font-weight: 550; }
+.anno-tray small { color: var(--quiet); }
+.anno-heart { display: flex; align-items: center; gap: 1rem; margin: .45rem 0 1rem; }
+.anno-heart strong { font: 450 clamp(2rem,4vw,3.7rem)/1 ui-monospace,monospace; letter-spacing: -.09em; }
+.anno-heart small { font-size: .78rem; color: var(--quiet); }
+.anno-heart canvas { flex: 1; min-width: 0; max-width: 180px; height: 48px; }
+.anno-health-action { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }
+.anno-count { font: 550 1.3rem ui-monospace,monospace; color: var(--accent); }
+.anno-segment, .anno-moods { display: flex; flex-wrap: wrap; gap: .45rem; margin-bottom: 1rem; }
+.anno-moods { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); margin: 1rem 0 0; }
+.anno-moods button { padding: .85rem; text-align: left; }
+.anno-segment button[aria-pressed="true"], .anno-moods button[aria-pressed="true"] { color: var(--ink); border-color: var(--accent); background: #22343e; }
+.anno-records { margin: 0; }
+.anno-records > div { display: flex; justify-content: space-between; gap: 1rem; padding: .55rem 0; border-bottom: 1px solid var(--line); font-size: .85rem; }
+.anno-records dd { margin: 0; color: var(--accent); text-align: right; }
+.anno-consent { display: inline-flex; align-items: center; gap: .55rem; margin-top: .9rem; font-size: .83rem; cursor: pointer; }
+.anno-consent input { width: 17px; height: 17px; accent-color: var(--accent); }
+@media (max-width: 780px) {
+    .anno-workspace { grid-template-columns: 1fr; }
+    .anno-product { border-right: 0; border-bottom: 1px solid var(--line); }
+    .anno-photo { flex: none; min-height: 0; aspect-ratio: 2.15; }
+    .anno-panel { padding: 1.45rem; }
+    .anno-transcript { padding: 1rem 1.45rem 1.2rem; }
 }
-.anno-pill-icon.morning { background: linear-gradient(135deg, #ffd86a, #ff9b50); }
-.anno-pill-icon.noon    { background: linear-gradient(135deg, #ff8eb1, #c45cff); }
-.anno-pill-icon.evening { background: linear-gradient(135deg, #5b8eff, #3a4d8f); }
-.anno-pill-info {
-    flex: 1;
-    min-width: 0;
+@media (max-width: 540px) {
+    .anno-demo-intro { display: block; margin-bottom: 1.1rem; }
+    .anno-demo-intro > span { display: block; margin-top: .5rem; }
+    .anno-stage { border-radius: 9px; }
+    .anno-scene-btn { text-align: center; padding: .85rem .1rem; gap: .2rem; }
+    .anno-scene-btn time { font-size: .6rem; }
+    .anno-scene-btn > span { font: 600 clamp(.59rem,2.55vw,.72rem)/1.3 system-ui,sans-serif; }
+    .anno-photo { aspect-ratio: 1.9; }
 }
-.anno-pill-name {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.95rem;
-    color: #fff;
-    font-weight: 500;
+@media (prefers-reduced-motion: reduce) {
+    .anno-stage *, .anno-stage *::after { transition: none !important; animation: none !important; }
 }
-.anno-pill-time {
-    display: block;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.7rem;
-    color: rgba(255, 255, 255, 0.55);
-    letter-spacing: 0.1em;
-    margin-top: 2px;
-}
-.anno-pill-status {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.65rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    padding: 0.3rem 0.6rem;
-    border-radius: 6px;
-    background: rgba(255, 255, 255, 0.08);
-    color: rgba(255, 255, 255, 0.6);
-}
-.anno-pill-row.taken .anno-pill-status {
-    background: rgba(62, 234, 138, 0.15);
-    color: #5dffa3;
-}
-
-/* Vital stat block */
-.anno-vital {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.6rem;
-}
-.anno-vital-cell {
-    padding: 0.7rem 0.8rem;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-}
-.anno-vital-cell.alert {
-    border-color: rgba(255, 100, 130, 0.65);
-    background: rgba(255, 100, 130, 0.12);
-    animation: annoAlertGlow 1.4s ease-in-out infinite;
-}
-@keyframes annoAlertGlow {
-    0%, 100% { box-shadow: 0 0 0 rgba(255, 100, 130, 0); }
-    50%      { box-shadow: 0 0 18px rgba(255, 100, 130, 0.45); }
-}
-.anno-vital-label {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.55rem;
-    letter-spacing: 0.2em;
-    color: rgba(255, 255, 255, 0.55);
-    text-transform: uppercase;
-}
-.anno-vital-value {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.4rem;
-    color: #fff;
-    margin-top: 4px;
-    font-weight: 600;
-}
-.anno-vital-unit {
-    font-size: 0.65rem;
-    color: rgba(255, 255, 255, 0.5);
-    margin-left: 3px;
-}
-
-/* SOS countdown */
-.anno-sos {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    padding: 0.9rem 1rem;
-    background: rgba(255, 100, 130, 0.12);
-    border: 1px solid rgba(255, 100, 130, 0.4);
-    border-radius: 10px;
-}
-.anno-sos-num {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 2rem;
-    font-weight: 700;
-    color: #ff8eb1;
-    min-width: 2.4rem;
-    text-align: center;
-    line-height: 1;
-}
-.anno-sos-text {
-    flex: 1;
-    color: #fff;
-    font-size: 0.9rem;
-    line-height: 1.4;
-}
-.anno-sos-cancel {
-    padding: 0.45rem 0.9rem;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 8px;
-    color: #fff;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-.anno-sos-cancel:hover { background: rgba(255, 255, 255, 0.18); }
-
-/* Emotion mode picker */
-.anno-emo-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.6rem;
-}
-.anno-emo-btn {
-    padding: 0.85rem 0.7rem;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    color: #fff;
-    cursor: pointer;
-    text-align: left;
-    transition: all 0.25s var(--ease-smooth);
-}
-.anno-emo-btn:hover {
-    background: rgba(167, 139, 255, 0.1);
-    border-color: rgba(167, 139, 255, 0.4);
-}
-.anno-emo-btn.active {
-    background: linear-gradient(135deg, rgba(167, 139, 255, 0.25), rgba(122, 255, 240, 0.15));
-    border-color: rgba(167, 139, 255, 0.6);
-    box-shadow: 0 0 14px rgba(167, 139, 255, 0.3);
-}
-.anno-emo-emoji {
-    font-size: 1.4rem;
-    display: block;
-    margin-bottom: 4px;
-}
-.anno-emo-label {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-}
-
-/* Privacy view toggle */
-.anno-privacy-tabs {
-    display: flex;
-    gap: 0.4rem;
-    padding: 0.3rem;
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 999px;
-    margin-bottom: 0.8rem;
-}
-.anno-privacy-tab {
-    flex: 1;
-    padding: 0.45rem 0.6rem;
-    background: transparent;
-    border: none;
-    border-radius: 999px;
-    color: rgba(255, 255, 255, 0.6);
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.65rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.25s ease;
-}
-.anno-privacy-tab.active {
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-}
-
-.anno-privacy-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.6rem 0.8rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 0.88rem;
-}
-.anno-privacy-row:last-child { border-bottom: none; }
-.anno-privacy-row .anno-privacy-key {
-    color: rgba(255, 255, 255, 0.55);
-}
-.anno-privacy-row .anno-privacy-val {
-    font-family: 'Orbitron', sans-serif;
-    color: #fff;
-}
-.anno-privacy-redacted {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    padding: 2px 8px;
-    color: rgba(255, 255, 255, 0.45);
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-}
-
-/* ----- Voice prompts bar (bottom) ----- */
-.anno-voice {
-    grid-column: 1 / -1;
-    position: relative;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    margin-top: 0.5rem;
-    padding: 0.7rem 1rem;
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid var(--anno-glass-bd);
-    border-radius: 999px;
-}
-.anno-voice-mic {
-    width: 38px; height: 38px;
-    flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    background: linear-gradient(135deg, var(--anno-violet), var(--anno-mint));
-    border: none;
-    border-radius: 50%;
-    color: #0e1320;
-    cursor: pointer;
-    box-shadow: 0 0 14px rgba(167, 139, 255, 0.5);
-    transition: transform 0.2s ease;
-}
-.anno-voice-mic:hover { transform: scale(1.06); }
-.anno-voice-mic svg { width: 18px; height: 18px; }
-.anno-voice-mic.listening {
-    animation: annoMicPulse 0.9s ease-in-out infinite;
-}
-@keyframes annoMicPulse {
-    0%, 100% { box-shadow: 0 0 14px rgba(167, 139, 255, 0.5); }
-    50%      { box-shadow: 0 0 26px rgba(167, 139, 255, 0.95); }
-}
-
-.anno-voice-prompts {
-    flex: 1;
-    display: flex;
-    gap: 0.5rem;
-    overflow-x: auto;
-    scrollbar-width: none;
-}
-.anno-voice-prompts::-webkit-scrollbar { display: none; }
-.anno-voice-prompt {
-    flex-shrink: 0;
-    padding: 0.45rem 0.95rem;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 999px;
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 0.82rem;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.2s ease;
-}
-.anno-voice-prompt:hover {
-    background: rgba(167, 139, 255, 0.18);
-    border-color: rgba(167, 139, 255, 0.5);
-    color: #fff;
-}
-
 /* ============================================================
    ============ OBSERVATION JOURNEY MAP =======================
    ============================================================ */
@@ -892,4 +391,12 @@
 @media (max-width: 600px) {
     .anno-dog-side { min-width: 0; max-width: 260px; }
     .anno-bubble { max-width: 80%; }
+}
+
+.anno-scene-credit { display: none; }
+.anno-stage[data-scene="emotion"] .anno-photo img { transform: none; object-position: 50% 42%; }
+.anno-stage[data-scene="emotion"] .anno-scene-credit {
+    display: block; position: absolute; z-index: 1; left: 12px; bottom: 10px;
+    font: 500 11px/1.35 system-ui,sans-serif; color: #fff;
+    background: #182126bb; padding: 3px 7px; border-radius: 3px;
 }

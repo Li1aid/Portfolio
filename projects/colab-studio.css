@@ -1,0 +1,90 @@
+/* CoLab's directory uses the Australian avatars from the original prototype. */
+.colab-studio { margin: 0; }
+#demo-teamup {
+    --ink: #182543;
+    --orange: #fe8c4a;
+    border: 0;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #f4f5f0;
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+}
+.colab-team-header {
+    min-height: 205px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--orange);
+    padding: 2rem clamp(1.4rem, 5%, 4.5rem);
+}
+.colab-team-header h2 { font: 750 clamp(3rem, 8vw, 6.3rem)/.92 -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; color: var(--ink); margin: 0 0 .65rem; letter-spacing: -.087em; }
+.colab-team-header p { font: 500 clamp(.9rem, 1.4vw, 1.1rem)/1.4 -apple-system, sans-serif; margin: 0; max-width: 26ch; color: #263149; line-height: 1.4; }
+.colab-cast { display: flex; align-items: flex-end; align-self: stretch; width: 45%; position: relative; }
+.colab-cast img { width: 41%; height: auto; object-fit: contain; position: relative; align-self: end; margin: 0 -5% -2.3rem; filter: drop-shadow(0 4px 0 #19254019); }
+.colab-cast img:first-child { rotate: -7deg; }
+.colab-cast img:nth-child(2) { z-index: 1; width: 44%; rotate: 5deg; }
+.colab-cast img:last-child { rotate: 9deg; }
+#demo-teamup .demo-body { padding: clamp(1rem, 3.5%, 2.6rem); }
+.colab-directory-bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; border-bottom: 1px solid #ccd0c9; gap: 10px; padding-bottom: 13px; margin-bottom: 1.25rem; }
+#demo-teamup .teamup-tabs { display: flex; align-items: center; width: auto; background: none; border: 0; margin: 0; gap: .3rem; padding: 0; flex-wrap: wrap; }
+#demo-teamup .teamup-tab, #demo-teamup .teamup-connect { font: 600 .86rem/1.2 -apple-system, sans-serif; font-family: inherit; text-transform: none; letter-spacing: 0; color: var(--ink); }
+#demo-teamup .teamup-tab { padding: .65rem .9rem; border: 0; border-radius: 20px; color: #505965; background: transparent; box-shadow: none; }
+#demo-teamup .teamup-tab.active { color: #fff; background: var(--ink); }
+.colab-skill { font-size: .78rem; font-weight: 600; display: flex; align-items: center; gap: .55rem; color: #56616b; }
+.colab-skill select { max-width: 145px; font: inherit; border: 1px solid #b8c1bd; color: var(--ink); background: #fff; padding: .55rem; border-radius: 8px; }
+#demo-teamup .teamup-grid { grid-template-columns: repeat(3,minmax(0,1fr)); gap: .85rem; min-height: 0; }
+#demo-teamup .teamup-card { display: flex; flex-direction: column; justify-content: start; align-items: stretch; gap: .9rem; color: var(--ink); background: #fff; padding: 1.1rem; border: 1px solid #d6dad4; border-radius: 12px; box-shadow: 0 2px 3px #19254006; }
+#demo-teamup .teamup-card-head { display: flex; align-items: center; gap: .7rem; margin: 0; }
+#demo-teamup .teamup-avatar { flex: 0 0 50px; height: 50px; width: 50px; align-items: end; overflow: hidden; border: 0; border-radius: 50%; background: #eae1c9; color: var(--ink); font-family: inherit; box-shadow: none; }
+#demo-teamup .teamup-avatar img { height: 98%; width: 94%; object-fit: contain; }
+#demo-teamup .teamup-card:nth-child(3n+2) .teamup-avatar { background: #f5d1bd; }
+#demo-teamup .teamup-card:nth-child(3n) .teamup-avatar { background: #d4e1d7; }
+#demo-teamup .teamup-name { color: var(--ink); font: 700 1.06rem/1.3 -apple-system, sans-serif; font-family: inherit; letter-spacing: -.03em; }
+#demo-teamup .teamup-role { color: #58616c; font: 400 .76rem/1.35 -apple-system, sans-serif; font-family: inherit; }
+#demo-teamup .teamup-tags { display: flex; flex-wrap: wrap; gap: 4px; margin: 0; }
+#demo-teamup .teamup-tag { color: #48554d; background: #f0f3ed; padding: .22rem .45rem; border: 0; border-radius: 4px; font: 500 .69rem/1.3 -apple-system, sans-serif; letter-spacing: 0; text-transform: none; }
+.colab-actions { display: flex; gap: .4rem; margin-top: auto; }
+#demo-teamup .teamup-connect, .teamup-save { background: #fff; border: 1px solid #b8c3bc; color: var(--ink); border-radius: 6px; padding: .42rem .7rem; align-self: stretch; margin: 0; cursor: pointer; }
+#demo-teamup .teamup-connect { flex: 1; }
+.teamup-save { display: grid; place-items: center; }
+.teamup-save svg { height: 17px; width: 17px; }
+#demo-teamup .colab-actions button[aria-pressed="true"], #demo-teamup .colab-actions button:hover { background: #e6eedf; color: #24422e; }
+#demo-teamup .teamup-status, .colab-empty { color: #59635c; font-family: inherit; font-size: .8rem; text-transform: none; letter-spacing: 0; }
+.colab-empty { padding-block: 2rem; grid-column: 1 / -1; }
+#demo-teamup :is(button, select):focus-visible { outline: 3px solid #1d69a0; outline-offset: 3px; }
+@media (max-width: 780px) { #demo-teamup .teamup-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media (max-width: 540px) {
+    #demo-teamup .teamup-grid { grid-template-columns: 1fr; }
+    .colab-team-header { min-height: 145px; padding: 1.4rem 1rem; }
+    .colab-team-header h2 { font-size: clamp(2.6rem, 12vw, 3.5rem); }
+    .colab-team-header p { font-size: .79rem; max-width: 21ch; }
+    .colab-cast { width: 33%; }
+    .colab-cast img:first-child, .colab-cast img:last-child { display: none; }
+    .colab-cast img:nth-child(2) { width: 120%; max-width: none; margin: 0 0 -1.6rem -12%; }
+    #demo-teamup .teamup-card { gap: .65rem; }
+}
+#demo-lecture .lecture-stage {
+    display: grid; grid-template-columns: 1fr 1.1fr; grid-template-rows: 1fr auto;
+    align-items: end; padding: clamp(1.2rem,4vw,3.8rem); gap: 0 2rem; aspect-ratio: 2.4;
+    border: 0; border-radius: 10px; background: #dfe9dc; cursor: pointer; color: #1f3832;
+}
+#demo-lecture .lecture-stage::before { background-image: repeating-linear-gradient(90deg, transparent 0 calc(8.333% - 1px), #24433a21 calc(8.333% - 1px) 8.333%); background-size: auto; }
+#demo-lecture .lecture-stage-title { text-align: left; color: inherit; font: 680 clamp(2.1rem,5.2vw,5.5rem)/.92 -apple-system,sans-serif; letter-spacing: -.06em; }
+#demo-lecture .lecture-stage-chapter { grid-area: 2/1; color: #37564a; font: 500 .88rem/1.4 -apple-system,sans-serif; }
+.lecture-specimen { grid-area: 1/2/3; align-self: center; background: #f6f5e8; width: 100%; aspect-ratio: 1.75; padding: 8%; box-shadow: 5px 9px 0 #59765e4a; display: grid; grid-template: 1fr .12fr .12fr / 1fr .9fr; gap: 7%; border: 1px solid #213b2c38; }
+.lecture-specimen span { color: #233b32; font: 580 clamp(2.2rem,7vw,6rem)/.7 Georgia,serif; letter-spacing: -.09em; }
+.lecture-specimen i { background: #ad6443; }
+.lecture-specimen i:nth-last-child(-n+3) { background: #67766a; }
+[data-slide="1"] .lecture-specimen { grid-template-columns: repeat(3,1fr); }
+[data-slide="2"] .lecture-specimen { background: repeating-linear-gradient(0deg, #f6f5e8 0 12px,#9cab9b 12px 13px); }
+[data-slide="3"] .lecture-specimen { width: 72%; justify-self: center; }
+[data-slide="4"] .lecture-specimen span { transform: rotate(-13deg) scale(1.2); }
+#demo-lecture .lecture-playstate { inset: .8rem auto auto .9rem; width: 26px; height: 26px; color: #203d2f; }
+#demo-lecture .lecture-playstate .play-icon-svg { width: 17px; height: 17px; }
+@media(max-width:570px) {
+    #demo-lecture .lecture-stage { aspect-ratio: 1.55; gap: 0 .6rem; padding: 1rem; }
+    #demo-lecture .lecture-stage-chapter { font-size: .72rem; }
+}

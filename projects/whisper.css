@@ -987,3 +987,71 @@
         transition-duration: 0s !important;
     }
 }
+
+/* Three wall planes meet a single grass floor, as in the installation study. */
+#whisper-cube-demo { padding: 0; border-radius: 13px; border: 1px solid #434947; background: #202423; color: #f0f1e8; overflow: hidden; }
+.whisper-cube-room { grid-template-columns: 1fr; min-height: 0; gap: 0; border-radius: 0; }
+.whisper-phase-picker { justify-content: flex-start; gap: 0; border: 0; border-radius: 0; margin: 0; padding: .65rem 1.2rem; background: #252927; border-bottom: 1px solid #3e4441; }
+.whisper-phase-picker .whisper-phase-arrow { display: none; }
+.whisper-phase-btn, .whisper-sketch-toggle {
+    font: 500 .83rem/1.2 -apple-system, BlinkMacSystemFont, sans-serif;
+    text-transform: none; letter-spacing: 0; color: #c4c8be; border-radius: 3px;
+    padding: .55rem .7rem; background: transparent; cursor: pointer;
+}
+.whisper-phase-num { display: none; }
+.whisper-phase-btn.active { border-color: #737b70; background: #464d46; color: #fff; box-shadow: none; }
+.whisper-sketch-toggle { margin-left: auto; color: #f5f1de; border: 1px solid #636a60; }
+.whisper-sketch-toggle[aria-pressed=true] { background: #e1dfcd; color: #242922; }
+.whisper-cube-view { width: 100%; aspect-ratio: 1.91; min-height: 0; border: 0; border-radius: 0; background: radial-gradient(ellipse at 50% 45%, #596263, #202726 69%, #121614); isolation: isolate; }
+.whisper-cube-ceiling { height: 20%; background: linear-gradient(180deg,#1a201e,#2e3431); }
+.whisper-ceiling-rail { top: 18%; left: 22%; right: 22%; }
+.whisper-ceiling-spot { top: 15%; transform: scale(.8); }
+.whisper-cube-walls { position: absolute; inset: 5% 0 17%; margin: 0; display: grid; grid-template-columns: 22% 56% 22%; gap: 0; perspective: none; z-index: 2; }
+.whisper-wall { border: 0; border-radius: 0; cursor: auto; }
+.whisper-wall-l { clip-path: polygon(0 0,100% 16%,100% 83%,0 100%); transform: none; filter: brightness(.70); }
+.whisper-wall-c { margin: 0; clip-path: inset(16% 0 17%); transform: none; }
+.whisper-wall-r { clip-path: polygon(0 16%,100% 0,100% 100%,0 83%); transform: none; filter: brightness(.81); }
+.whisper-wall:hover { filter: none; }
+.whisper-wall::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg,#27251b22,transparent 30%,transparent 65%,#06140e22); }
+.whisper-cube-floor { position: absolute; inset: 64% 0 0; height: auto; margin: 0; border: 0; border-radius: 0; z-index: 1; background: linear-gradient(180deg,#354b40,#263c32 55%,#17271d); }
+.whisper-seat { opacity: .88; width: 15%; height: auto; bottom: 6%; z-index: 2; filter: drop-shadow(4px 7px 3px #12180d75); }
+.whisper-seat-l { left: 12%; }
+.whisper-seat-r { right: 12%; }
+.whisper-floor-hint { bottom: 8%; font: 500 .68rem/1.3 -apple-system,sans-serif; text-transform: none; letter-spacing: .02em; color: #d4ddcc; white-space: nowrap; }
+.whisper-phase-hud { top: auto; left: 2%; bottom: 3%; transform: none; padding: 0; flex-direction: row; background: none; border: 0; border-radius: 0; backdrop-filter: none; text-shadow: 0 1px 5px #000c; }
+.whisper-hud-eyebrow { color: #fff; font: 520 clamp(.8rem,1.8vw,1.25rem)/1.2 Georgia,serif; letter-spacing: -.02em; text-transform: none; }
+.whisper-hud-bar, .whisper-hud-meta { display: none; }
+.whisper-sketch { position: absolute; inset: 0; margin: 0; z-index: 5; background: #181b19; }
+.whisper-sketch[hidden] { display: none; }
+.whisper-sketch img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.whisper-cube-panel { min-height: 0; display: grid; grid-template-columns: minmax(0,1.7fr) minmax(190px,.8fr); grid-template-rows: auto auto; align-items: start; gap: .65rem 1.5rem; border: 0; border-radius: 0; border-top: 1px solid #454b45; background: #272c28; padding: clamp(1rem,2.5vw,2rem); }
+.whisper-panel-title { grid-area: 1/1; font: 570 .96rem/1.25 -apple-system,sans-serif; color: #f1f2e9; }
+.whisper-panel-eyebrow { grid-area: 1/2; font: 570 .96rem/1.25 -apple-system,sans-serif; letter-spacing: 0; text-transform: none; color: #f1f2e9; }
+.whisper-panel-divider { display: none; }
+.whisper-scene-grid { grid-area: 2/1; display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: .4rem; }
+.whisper-scene-card { height: clamp(58px,7vw,96px); border-radius: 3px; border: 1px solid #626a5d; background: #111711; }
+.whisper-scene-card.active { border: 2px solid #e5eacd; box-shadow: none; }
+.whisper-scene-thumb::after { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent 47%,#101711dc); }
+.whisper-scene-card .whisper-scene-name { font: 500 .65rem/1.15 -apple-system,sans-serif; letter-spacing: 0; text-transform: none; left: 5px; right: 3px; text-align: left; }
+.whisper-grass-controls { grid-area: 2/2; }
+.whisper-control-row { grid-template-columns: minmax(65px,1.5fr) minmax(32px,1fr) 24px; gap: 5px; }
+.whisper-control-label, .whisper-control-out, .whisper-cycle-btn { font: 500 .68rem/1.35 -apple-system,sans-serif; text-transform: none; letter-spacing: 0; }
+#whisper-cube-demo :is(button,input):focus-visible { outline: 2px solid #fff5ba; outline-offset: -3px; }
+@media(max-width:650px) {
+    .whisper-cube-panel { grid-template-columns: 1fr; grid-template-rows: auto; gap: .6rem; }
+    .whisper-panel-title, .whisper-panel-eyebrow, .whisper-scene-grid, .whisper-grass-controls { grid-area: auto; }
+    .whisper-panel-eyebrow { padding-top: .6rem; }
+    .whisper-cube-view { aspect-ratio: 1.55; }
+    .whisper-phase-picker { padding: .45rem; flex-wrap: wrap; gap: .25rem; justify-content: flex-start; }
+    .whisper-phase-btn, .whisper-sketch-toggle { font-size: .71rem; padding: .42rem .40rem; }
+    .whisper-sketch-toggle { margin-left: 0; }
+    .whisper-floor-hint { display: none; }
+}
+.whisper-cube-ceiling { z-index: 1; }
+.whisper-wall-scene { background-repeat: no-repeat; }
+.whisper-wall-l .whisper-wall-scene { background-size: 454.545% 100%; background-position: 0 50%; }
+.whisper-wall-c .whisper-wall-scene { background-size: 178.571% 100%; background-position: 50% 50%; }
+.whisper-wall-r .whisper-wall-scene { background-size: 454.545% 100%; background-position: 100% 50%; }
+.whisper-scene-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.whisper-projection-credit { font-size: .72rem; color: #acb2a9; margin: .7rem 0 0; }
+.whisper-projection-credit a { color: inherit; text-decoration: underline; }

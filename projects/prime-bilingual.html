@@ -30,6 +30,9 @@
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="project.css">
     <link rel="stylesheet" href="this-site.css">
+    <link rel="stylesheet" href="product-demos.css">
+    <link rel="stylesheet" href="demo-gallery.css">
+    <script defer src="demo-reel.js"></script>
 </head>
 
 <body class="project-page">
@@ -84,11 +87,35 @@
             </div>
         </div>
 
-        <div class="project-cover">
+        <div class="project-cover" data-reel="prime-bilingual">
             <img src="../Assets/prime-bilingual.svg" alt="Prime Bilingual — subtitle interception pipeline">
             <div class="project-cover-overlay"></div>
         </div>
+        <div class="case-demo-links">
+            <a class="case-demo-enter" href="#subtitle-player"><span data-en="Try demo" data-zh="进入演示">Try demo</span> <span aria-hidden="true">↓</span></a>
+            <a href="demos.html"><span data-en="All demos" data-zh="全部演示">All demos</span> <span aria-hidden="true">↗</span></a>
+        </div>
     </section>
+
+    <section class="product-stage" id="subtitle-player" aria-labelledby="subtitle-heading">
+        <div class="subtitle-desk">
+            <div class="subtitle-screen">
+                <canvas id="subtitle-landscape" width="1200" height="520" aria-hidden="true"></canvas>
+                <h2 id="subtitle-heading"><span  data-en="The last ferry" data-zh="末班渡轮">The last ferry</span></h2>
+                <div class="subtitle-cues">
+                    <p id="subtitle-en" lang="en">There’s one more ferry tonight.</p>
+                    <p id="subtitle-zh" lang="zh-CN">今晚还有最后一班渡轮。</p>
+                </div>
+            </div>
+            <div class="subtitle-controls">
+                <button type="button" id="subtitle-play"><span  data-en="Play" data-zh="播放">Play</span></button>
+                <span class="subtitle-time" id="subtitle-time">0:00 / 0:12</span>
+                <input id="subtitle-seek" type="range" min="0" max="12" step="0.1" value="0" aria-label="Playback position">
+                <button type="button" id="subtitle-mode" aria-pressed="true"><span  data-en="Bilingual" data-zh="双语">Bilingual</span></button>
+            </div>
+        </div>
+    </section>
+
 
     <!-- ─── What it does ─── -->
     <section class="project-section bg-dark">
@@ -273,6 +300,7 @@
     <script src="../script.js"></script>
     <script src="diagram-keyboard.js"></script>
     <script src="prime-bilingual.js"></script>
+    <script src="product-demos.js"></script>
     <script>
         document.body.classList.add('loaded');
         const loaderEl = document.querySelector('.loader');

@@ -365,3 +365,61 @@
     color: #aaa; background: #101018; border: 1px solid #25252e; border-radius: 6px; padding: 5px 10px;
 }
 .ck-hood .arch-interactive { margin-top: 2rem; }
+
+/* A large printable card and the working phone share the same deck. */
+.ck-demo-layout {
+    grid-template-columns: minmax(0, 1.08fr) minmax(240px, .92fr);
+    align-items: center;
+    gap: clamp(1.8rem, 5vw, 5rem);
+    padding: clamp(2rem, 5vw, 4.6rem);
+    background: #cac8e7;
+    border-radius: 18px;
+    overflow: hidden;
+    color: #292745;
+    margin: 1.5rem 0 0;
+}
+.ck-paper-desk { align-self: center; width: 100%; min-width: 0; }
+.ck-paper-stack { position: relative; isolation: isolate; margin: 1.5rem .65rem 2.3rem; }
+.ck-paper-stack::before, .ck-paper-stack::after {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    border-radius: 9px; border: 1px solid #29274524; transform: rotate(-5deg);
+    background: #9999ce; box-shadow: 1px 8px 14px #302d571f;
+}
+.ck-paper-stack::after { background: #e6ddfa; transform: rotate(3deg); }
+.ck-paper {
+    border: 1px solid #332c4d38; position: relative; width: 100%; min-height: 245px; aspect-ratio: 1.45;
+    display: flex; flex-direction: column; justify-content: space-between; text-align: left;
+    background: #fffced; color: #2a2542; border-radius: 9px; padding: clamp(1.2rem, 2.4vw, 2rem);
+    box-shadow: 0 9px 22px #29234b24; cursor: pointer; translate: 0 0;
+    transition: background .2s, transform .2s;
+}
+.ck-paper[aria-pressed="true"] { background: #302b49; color: #fffced; }
+.ck-paper:active { transform: rotateY(6deg); }
+.ck-paper-top, .ck-paper-foot, .ck-desk-controls { font: 550 .84rem/1.4 -apple-system, BlinkMacSystemFont, sans-serif; }
+.ck-paper-top, .ck-desk-controls { display: flex; align-items: center; justify-content: space-between; gap: .75rem; }
+.ck-paper-top { padding-bottom: .75rem; border-bottom: 1px solid currentColor; width: 100%; }
+.ck-paper-copy { font: 550 clamp(2.25rem, 5vw, 4.5rem)/1.05 Georgia, "Songti SC", serif; letter-spacing: -.055em; overflow-wrap: anywhere; }
+.ck-paper-copy:lang(zh) { letter-spacing: -.035em; line-height: 1.25; }
+.ck-paper-foot { font-size: .78rem; }
+.ck-desk-controls { margin: 0 .65rem; color: #423d5d; }
+.ck-desk-controls button { background: transparent; border: 1px solid #756e91; border-radius: 50%; width: 36px; height: 36px; margin-left: 5px; color: #332d4e; cursor: pointer; }
+.ck-device { max-width: 330px; width: 100%; margin: 0 auto; }
+.ck-phone { padding: 7px; border: 1px solid #aaa6b3; border-radius: 37px; box-shadow: 2px 18px 34px #4d466b4d, inset 0 0 0 1px #504d55; }
+.ck-screen { border-radius: 30px; }
+.ck-notch { width: 82px; height: 22px; top: 8px; }
+.ck-statusbar { height: 35px; font-size: 11px; }
+.ck-signal { font-size: .58rem; }
+.ck-device-caption { font: 500 .79rem/1.5 -apple-system, sans-serif; color: #423d5d; margin: 1.2rem .3rem 0; }
+.ck-device-note { color: #a6a6ad; margin-top: 1rem; font-size: .83rem; }
+.ck-flashcard { color: inherit; width: 100%; border: 0; padding: 0; background: transparent; font: inherit; }
+.ck-demo-layout :focus-visible { outline: 3px solid #3c4eab; outline-offset: 3px; }
+@media(max-width: 760px) {
+    .ck-demo-layout { grid-template-columns: 1fr; gap: 2.5rem; padding: clamp(1.05rem,5vw,2rem); }
+    .ck-paper-desk { max-width: 440px; margin: 0 auto; }
+    .ck-paper { min-height: 176px; aspect-ratio: 1.7; }
+    .ck-paper-copy { font-size: clamp(2.1rem,8vw,3.1rem); }
+    .ck-device { max-width: 340px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .ck-demo-layout *, .ck-demo-layout *::before { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}

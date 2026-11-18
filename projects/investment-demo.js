@@ -49,7 +49,7 @@
 
     // ── Bilingual strings ────────────────────────────────────────
     const STRINGS = {
-        priceUpdated:    { en: 'Prices updated just now · 1 AUD = 4.72 CNY', zh: '行情刚刚更新 · 1 AUD = 4.72 CNY' },
+        priceUpdated:    { en: 'Simulated prices · 1 AUD = 4.72 CNY', zh: '模拟行情 · 1 AUD = 4.72 CNY' },
         cost:            { en: 'Cost',  zh: '成本' },
         pnl:             { en: 'P&L',   zh: '盈亏' },
         emptyLog:        { en: 'No actions yet.', zh: '还没有记录。' },
@@ -101,8 +101,48 @@
     function totalValCny() { return holdings.reduce((s, h) => s + h.qty * h.price * FX[h.ccy], 0); }
     function totalCostCny() { return holdings.reduce((s, h) => s + h.qty * h.cost * FX[h.ccy], 0); }
 
+    const allocationGroups = [
+        { id: 'CNY', color: '#abc398', en: 'CNY holdings', zh: '人民币持仓' },
+        { id: 'AUD', color: '#ddbd83', en: 'AUD holdings', zh: '澳元持仓' },
+        { id: 'HKD', color: '#9fb9cc', en: 'HKD holdings', zh: '港币持仓' },
+        { id: 'cash', color: '#baaeae', en: 'Cash', zh: '现金' }
+    ];
+    let selectedGroup = 'CNY';
+    function initAllocation() {
+        for (const group of allocationGroups) {
+            const segment = document.createElement('span');
+            segment.style.setProperty('--mix', group.color);
+            $('alloc-bars').append(segment);
+            const key = document.createElement('button');
+            key.type = 'button';
+            key.style.setProperty('--mix', group.color);
+            key.addEventListener('click', () => {
+                selectedGroup = group.id;
+                renderAllocation(totalValCny() + cashCny);
+            });
+            $('alloc-keys').append(key);
+        }
+    }
+    function renderAllocation(equity) {
+        allocationGroups.forEach((group, i) => {
+            const marketValue = group.id === 'cash' ? cashCny : holdings
+                .filter(h => h.ccy === group.id)
+                .reduce((sum, h) => sum + h.qty * h.price * FX[h.ccy], 0);
+            const weight = equity ? marketValue / equity * 100 : 0;
+            const selected = group.id === selectedGroup;
+            const segment = $('alloc-bars').children[i];
+            segment.style.flex = String(weight);
+            segment.classList.toggle('selected', selected);
+            const key = $('alloc-keys').children[i];
+            key.textContent = (group.id === 'cash' ? group[lang()] : group.id) + ' ' + weight.toFixed(1) + '%';
+            key.setAttribute('aria-pressed', String(selected));
+            if (selected) $('alloc-detail').textContent = group[lang()] + ' · ' + withSym(inDisplay(marketValue));
+        });
+    }
+
     function renderTotals() {
         const equity = totalValCny() + cashCny;
+        renderAllocation(equity);
         const costBasis = totalCostCny();
         const pnl = equity - openingEquityCny;
         const pct = pnl / openingEquityCny * 100;
@@ -202,8 +242,11 @@
     // ── Currency switcher ─────────────────────────────────────────
     function setCcy(c) {
         displayCcy = c;
-        document.querySelectorAll('.demo-ccy').forEach(b =>
-            b.classList.toggle('active', b.dataset.ccy === c));
+        document.querySelectorAll('.demo-ccy').forEach(b => {
+            const active = b.dataset.ccy === c;
+            b.classList.toggle('active', active);
+            b.setAttribute('aria-pressed', String(active));
+        });
         renderTotals();
         renderRows();
         renderCalendar();
@@ -318,6 +361,7 @@
         const root = $('invest-demo');
         if (!root) return;
 
+        initAllocation();
         rerenderAll();
         attachLogForm();
 

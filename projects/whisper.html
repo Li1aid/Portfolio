@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="project.css">
     <link rel="stylesheet" href="whisper.css">
+    <link rel="stylesheet" href="demo-gallery.css">
+    <script defer src="demo-reel.js"></script>
 </head>
 
 <body class="project-page">
@@ -86,9 +88,13 @@
             </div>
         </div>
 
-        <div class="project-cover whisper-cover">
+        <div class="project-cover whisper-cover" data-reel="whisper">
             <img src="../Assets/4.jpg" alt="Whisper Field cover">
             <div class="whisper-cover-overlay"></div>
+        </div>
+        <div class="case-demo-links">
+            <a class="case-demo-enter" href="#whisper-cube-demo"><span data-en="Try demo" data-zh="进入演示">Try demo</span> <span aria-hidden="true">↓</span></a>
+            <a href="demos.html#whisper"><span data-en="All demos" data-zh="全部演示">All demos</span> <span aria-hidden="true">↗</span></a>
         </div>
     </section>
 
@@ -106,12 +112,7 @@
     <!-- ============== CUBE INTERACTIVE DEMO ============== -->
     <section class="project-section bg-medium" id="whisper-cube-demo-section">
         <div class="project-container">
-            <div class="section-eyebrow" data-en="INTERACTIVE DEMO · CUBE" data-zh="交互演示 · CUBE">INTERACTIVE DEMO · CUBE</div>
-            <h2 class="project-h2" data-en="Step inside the Cube" data-zh="走进 Cube">Step inside the Cube</h2>
-            <p class="demos-hint" data-en="Move through the three breathing phases. Touch the grass, swap a scene, and watch the panorama respond." data-zh="在三个呼吸阶段之间来回切换。摸一摸草地，换一个场景，看全景怎么回应你。">
-                Move through the three breathing phases. Touch the grass, swap a scene, and watch the panorama respond.
-            </p>
-
+            <h2 class="project-h2" data-en="The projection room" data-zh="投影室">The projection room</h2>
             <div class="whisper-cube-stage" id="whisper-cube-demo">
                 <!-- Phase picker -->
                 <div class="whisper-phase-picker" id="whisper-phase-picker">
@@ -129,7 +130,9 @@
                         <span class="whisper-phase-num">03</span>
                         <span class="whisper-phase-name" data-en="Deconstruction" data-zh="解构">Deconstruction</span>
                     </button>
-                    <span class="whisper-phase-arrow whisper-phase-arrow-loop" aria-hidden="true">↺</span>
+                    <button type="button" class="whisper-sketch-toggle" id="whisper-sketch-toggle" aria-pressed="false" aria-controls="whisper-sketch">
+                        <span data-en="Concept drawing" data-zh="设计原图">Concept drawing</span>
+                    </button>
                 </div>
 
                 <div class="whisper-cube-room" id="whisper-cube-room">
@@ -163,14 +166,17 @@
                         <div class="whisper-cube-floor" id="whisper-cube-floor">
                             <div class="whisper-floor-glow" id="whisper-floor-glow"></div>
                             <canvas class="whisper-grass" id="whisper-grass"></canvas>
-                            <!-- Two infinity-shaped seats facing slightly inward -->
-                            <svg class="whisper-seat whisper-seat-l" viewBox="0 0 120 60" aria-hidden="true">
-                                <path d="M 8 42 Q 8 12 38 12 Q 60 12 60 30 Q 60 48 82 48 Q 112 48 112 18"
-                                      fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="6" stroke-linecap="round"/>
+                            <svg class="whisper-seat whisper-seat-l" viewBox="0 0 150 83" aria-hidden="true">
+                                <defs><linearGradient id="shell-l" x2="0.8" y2="1"><stop stop-color="#d4d8cb"/><stop offset=".38" stop-color="#aeb7a8"/><stop offset=".85" stop-color="#555e58"/><stop offset="1" stop-color="#333d37"/></linearGradient></defs>
+                                <ellipse cx="76" cy="68" rx="61" ry="8" fill="#080d0b" opacity=".6"/>
+                                <path d="M12 47Q11 17 25 13L48 9Q62 7 64 24L66 39Q67 47 86 44L110 38Q133 31 140 46Q146 63 126 67L73 73Q23 77 12 47Z" fill="url(#shell-l)"/>
+                                <path d="M14 43Q13 23 26 18Q38 14 45 17Q54 20 55 37Q57 59 83 58L119 52Q131 50 139 48" fill="none" stroke="#f1f2df" stroke-opacity=".52" stroke-width="1.3"/>
                             </svg>
-                            <svg class="whisper-seat whisper-seat-r" viewBox="0 0 120 60" aria-hidden="true">
-                                <path d="M 8 42 Q 8 12 38 12 Q 60 12 60 30 Q 60 48 82 48 Q 112 48 112 18"
-                                      fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="6" stroke-linecap="round"/>
+                            <svg class="whisper-seat whisper-seat-r" viewBox="0 0 150 83" aria-hidden="true">
+                                <defs><linearGradient id="shell-r" x2="0.8" y2="1"><stop stop-color="#d4d8cb"/><stop offset=".38" stop-color="#aeb7a8"/><stop offset=".85" stop-color="#555e58"/><stop offset="1" stop-color="#333d37"/></linearGradient></defs>
+                                <ellipse cx="76" cy="68" rx="61" ry="8" fill="#080d0b" opacity=".6"/>
+                                <path d="M12 47Q11 17 25 13L48 9Q62 7 64 24L66 39Q67 47 86 44L110 38Q133 31 140 46Q146 63 126 67L73 73Q23 77 12 47Z" fill="url(#shell-r)"/>
+                                <path d="M14 43Q13 23 26 18Q38 14 45 17Q54 20 55 37Q57 59 83 58L119 52Q131 50 139 48" fill="none" stroke="#f1f2df" stroke-opacity=".52" stroke-width="1.3"/>
                             </svg>
                             <div class="whisper-floor-hint" id="whisper-floor-hint" data-en="Click or drag the grass" data-zh="点击或拖动草地">Click or drag the grass</div>
                         </div>
@@ -181,23 +187,22 @@
                             <div class="whisper-hud-bar"><span id="whisper-hud-fill"></span></div>
                             <div class="whisper-hud-meta"><span id="whisper-hud-meta">Particles converging</span></div>
                         </div>
+                        <figure class="whisper-sketch" id="whisper-sketch" hidden>
+                            <img src="../Assets/4.jpg" width="1889" height="1063" alt="Original concept drawing of the panoramic room, grass floor and curved benches" loading="lazy">
+                        </figure>
                     </div>
 
                     <!-- Side controls panel -->
                     <aside class="whisper-cube-panel" id="whisper-cube-panel">
-                        <div class="whisper-panel-eyebrow" id="whisper-panel-eyebrow" data-en="LANDSCAPE LIBRARY" data-zh="风景库">LANDSCAPE LIBRARY</div>
-                        <h3 class="whisper-panel-title" id="whisper-panel-title">Pick a scene</h3>
-                        <p class="whisper-panel-desc" id="whisper-panel-desc" data-en="Each scene is time-sensitive — its rhythm shifts in response to phase, time, and presence." data-zh="每个场景都会随时间变化：节奏跟着阶段、时刻和在场的人一起改变。">
-                            Each scene is time-sensitive — its rhythm shifts in response to phase, time, and presence.
-                        </p>
 
+                        <h3 class="whisper-panel-title" id="whisper-panel-title" data-en="Choose a landscape" data-zh="选择风景">Choose a landscape</h3>
                         <div class="whisper-scene-grid" id="whisper-scene-grid">
                             <!-- injected by JS -->
                         </div>
 
                         <div class="whisper-panel-divider"></div>
 
-                        <div class="whisper-panel-eyebrow" data-en="GRASS RESPONSE" data-zh="草地响应">GRASS RESPONSE</div>
+                        <div class="whisper-panel-eyebrow" data-en="Grass response" data-zh="草地响应">Grass response</div>
                         <div class="whisper-grass-controls">
                             <label class="whisper-control-row">
                                 <span class="whisper-control-label" data-en="Delay (ms)" data-zh="延迟 (毫秒)">Delay (ms)</span>
@@ -217,6 +222,7 @@
                     </aside>
                 </div>
             </div>
+            <p class="whisper-projection-credit"><span data-en="Projection study with landscape photography from" data-zh="投影演示中的风景摄影来自">Projection study with landscape photography from</span> <a href="https://polyhaven.com/hdris">Poly Haven</a> · <a href="https://polyhaven.com/license">CC0</a></p>
         </div>
     </section>
 

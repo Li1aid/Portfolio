@@ -31,6 +31,8 @@
     <link rel="stylesheet" href="project.css">
     <link rel="stylesheet" href="this-site.css">
     <link rel="stylesheet" href="chunks.css">
+    <link rel="stylesheet" href="demo-gallery.css">
+    <script defer src="demo-reel.js"></script>
 </head>
 
 <body class="project-page">
@@ -85,9 +87,13 @@
             </div>
         </div>
 
-        <div class="project-cover">
+        <div class="project-cover" data-reel="chunks">
             <img src="../Assets/chunks-poster.svg" alt="Chunks — app poster">
             <div class="project-cover-overlay"></div>
+        </div>
+        <div class="case-demo-links">
+            <a class="case-demo-enter" href="#ck-demo"><span data-en="Try demo" data-zh="进入演示">Try demo</span> <span aria-hidden="true">↓</span></a>
+            <a href="demos.html#chunks"><span data-en="All demos" data-zh="全部演示">All demos</span> <span aria-hidden="true">↗</span></a>
         </div>
     </section>
 
@@ -132,20 +138,29 @@
     <!-- ─── Live demo ─── -->
     <section class="project-section bg-medium">
         <div class="project-container">
-            <div class="section-eyebrow" data-en="TRY IT" data-zh="试一试">TRY IT</div>
-            <h2 class="project-h2" data-en="Three screens. That's the whole product." data-zh="三个页面，整个产品就这么多。">
-                Three screens. That's the whole product.
-            </h2>
-            <p class="project-lead" data-en="This is a working replica of the app — same layout, same copy, same scheduling code as the version on my phone. The AI replies are pre-baked so it runs without an API key; everything else is real." data-zh="这是一个能直接上手的复刻版：布局、文案、复习排期的代码都和我手机上那版一模一样。AI 回复是预先生成的，所以不需要 API key；其余全是真的。">
-                This is a working replica of the app — same layout, same copy, same scheduling code as the version on my phone. The AI replies are pre-baked so it runs without an API key; everything else is real.
-            </p>
-
-            <div class="ck-demo-layout">
-                <!-- Phone -->
-                <div class="ck-phone" id="ck-demo">
+            <h2 class="project-h2" data-en="Chunks" data-zh="Chunks 语块">Chunks</h2>
+            <div class="ck-demo-layout" id="ck-demo">
+                <div class="ck-paper-desk">
+                    <div class="ck-paper-stack">
+                        <button type="button" class="ck-paper" id="ck-paper" aria-pressed="false">
+                            <span class="ck-paper-top"><span data-en="Recall card" data-zh="回忆卡">Recall card</span><span id="ck-paper-index"></span></span>
+                            <span class="ck-paper-copy" id="ck-paper-copy" aria-live="polite"></span>
+                            <span class="ck-paper-foot" id="ck-paper-hint"></span>
+                        </button>
+                    </div>
+                    <div class="ck-desk-controls">
+                        <span data-en="Sample deck" data-zh="示例卡组">Sample deck</span>
+                        <div>
+                            <button type="button" id="ck-paper-prev" aria-label="Previous card">←</button>
+                            <button type="button" id="ck-paper-next" aria-label="Next card">→</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="ck-device">
+                  <div class="ck-phone">
                     <div class="ck-screen">
                         <div class="ck-notch"></div>
-                        <div class="ck-statusbar"><span id="ck-clock">9:41</span><span>●●●</span></div>
+                        <div class="ck-statusbar"><span id="ck-clock">9:41</span><span class="ck-signal" aria-hidden="true">▮▮▮</span></div>
 
                         <!-- 翻译 -->
                         <div class="ck-panel active" id="ck-panel-translate">
@@ -157,7 +172,7 @@
                                     <button class="ck-chip">我今天有点不在状态…</button>
                                     <button class="ck-chip">房东又涨房租了…</button>
                                 </div>
-                                <button class="ck-btn-primary" id="ck-translate">Translate</button>
+                                <button class="ck-btn-primary" id="ck-translate" data-en="Translate" data-zh="翻译">Translate</button>
 
                                 <div class="ck-result hidden" id="ck-result">
                                     <div class="ck-card ck-en-card">
@@ -173,7 +188,7 @@
 
                         <!-- 卡片 -->
                         <div class="ck-panel" id="ck-panel-library">
-                            <div class="ck-navbar"><h1>Cards</h1></div>
+                            <div class="ck-navbar"><h1 data-en="Cards" data-zh="卡片">Cards</h1></div>
                             <div class="ck-content">
                                 <div class="ck-search"><svg viewBox="0 0 24 24" width="15" height="15"><path fill="currentColor" d="M10 2a8 8 0 1 0 5.3 14L21 21.7l1.4-1.4-5.7-5.7A8 8 0 0 0 10 2Zm0 2a6 6 0 1 1 0 12 6 6 0 0 1 0-12Z"/></svg><input type="text" id="ck-search" placeholder="Search"></div>
                                 <div class="ck-list" id="ck-library"></div>
@@ -182,40 +197,40 @@
 
                         <!-- 复习 -->
                         <div class="ck-panel" id="ck-panel-review">
-                            <div class="ck-navbar"><h1>Review</h1></div>
+                            <div class="ck-navbar"><h1 data-en="Review" data-zh="复习">Review</h1></div>
                             <div class="ck-content">
                                 <div class="ck-card ck-stats">
-                                    <div class="ck-stat"><div class="ck-stat-num" id="ck-due">0</div><div class="ck-stat-lbl">Due</div></div>
+                                    <div class="ck-stat"><div class="ck-stat-num" id="ck-due">0</div><div class="ck-stat-lbl" data-en="Due" data-zh="到期">Due</div></div>
                                     <div class="ck-stat-div"></div>
-                                    <div class="ck-stat"><div class="ck-stat-num" id="ck-new">0</div><div class="ck-stat-lbl">New</div></div>
+                                    <div class="ck-stat"><div class="ck-stat-num" id="ck-new">0</div><div class="ck-stat-lbl" data-en="New" data-zh="新增">New</div></div>
                                     <div class="ck-stat-div"></div>
-                                    <div class="ck-stat"><div class="ck-stat-num" id="ck-total">0</div><div class="ck-stat-lbl">Total</div></div>
+                                    <div class="ck-stat"><div class="ck-stat-num" id="ck-total">0</div><div class="ck-stat-lbl" data-en="Total" data-zh="合计">Total</div></div>
                                 </div>
 
                                 <div id="ck-review-wrap">
                                     <div class="ck-progress" id="ck-progress"></div>
-                                    <div class="ck-flashcard" id="ck-flash">
+                                    <button type="button" class="ck-flashcard" id="ck-flash" aria-pressed="false">
                                         <div class="ck-flash-inner">
                                             <div class="ck-face front">
                                                 <div class="ck-card-zh" id="ck-card-zh"></div>
-                                                <div class="ck-tap-hint">tap to reveal</div>
+                                                <div class="ck-tap-hint" data-en="tap to reveal" data-zh="点一下翻面">tap to reveal</div>
                                             </div>
                                             <div class="ck-face back">
                                                 <div class="ck-card-en" id="ck-card-en"></div>
                                                 <div class="ck-card-ex" id="ck-card-ex"></div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </button>
                                     <div class="ck-rates" id="ck-rates">
-                                        <button class="ck-rate bad" id="ck-r-bad" data-rate="bad"><span class="ck-rate-label">Forgot</span><span class="ck-rate-detail">1d</span></button>
-                                        <button class="ck-rate mid" id="ck-r-mid" data-rate="mid"><span class="ck-rate-label">Fuzzy</span><span class="ck-rate-detail">2d</span></button>
-                                        <button class="ck-rate good" id="ck-r-good" data-rate="good"><span class="ck-rate-label">Got it</span><span class="ck-rate-detail">4d</span></button>
+                                        <button class="ck-rate bad" id="ck-r-bad" data-rate="bad"><span class="ck-rate-label" data-en="Forgot" data-zh="没想起">Forgot</span><span class="ck-rate-detail">1d</span></button>
+                                        <button class="ck-rate mid" id="ck-r-mid" data-rate="mid"><span class="ck-rate-label" data-en="Fuzzy" data-zh="有点模糊">Fuzzy</span><span class="ck-rate-detail">2d</span></button>
+                                        <button class="ck-rate good" id="ck-r-good" data-rate="good"><span class="ck-rate-label" data-en="Got it" data-zh="记住了">Got it</span><span class="ck-rate-detail">4d</span></button>
                                     </div>
                                 </div>
                                 <div class="ck-done hidden" id="ck-done">
-                                    <div class="ck-done-title">All done for today</div>
-                                    <div class="ck-done-hint">Go translate a new sentence</div>
-                                    <button class="ck-btn-primary" id="ck-restart" style="margin-top:18px">Translate</button>
+                                    <div class="ck-done-title" data-en="All done for today" data-zh="今天复习完了">All done for today</div>
+                                    <div class="ck-done-hint" data-en="Go translate a new sentence" data-zh="去翻译一个新句子">Go translate a new sentence</div>
+                                    <button class="ck-btn-primary" id="ck-restart" style="margin-top:18px" data-en="Translate" data-zh="翻译">Translate</button>
                                 </div>
                             </div>
                         </div>
@@ -223,41 +238,17 @@
                         <div class="ck-toast" id="ck-toast"></div>
 
                         <nav class="ck-tabbar">
-                            <button class="ck-tab active" data-tab="translate"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12.87 15.07 10.33 12.56l.03-.03A17.52 17.52 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04ZM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12Zm-2.62 7 1.62-4.33L19.12 17h-3.24Z"/></svg><span>Translate</span></button>
-                            <button class="ck-tab" data-tab="library"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M4 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4Zm2 0v16h12V4H6Zm2 3h8v1.5H8V7Zm0 4h8v1.5H8V11Zm0 4h5v1.5H8V15Z"/></svg><span>Cards</span></button>
-                            <button class="ck-tab" data-tab="review"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M7 3h10a2 2 0 0 1 2 2v1H5V5a2 2 0 0 1 2-2Zm-2 5h14v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8Zm3.5 4 2.5 2.5L16 9.5l-1-1-3.5 3.5-1.5-1.5L8.5 12Z"/></svg><span>Review</span><span class="ck-badge hidden" id="ck-badge">0</span></button>
+                            <button class="ck-tab active" data-tab="translate"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12.87 15.07 10.33 12.56l.03-.03A17.52 17.52 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04ZM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12Zm-2.62 7 1.62-4.33L19.12 17h-3.24Z"/></svg><span data-en="Translate" data-zh="翻译">Translate</span></button>
+                            <button class="ck-tab" data-tab="library"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M4 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4Zm2 0v16h12V4H6Zm2 3h8v1.5H8V7Zm0 4h8v1.5H8V11Zm0 4h5v1.5H8V15Z"/></svg><span data-en="Cards" data-zh="卡片">Cards</span></button>
+                            <button class="ck-tab" data-tab="review"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M7 3h10a2 2 0 0 1 2 2v1H5V5a2 2 0 0 1 2-2Zm-2 5h14v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8Zm3.5 4 2.5 2.5L16 9.5l-1-1-3.5 3.5-1.5-1.5L8.5 12Z"/></svg><span data-en="Review" data-zh="复习">Review</span><span class="ck-badge hidden" id="ck-badge">0</span></button>
                         </nav>
                     </div>
                 </div>
 
-                <!-- Guided steps -->
-                <div>
-                    <div class="ck-steps">
-                        <div class="ck-step active" data-step="translate">
-                            <div class="ck-step-num">01</div>
-                            <div>
-                                <h4 data-en="Say it in Chinese" data-zh="先用中文说">Say it in Chinese</h4>
-                                <p data-en="Tap one of the sample sentences and hit Translate. You get the natural English — not a literal translation — and the reusable phrases inside it are saved as cards before you've done anything. The green bar is the only confirmation." data-zh="点一句例句，按 Translate。你得到的是地道英文，不是逐字直译；句子里能复用的短语，在你还没动手之前就已经存成了卡片。那条绿色横条，是唯一的确认提示。">Tap one of the sample sentences and hit Translate. You get the natural English — not a literal translation — and the reusable phrases inside it are saved as cards before you've done anything. The green bar is the only confirmation.</p>
-                            </div>
-                        </div>
-                        <div class="ck-step" data-step="library">
-                            <div class="ck-step-num">02</div>
-                            <div>
-                                <h4 data-en="Your deck, made of your sentences" data-zh="你的卡组，全是你自己的句子">Your deck, made of your sentences</h4>
-                                <p data-en="Every card came from something you actually tried to say. New cards are tinted; the grey line under each shows when it's due. Search replaces categories — more on that below." data-zh="每张卡都来自你真的想说过的一句话。新卡带底色，每张卡下面那行灰字是下次复习的时间。这里用搜索代替分类，原因在后面细说。">Every card came from something you actually tried to say. New cards are tinted; the grey line under each shows when it's due. Search replaces categories — more on that below.</p>
-                            </div>
-                        </div>
-                        <div class="ck-step" data-step="review">
-                            <div class="ck-step-num">03</div>
-                            <div>
-                                <h4 data-en="Recall, then tell it how it went" data-zh="先回忆，再告诉它记得怎么样">Recall, then tell it how it went</h4>
-                                <p data-en="Chinese on the front, because the goal is producing English, not recognising it. Tap to flip. The three buttons show the next review date before you press — the consequence is visible, so the grading is honest. This runs the app's actual scheduling code." data-zh="正面放中文，因为目标是把英文说出来，而不是看到能认出来。点一下翻面。三个按钮在你按下之前就写着下次复习的日期：后果摆在眼前，打分才会诚实。这里跑的就是 app 里真实的排期代码。">Chinese on the front, because the goal is producing English, not recognising it. Tap to flip. The three buttons show the next review date before you press — the consequence is visible, so the grading is honest. This runs the app's actual scheduling code.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="ck-demo-note" data-en="DEMO · SYNTHETIC DECK · AI REPLIES PRE-BAKED · SCHEDULER IS THE REAL ONE" data-zh="演示 · 卡组为虚构 · AI 回复预先生成 · 排期算法是真的">DEMO · SYNTHETIC DECK · AI REPLIES PRE-BAKED · SCHEDULER IS THE REAL ONE</p>
+                  <p class="ck-device-caption" data-en="Choose a sample sentence on the phone to translate it and add its phrases to the deck." data-zh="在手机上选一句中文，翻译后，里面的语块会自动存成卡片。">Choose a sample sentence on the phone to translate it and add its phrases to the deck.</p>
                 </div>
             </div>
+            <p class="ck-device-note" data-en="The sample translations are fixed. The app calculates each review date." data-zh="示例译文预先生成，复习日期按应用内的算法计算。">The sample translations are fixed. The app calculates each review date.</p>
         </div>
     </section>
 
@@ -276,7 +267,7 @@
                 <div class="ck-detail">
                     <div class="ck-detail-ui">
                         <div class="ck-mini-input">Type a Chinese sentence</div>
-                        <div class="ck-mini-btn">Translate</div>
+                        <div class="ck-mini-btn" data-en="Translate" data-zh="翻译">Translate</div>
                     </div>
                     <h3 data-en="One box, one button" data-zh="一个框，一个按钮">One box, one button</h3>
                     <p data-en="No language picker, no mode switch, no settings on the main screen. The app knows you're typing Chinese and wants English back." data-zh="没有语言选择，没有模式切换，主页面上一个设置都没有。它知道你打的是中文，要的是英文。">No language picker, no mode switch, no settings on the main screen. The app knows you're typing Chinese and wants English back.</p>
@@ -325,7 +316,7 @@
 
                 <div class="ck-detail">
                     <div class="ck-detail-ui">
-                        <div class="ck-mini-tabs"><div class="ck-mini-tab on">Translate</div><div class="ck-mini-tab">Cards</div><div class="ck-mini-tab">Review<span class="b">3</span></div></div>
+                        <div class="ck-mini-tabs"><div class="ck-mini-tab on" data-en="Translate" data-zh="翻译">Translate</div><div class="ck-mini-tab" data-en="Cards" data-zh="卡片">Cards</div><div class="ck-mini-tab">Review<span class="b">3</span></div></div>
                     </div>
                     <h3 data-en="One badge, zero notifications" data-zh="一个角标，零推送">One badge, zero notifications</h3>
                     <p data-en="The only nudge in the product is a red count on the Review tab. No push, no streaks, no daily goal." data-zh="整个产品唯一的提醒，就是 Review 标签上那个红色数字。没有推送，没有连续打卡，没有每日目标。">The only nudge in the product is a red count on the Review tab. No push, no streaks, no daily goal.</p>

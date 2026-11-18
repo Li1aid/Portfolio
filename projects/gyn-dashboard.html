@@ -30,6 +30,9 @@
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="project.css">
     <link rel="stylesheet" href="this-site.css">
+    <link rel="stylesheet" href="product-demos.css">
+    <link rel="stylesheet" href="demo-gallery.css">
+    <script defer src="demo-reel.js"></script>
 </head>
 
 <body class="project-page">
@@ -59,7 +62,7 @@
     <section class="project-hero">
         <div class="project-hero-inner">
             <div class="project-tagline" data-en="RESEARCH TOOL · AI PIPELINE · 2026" data-zh="科研工具 · AI 流水线 · 2026">RESEARCH TOOL · AI PIPELINE · 2026</div>
-            <h1 class="project-title-xl" data-en="Gyn Research Dashboard" data-zh="Gyn Research Dashboard">Gyn Research Dashboard</h1>
+            <h1 class="project-title-xl" data-en="Gyn Research Dashboard" data-zh="妇科科研看板">Gyn Research Dashboard</h1>
             <p class="project-subtitle" data-en="A daily literature radar, built for one medical researcher." data-zh="一个每日文献雷达，专为一位医学研究者而做。">
                 A daily literature radar, built for one medical researcher.
             </p>
@@ -84,11 +87,43 @@
             </div>
         </div>
 
-        <div class="project-cover">
+        <div class="project-cover" data-reel="gyn-dashboard">
             <img src="../Assets/gyn-dashboard.svg" alt="Gynaecology Research Dashboard — retrieval and grading pipeline">
             <div class="project-cover-overlay"></div>
         </div>
+        <div class="case-demo-links">
+            <a class="case-demo-enter" href="#research-reader"><span data-en="Try demo" data-zh="进入演示">Try demo</span> <span aria-hidden="true">↓</span></a>
+            <a href="demos.html#gyn-dashboard"><span data-en="All demos" data-zh="全部演示">All demos</span> <span aria-hidden="true">↗</span></a>
+        </div>
     </section>
+
+    <section class="product-stage" id="research-reader" aria-labelledby="reader-heading">
+        <div class="reading-desk">
+            <div class="reader-index">
+                <h2 id="reader-heading" data-en="Reading desk" data-zh="文献阅读台">Reading desk</h2>
+                <p  data-en="Selected papers on endometriosis" data-zh="子宫内膜异位症 · 文献选读">Selected papers on endometriosis</p>
+                <div class="reader-options"><button type="button" class="reader-option" aria-controls="paper-1" aria-pressed="true"><small>2022</small><span  data-en="ESHRE guideline" data-zh="ESHRE 指南">ESHRE guideline</span><i aria-hidden="true">→</i></button><button type="button" class="reader-option" aria-controls="paper-2" aria-pressed="false"><small>2011</small><span  data-en="Work and quality of life" data-zh="工作与生活质量">Work and quality of life</span><i aria-hidden="true">→</i></button></div>
+            </div>
+            <div class="reader-sheet"><article class="reader-entry" id="paper-1" >
+            <p class="reader-citation">Becker et al. · Human Reproduction Open · 2022</p>
+            <h3  data-en="ESHRE guideline: endometriosis" data-zh="ESHRE 子宫内膜异位症指南">ESHRE guideline: endometriosis</h3>
+            <div class="reader-notes">
+                <div><h4  data-en="Reading note" data-zh="阅读笔记">Reading note</h4><p  data-en="The ESHRE group reviewed evidence on diagnosis, pain and fertility for its 2022 guideline. The paper sets out the questions behind the recommendations." data-zh="ESHRE 团队在 2022 年指南中梳理了有关诊断、疼痛和生育的证据。论文列出了每项建议所针对的问题。">The ESHRE group reviewed evidence on diagnosis, pain and fertility for its 2022 guideline. The paper sets out the questions behind the recommendations.</p></div>
+                <div><h4  data-en="Scope" data-zh="适用范围">Scope</h4><p  data-en="Read the evidence summary for each question. The strength of the evidence varies across topics." data-zh="可以按问题查阅证据摘要，各项建议所依据的证据强度有所不同。">Read the evidence summary for each question. The strength of the evidence varies across topics.</p></div>
+            </div>
+            <a class="reader-source" href="https://pubmed.ncbi.nlm.nih.gov/35350465/" target="_blank" rel="noopener"><span  data-en="Read on PubMed" data-zh="查看 PubMed 原文">Read on PubMed</span> <span aria-hidden="true">↗</span></a>
+        </article><article class="reader-entry" id="paper-2" hidden>
+            <p class="reader-citation">Nnoaham et al. · Fertility and Sterility · 2011</p>
+            <h3  data-en="Living and working with endometriosis" data-zh="子宫内膜异位症与日常工作">Living and working with endometriosis</h3>
+            <div class="reader-notes">
+                <div><h4  data-en="Reading note" data-zh="阅读笔记">Reading note</h4><p  data-en="Across ten countries, 1,418 women scheduled for laparoscopy answered questions about their health and work. The researchers compared responses with the surgical findings." data-zh="在十个国家，1,418 名即将接受腹腔镜检查的女性填写了有关健康和工作的问卷。研究者将她们的回答与检查结果进行对照。">Across ten countries, 1,418 women scheduled for laparoscopy answered questions about their health and work. The researchers compared responses with the surgical findings.</p></div>
+                <div><h4  data-en="Scope" data-zh="适用范围">Scope</h4><p  data-en="Participants were recruited through surgical centres. The sample represents women referred for laparoscopy, a narrower group than the general population." data-zh="受访者均由手术中心招募。结果反映的是被转诊接受腹腔镜检查的人群，不能直接推及一般人群。">Participants were recruited through surgical centres. The sample represents women referred for laparoscopy, a narrower group than the general population.</p></div>
+            </div>
+            <a class="reader-source" href="https://pubmed.ncbi.nlm.nih.gov/21718982/" target="_blank" rel="noopener"><span  data-en="Read on PubMed" data-zh="查看 PubMed 原文">Read on PubMed</span> <span aria-hidden="true">↗</span></a>
+        </article></div>
+        </div>
+    </section>
+
 
     <!-- ─── What it does ─── -->
     <section class="project-section bg-dark">
@@ -258,6 +293,7 @@
     <script src="../script.js"></script>
     <script src="diagram-keyboard.js"></script>
     <script src="gyn-dashboard.js"></script>
+    <script src="product-demos.js"></script>
     <script>
         document.body.classList.add('loaded');
         const loaderEl = document.querySelector('.loader');
