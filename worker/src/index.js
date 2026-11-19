@@ -445,7 +445,8 @@ async function callAnthropic(env, messages) {
   });
   if (!res.ok) throw new Error(`Anthropic ${res.status}: ${await res.text()}`);
   const data = await res.json();
-  const text = data.content?.[0]?.text ?? "";
+  // Newer models can return more than one content block; keep only the text ones.
+  const text = (data.content || []).filter((b) => b.type === "text").map((b) => b.text).join("").trim();
   return data.stop_reason === "max_tokens" ? endOnSentence(text) : text;
 }
 
