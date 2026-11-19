@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
@@ -17,331 +16,60 @@
 <meta content="A hybrid learning platform for international design students. UX/UI case study by Sydney-based designer Aiden Yang." property="og:description"/>
 <meta content="https://aidenyang.me/Assets/1.jpg" property="og:image"/>
 <meta content="Aiden Yang Portfolio" property="og:site_name"/>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
-<link href="../style.css" rel="stylesheet"/>
-<link href="project.css" rel="stylesheet"/>
-<link href="case.css" rel="stylesheet"/><link href="../chat.css" rel="stylesheet"/></head>
-<body class="project-page case lane-design">
-<!-- Animated Background -->
-<canvas id="particles-canvas"></canvas>
-<div class="grid-background"></div>
-<!-- Custom Cursor -->
-<div class="cursor">
-<div class="cursor-glow"></div>
-</div>
-<div class="cursor-dot"></div>
-<!-- Subpage Top Bar -->
-<nav class="project-nav">
-<a class="project-nav-btn project-nav-back" href="../index.html#showcase">
-<span class="arrow">←</span>
-<span data-en="Back to Works" data-zh="返回作品">Back to Works</span>
-</a>
-<button class="lang-toggle" id="langToggle">
-<span class="lang-option active" data-lang="en">EN</span>
-<span class="lang-divider">/</span>
-<span class="lang-option" data-lang="zh">中</span>
-</button>
-<a class="project-nav-btn project-nav-home" href="../index.html">
-<span data-en="Visit Main Site" data-zh="前往主站">Visit Main Site</span>
-<span class="arrow">→</span>
-</a>
-</nav><header class="cs-head"><a aria-label="Aiden Yang, home" class="cs-name" href="../index.html"><svg aria-hidden="true" fill="#141414" viewbox="0 10 720 52"><path d="M0.7 59.4 31.6 13.3H51.6L82.8 59.4H63L58.5 52.4H25L20.5 59.4ZM51.5 41.6 41.7 26.5 32 41.6Z"></path><path d="M87.5 13.3H105.5V59.4H87.5Z"></path><path d="M166.3 13.3Q176 13.3 182.4 15.2Q188.7 17.1 192.3 20.3Q195.9 23.5 197.4 27.7Q198.9 31.8 198.9 36.4Q198.9 40.9 197.2 45Q195.5 49.2 191.8 52.4Q188 55.7 181.8 57.5Q175.5 59.4 166.3 59.4H114.5V13.3ZM132.5 45H165.6Q169.6 45 172.4 44.5Q175.2 43.9 176.9 42.8Q178.6 41.8 179.4 40.1Q180.1 38.5 180.1 36.4Q180.1 34.2 179.4 32.6Q178.6 31 176.9 29.9Q175.2 28.8 172.4 28.3Q169.6 27.7 165.6 27.7H132.5Z"></path><path d="M224.1 40V45.7H278.8V59.4H206.1V13.3H278.6V27H224.1V32.8H268.7V40Z"></path><path d="M351.5 41.3V13.3H369.5V59.4H351.5L304 31.9V59.4H286V13.3H304Z"></path><path d="M469.2 13.3 440.1 47.7V59.4H422.1V47.7L392.9 13.3H414.1L431.1 34.8L448 13.3Z"></path><path d="M455.9 59.4 486.8 13.3H506.8L538 59.4H518.2L513.6 52.4H480.2L475.7 59.4ZM506.7 41.6 496.9 26.5 487.1 41.6Z"></path><path d="M607.1 41.3V13.3H625.1V59.4H607.1L559.6 31.9V59.4H541.6V13.3H559.6Z"></path><path d="M675 60.8Q665.6 60.8 657.8 59.7Q650 58.6 644.3 55.9Q638.6 53.2 635.4 48.5Q632.3 43.8 632.3 36.7Q632.3 29.6 635.5 24.8Q638.6 20 644.6 17.2Q650.5 14.3 658.8 13.1Q667 11.9 677.2 11.9Q690.5 11.9 699.5 14.3Q708.6 16.8 713.3 21.3Q718.1 25.8 718.4 32H699.7Q698.8 30.4 696.5 28.9Q694.2 27.4 689.6 26.5Q685 25.6 677.2 25.6Q667.9 25.6 662.2 26.7Q656.4 27.8 653.8 30.2Q651.1 32.7 651.1 36.7Q651.1 40.2 653.8 42.6Q656.6 44.9 662.6 46Q668.7 47.2 678.6 47.2Q685.6 47.2 690.7 46.5Q695.9 45.9 700.1 44.6Q702.3 44 704.4 43.1H681V35.6H719.4V59.4H705.3Q705.3 57.2 705.9 54.5Q706.5 51.8 707.4 48.7Q707.6 48 707.8 47.3Q703.7 53 697 56.4Q688.2 60.8 675 60.8Z"></path></svg></a><nav aria-label="All works" class="cs-run"><a aria-label="VividXperience" class="d" href="vivid.html"><span></span></a><a aria-label="ANNO" class="d" href="anno.html"><span></span></a><a aria-label="Whisperfield" class="d" href="whisper.html"><span></span></a><a aria-current="page" aria-label="CoLab" class="d" href="colab.html"><span></span></a><a aria-label="Chunks" class="p" href="chunks.html"><span></span></a><a aria-label="Investment Assistant" class="p" href="investment.html"><span></span></a><a aria-label="Gyn Research Dashboard" class="p" href="gyn-dashboard.html"><span></span></a><a aria-label="This Portfolio" class="p" href="this-site.html"><span></span></a><a aria-label="Prime Bilingual" class="x" href="prime-bilingual.html"><span></span></a></nav><a class="cs-next" href="chunks.html">Chunks <span aria-hidden="true">→</span></a></header>
-<!-- Hero -->
-<section class="project-hero">
-<div class="project-hero-inner">
-<div class="project-tagline" data-en="EDUCATION PLATFORM · 2025" data-zh="教育平台 · 2025">EDUCATION PLATFORM · 2025</div>
-<h1 class="project-title-xl">CoLab</h1>
-<p class="project-subtitle" data-en="A learning experience as refreshing as a sip of Coke." data-zh="学习也可以像喝一口可乐那样清爽。">
-                A learning experience as refreshing as a sip of Coke.
-            </p>
-<div class="project-meta-grid">
-<div class="meta-cell">
-<div class="meta-label" data-en="ROLE" data-zh="角色">ROLE</div>
-<div class="meta-value" data-en="UI/UX · Frontend" data-zh="UI/UX · 前端">UI/UX · Frontend</div>
-</div>
-<div class="meta-cell">
-<div class="meta-label" data-en="YEAR" data-zh="年份">YEAR</div>
-<div class="meta-value">2025</div>
-</div>
-<div class="meta-cell">
-<div class="meta-label" data-en="TYPE" data-zh="类型">TYPE</div>
-<div class="meta-value" data-en="Hybrid Learning" data-zh="混合式学习">Hybrid Learning</div>
-</div>
-<div class="meta-cell">
-<div class="meta-label" data-en="TOOLS" data-zh="工具">TOOLS</div>
-<div class="meta-value">Figma · Web</div>
-</div>
-</div>
-</div>
-<div class="project-cover">
-<img alt="CoLab cover" src="../Assets/1.jpg"/>
-<div class="project-cover-overlay"></div>
-</div>
-</section>
-<!-- Overview -->
-<section class="project-section bg-medium">
-<div class="project-container"><div class="cs-col"><div class="section-eyebrow" data-en="OVERVIEW" data-zh="项目简介">OVERVIEW</div><h2 class="project-h2" data-en="What is CoLab?" data-zh="CoLab 是什么？">What is CoLab?</h2><p class="project-lead" data-en="CoLab is a hybrid learning platform for international design students, exhibited at the University of Sydney's graduation exhibition and used by the university as a reference. It pairs standardized online lectures and quizzes with an in-person tutorial space — letting students freely form skill-based teams, follow lectures at their own pace, and ask questions in real time through an embedded AI assistant and live chat." data-zh="CoLab 是一个面向国际设计学生的混合式学习平台，曾在悉尼大学毕业展展出，并被学校参考使用。我们把标准化的 lecture 和小测放到线上，再配合线下的 tutorial 空间：学生可以按技能自由组队，用自己的节奏听课，还能随时通过内置的 AI 助手和实时聊天提问。">
-                CoLab is a hybrid learning platform for international design students, exhibited at the University of Sydney's graduation exhibition and used by the university as a reference. It pairs standardized online lectures and quizzes with an in-person tutorial space — letting students freely form skill-based teams, follow lectures at their own pace, and ask questions in real time through an embedded AI assistant and live chat.
-            </p></div></div>
-</section>
-<!-- Key Features -->
-<section class="project-section">
-<div class="project-container"><div class="cs-col"><div class="section-eyebrow" data-en="KEY FEATURES" data-zh="核心功能">KEY FEATURES</div><h2 class="project-h2" data-en="Four pillars" data-zh="四个核心设计">Four pillars</h2><div class="features-grid">
-<a class="feature-card" href="#demo-teamup">
-<div class="feature-num">01</div>
-<h3 class="feature-title" data-en="Free Team-Up" data-zh="自由组队">Free Team-Up</h3>
-<p class="feature-desc" data-en="Skill-based profiles let students find compatible teammates in the same course — no more random groups." data-zh="个人主页带技能标签，同一门课的同学能据此找到合拍的队友，不用再靠随机分组。">
-                        Skill-based profiles let students find compatible teammates in the same course — no more random groups.
-                    </p>
-<span class="feature-cta" data-en="Try the demo →" data-zh="试试看 →">Try the demo →</span>
-</a>
-<a class="feature-card" href="#demo-lecture">
-<div class="feature-num">02</div>
-<h3 class="feature-title" data-en="Standardized Online Lectures" data-zh="标准化的线上 lecture">Standardized Online Lectures</h3>
-<p class="feature-desc" data-en="Lecture content is delivered online with quiz-verified attendance — students can pace themselves, replay sections, and reduce language load." data-zh="Lecture 内容统一放到线上，用小测来确认出勤。学生可以按自己的节奏听，没听懂的地方反复回看，语言压力小很多。">
-                        Lecture content is delivered online with quiz-verified attendance — students can pace themselves, replay sections, and reduce language load.
-                    </p>
-<span class="feature-cta" data-en="Try the demo →" data-zh="试试看 →">Try the demo →</span>
-</a>
-<a class="feature-card" href="#demo-quiz">
-<div class="feature-num">03</div>
-<h3 class="feature-title" data-en="Quiz-verified Attendance" data-zh="小测确认出勤">Quiz-verified Attendance</h3>
-<p class="feature-desc" data-en="Lecture quizzes confirm participation while giving students immediate feedback on what they understood." data-zh="每节 lecture 后的小测既能确认你听了课，也能马上告诉你哪些地方真的听懂了。">
-                        Lecture quizzes confirm participation while giving students immediate feedback on what they understood.
-                    </p>
-<span class="feature-cta" data-en="Try the demo →" data-zh="试试看 →">Try the demo →</span>
-</a>
-<a class="feature-card" href="#demo-tutorial">
-<div class="feature-num">04</div>
-<h3 class="feature-title" data-en="In-class Tutorial Whiteboard" data-zh="Tutorial 课堂白板">In-class Tutorial Whiteboard</h3>
-<p class="feature-desc" data-en="During tutorials, every student sees richer content on their own screen, hovers terms for AI explanations, and joins a live chat — without interrupting the class." data-zh="Tutorial 上，每个人的屏幕里都有比投影更完整的内容：把鼠标停在术语上就能看到 AI 解释，有问题直接在实时聊天里问，不用打断老师。">
-                        During tutorials, every student sees richer content on their own screen, hovers terms for AI explanations, and joins a live chat — without interrupting the class.
-                    </p>
-<span class="feature-cta" data-en="Try the demo →" data-zh="试试看 →">Try the demo →</span>
-</a>
-</div></div></div>
-</section>
-<!-- Interactive Demos -->
-<section class="project-section bg-medium">
-<div class="project-container"><div class="cs-col"><div class="section-eyebrow" data-en="INTERACTIVE DEMOS" data-zh="交互演示">INTERACTIVE DEMOS</div><h2 class="project-h2" data-en="Try it yourself" data-zh="自己上手试试">Try it yourself</h2><p class="demos-hint" data-en="Click around — every panel below is live." data-zh="随便点点，下面每个面板都是能用的。">Click around — every panel below is live.</p></div><div class="cs-media"><div class="demos-stack">
-<!-- DEMO 1: Team Up -->
-<article class="demo-card" id="demo-teamup">
-<header class="demo-head">
-<div class="demo-num">01</div>
-<div class="demo-meta">
-<h3 class="demo-title" data-en="Team Up" data-zh="组队">Team Up</h3>
-<p class="demo-sub" data-en="Find compatible teammates by skill tags." data-zh="按技能标签找合拍的队友。">Find compatible teammates by skill tags.</p>
-</div>
-</header>
-<div class="demo-body">
-<div class="teamup-tabs">
-<button class="teamup-tab active" data-en="Card List" data-tab="all" data-zh="卡片列表">Card List</button>
-<button class="teamup-tab" data-en="Saved" data-tab="saved" data-zh="已收藏">Saved</button>
-<button class="teamup-tab" data-en="My Team" data-tab="myteam" data-zh="我的小组">My Team</button>
-</div>
-<div class="teamup-grid" id="teamup-grid">
-<!-- cards injected by JS -->
-</div>
-<div class="teamup-status" data-en="0 connected" data-zh="0 位队友" id="teamup-status">0 connected</div>
-</div>
-</article>
-<!-- DEMO 2: Lecture Player -->
-<article class="demo-card" id="demo-lecture">
-<header class="demo-head">
-<div class="demo-num">02</div>
-<div class="demo-meta">
-<h3 class="demo-title" data-en="Online Lecture" data-zh="线上 Lecture">Online Lecture</h3>
-<p class="demo-sub" data-en="Self-paced player with chapter jumps." data-zh="自己掌握节奏的播放器，可按章节跳转。">Self-paced player with chapter jumps.</p>
-</div>
-</header>
-<div class="demo-body">
-<div class="lecture-player">
-<div class="lecture-stage">
-<div class="lecture-stage-title">Grid Systems in Interaction Design</div>
-<div class="lecture-stage-chapter" id="lecture-chapter">— Why grids?</div>
-<div class="lecture-playstate" id="lecture-playstate">
-<svg aria-hidden="true" class="play-icon-svg" viewbox="0 0 24 24">
-<polygon fill="currentColor" points="7,5 19,12 7,19"></polygon>
-</svg>
-</div>
-</div>
-<div class="lecture-controls">
-<button aria-label="Play/Pause" class="lecture-play" id="lecture-play">
-<svg aria-hidden="true" class="play-icon-btn" viewbox="0 0 24 24">
-<polygon class="icon-play" fill="currentColor" points="8,5 19,12 8,19"></polygon>
-<g class="icon-pause" fill="currentColor">
-<rect height="14" rx="0.5" width="3" x="7" y="5"></rect>
-<rect height="14" rx="0.5" width="3" x="14" y="5"></rect>
-</g>
-</svg>
-</button>
-<div class="lecture-progress-wrap">
-<div class="lecture-progress" id="lecture-progress">
-<div class="lecture-progress-fill" id="lecture-progress-fill"></div>
-<div class="lecture-progress-knob" id="lecture-progress-knob"></div>
-</div>
-<div class="lecture-time"><span id="lecture-current">00:00</span> / 12:45</div>
-</div>
-</div>
-<div class="lecture-chapters">
-<button class="chapter-chip" data-label="Why grids?" data-time="45">00:45 · Why grids?</button>
-<button class="chapter-chip" data-label="Column systems" data-time="185">03:05 · Column systems</button>
-<button class="chapter-chip" data-label="Baseline rhythm" data-time="332">05:32 · Baseline rhythm</button>
-<button class="chapter-chip" data-label="Responsive balance" data-time="550">09:10 · Responsive balance</button>
-<button class="chapter-chip" data-label="Breaking conventions" data-time="680">11:20 · Breaking conventions</button>
-</div>
-</div>
-</div>
-</article>
-<!-- DEMO 3: Quiz -->
-<article class="demo-card" id="demo-quiz">
-<header class="demo-head">
-<div class="demo-num">03</div>
-<div class="demo-meta">
-<h3 class="demo-title" data-en="Lecture Quiz" data-zh="Lecture 小测">Lecture Quiz</h3>
-<p class="demo-sub" data-en="Quiz-verified attendance — answer to continue." data-zh="用小测确认出勤，答对才能继续。">Quiz-verified attendance — answer to continue.</p>
-</div>
-</header>
-<div class="demo-body">
-<div class="quiz-card" id="quiz-card">
-<div class="quiz-progress">
-<span data-en="Question" data-zh="题目">Question</span>
-<span><span id="quiz-q-num">1</span> / 3</span>
-</div>
-<h4 class="quiz-question" id="quiz-question">What is the primary purpose of a grid system in interaction design?</h4>
-<div class="quiz-options" id="quiz-options">
-<!-- options injected by JS -->
-</div>
-<div class="quiz-feedback" id="quiz-feedback"></div>
-<button class="quiz-next" data-en="Next" data-zh="下一题" disabled="" id="quiz-next">Next</button>
-</div>
-</div>
-</article>
-<!-- DEMO 4: Tutorial Whiteboard -->
-<article class="demo-card" id="demo-tutorial">
-<header class="demo-head">
-<div class="demo-num">04</div>
-<div class="demo-meta">
-<h3 class="demo-title" data-en="In-class Tutorial Whiteboard" data-zh="Tutorial 课堂白板">In-class Tutorial Whiteboard</h3>
-<p class="demo-sub" data-en="Hover any highlighted term to see an inline explanation." data-zh="把鼠标停在高亮的术语上，就能看到解释。">Hover any highlighted term to see an inline explanation.</p>
-</div>
-</header>
-<div class="demo-body tutorial-body">
-<!-- LEFT: whiteboard -->
-<div class="whiteboard">
-<div class="whiteboard-meta">
-<span class="live-badge"><span class="live-dot"></span>LIVE</span>
-<span class="meta-item"><span class="meta-icon">●</span> <span id="tutorial-viewers">1,247</span></span>
-<span class="meta-item">1:23:45</span>
-</div>
-<div class="whiteboard-stage">
-<div class="whiteboard-title">Typography Composition Workshop</div>
-<div class="whiteboard-instructor">Dr. Hannah Lee · Visual Communication</div>
-<p class="whiteboard-caption">
-                                    Today: <span class="term term-light" data-term="kerning">kerning</span>,
-                                    <span class="term term-light" data-term="baseline">baseline grid</span>,
-                                    <span class="term term-light" data-term="negative">negative space</span>,
-                                    and <span class="term term-light" data-term="hierarchy">hierarchy</span>.
-                                </p>
-<p class="whiteboard-hint" data-en="Hover any underlined term for an inline explanation." data-zh="把鼠标停在带下划线的术语上看解释。">Hover any underlined term for an inline explanation.</p>
-</div>
-<div class="whiteboard-toolbar">
-<button aria-label="Pen" class="wb-tool active" data-tool="pen">
-<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
-</button>
-<button aria-label="Eraser" class="wb-tool" data-tool="eraser">
-<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M3 17l6-6 6 6-6 6H6l-3-3z"></path><path d="M9 11l8-8 4 4-8 8"></path></svg>
-</button>
-<button aria-label="Color" class="wb-tool" data-tool="color">
-<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="7" fill="currentColor" r="1.5"></circle><circle cx="17" cy="12" fill="currentColor" r="1.5"></circle><circle cx="7" cy="12" fill="currentColor" r="1.5"></circle></svg>
-</button>
-<button aria-label="Upload" class="wb-tool" data-tool="upload">
-<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" x2="12" y1="3" y2="15"></line></svg>
-</button>
-<div class="wb-toolbar-divider"></div>
-<button class="wb-toggle" id="wb-toggle">
-<span class="wb-toggle-label">Drawing</span>
-<span class="wb-toggle-state" id="wb-toggle-state">OFF</span>
-</button>
-</div>
-</div>
-<!-- RIGHT: narrow live chat (matches whiteboard height) -->
-<aside class="tutorial-side">
-<div class="chat-panel">
-<div class="chat-head">
-<span class="chat-live-dot"></span>
-<span data-en="Live Chat" data-zh="实时聊天">Live Chat</span>
-<span class="chat-count" id="chat-count">847</span>
-</div>
-<div class="chat-stream" id="chat-stream">
-<!-- messages injected by JS -->
-</div>
-<form class="chat-form" id="chat-form">
-<input autocomplete="off" class="chat-input" id="chat-input" placeholder="Message…" type="text"/>
-<button aria-label="Send" class="chat-send" type="submit">↵</button>
-</form>
-</div>
-</aside>
-<!-- Bottom: principles list (full width) -->
-<div class="tutorial-content">
-<h4 class="tutorial-content-title">Core Design Principles</h4>
-<ul class="tutorial-list">
-<li>Proper <span class="term" data-term="kerning">letter spacing</span> enhances readability.</li>
-<li><span class="term" data-term="baseline">Baseline grids</span> create vertical rhythm.</li>
-<li><span class="term" data-term="negative">White space</span> is an active design element.</li>
-<li><span class="term" data-term="hierarchy">Hierarchy</span> directs attention effectively.</li>
-</ul>
-<!-- Tooltip injected here by JS -->
-<div aria-hidden="true" class="term-tooltip" id="term-tooltip" role="tooltip"></div>
-</div>
-</div>
-<!-- Bottom AI bar -->
-<div class="ai-bar">
-<div class="ai-bar-head">
-<span class="ai-dot"></span>
-<span class="ai-bar-title" data-en="Ask AI" data-zh="问 AI">Ask AI</span>
-<span class="ai-bar-hint" data-en="Hover a highlighted term, or type below." data-zh="停在高亮术语上，或者在下面直接输入。" id="ai-bar-hint">Hover a highlighted term, or type below.</span>
-</div>
-<form class="ai-bar-form" id="ai-form">
-<input autocomplete="off" class="ai-bar-input" id="ai-input" placeholder="Ask anything about this tutorial…" type="text"/>
-<button aria-label="Send" class="ai-bar-send" type="submit">→</button>
-</form>
-<div class="ai-bar-stream" id="ai-stream">
-<!-- AI replies appear here -->
-</div>
-</div>
-</article>
-</div></div></div>
-</section>
-<!-- Live Site CTA -->
-<section class="project-section bg-medium vivid-cta-section">
-<div class="project-container vivid-cta-inner"><div class="cs-col"><div class="section-eyebrow" data-en="LIVE SITE" data-zh="正式网站">LIVE SITE</div><h2 class="project-h2" data-en="Visit the full CoLab website" data-zh="去看看 CoLab 正式网站">Visit the full CoLab website</h2><p class="vivid-cta-text" data-en="Explore the complete CoLab project — built with my graduation studio team." data-zh="完整的 CoLab 项目，是我和毕业 studio 的小组一起做出来的。">Explore the complete CoLab project — built with my graduation studio team.</p><a class="vivid-cta-btn" href="https://li1aid.github.io/Graduation-Studio/" rel="noopener" target="_blank">
-<span data-en="Open CoLab" data-zh="打开 CoLab">Open CoLab</span>
-<span class="vivid-cta-arrow">↗</span>
-</a></div></div>
-</section>
-<!-- Bottom Nav -->
-<section class="project-end">
-<a class="project-end-link" href="../index.html#showcase">
-<span class="arrow">←</span>
-<span data-en="Back to all works" data-zh="返回全部作品">Back to all works</span>
-</a>
-</section><footer class="cs-end" style="--next-lane: #D9412C"><div class="cs-end-row"><span>Next</span><span>05 / 09</span></div><a class="cs-big" href="chunks.html"><i></i>Chunks</a><a class="cs-back" href="../index.html">← All works</a></footer>
-<script src="../script.js"></script>
-<script src="colab-demos.js"></script>
-<script>
-        // Skip the loader logic from script.js for subpages — make sure body is visible.
-        document.body.classList.add('loaded');
-        const loaderEl = document.querySelector('.loader');
-        if (loaderEl) loaderEl.remove();
-    </script>
-<div class="cs-chat-wrap"><div aria-label="Chat with AI Aiden" data-qs="Chat with AI Aiden|Why did you build CoLab?|What was the hardest part?|What would you do next?" id="chat" role="region">
-<div class="chat-log"><div class="chat-top"><button aria-label="Close conversation" class="chat-close" type="button"><svg aria-hidden="true" fill="none" height="14" stroke="currentColor" stroke-width="1.5" viewbox="0 0 14 14" width="14"><path d="M2 2l10 10M12 2L2 12"></path></svg></button></div><div aria-live="polite" class="chat-msgs"></div></div>
-<form><span aria-hidden="true" class="chat-dot"></span><input aria-label="Ask AI Aiden" autocomplete="off" placeholder="Chat with AI Aiden" type="text"/><button aria-label="Send" type="submit"><svg aria-hidden="true" fill="none" height="18" stroke="currentColor" stroke-width="1.6" viewbox="0 0 16 16" width="18"><path d="M2 8h11M9 4l4 4-4 4"></path></svg></button></form>
-</div></div><script src="../chat.js"></script></body>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&amp;display=swap"/>
+<link rel="stylesheet" href="case.css"/>
+<link rel="stylesheet" href="../chat.css"/>
+</head>
+<body class="case lane-design">
+<header class="cs-head"><a class="cs-name" href="../index.html" aria-label="Aiden Yang, home"><svg viewBox="0 10 720 52" aria-hidden="true" fill="#141414"><path d="M0.7 59.4 31.6 13.3H51.6L82.8 59.4H63L58.5 52.4H25L20.5 59.4ZM51.5 41.6 41.7 26.5 32 41.6Z"/><path d="M87.5 13.3H105.5V59.4H87.5Z"/><path d="M166.3 13.3Q176 13.3 182.4 15.2Q188.7 17.1 192.3 20.3Q195.9 23.5 197.4 27.7Q198.9 31.8 198.9 36.4Q198.9 40.9 197.2 45Q195.5 49.2 191.8 52.4Q188 55.7 181.8 57.5Q175.5 59.4 166.3 59.4H114.5V13.3ZM132.5 45H165.6Q169.6 45 172.4 44.5Q175.2 43.9 176.9 42.8Q178.6 41.8 179.4 40.1Q180.1 38.5 180.1 36.4Q180.1 34.2 179.4 32.6Q178.6 31 176.9 29.9Q175.2 28.8 172.4 28.3Q169.6 27.7 165.6 27.7H132.5Z"/><path d="M224.1 40V45.7H278.8V59.4H206.1V13.3H278.6V27H224.1V32.8H268.7V40Z"/><path d="M351.5 41.3V13.3H369.5V59.4H351.5L304 31.9V59.4H286V13.3H304Z"/><path d="M469.2 13.3 440.1 47.7V59.4H422.1V47.7L392.9 13.3H414.1L431.1 34.8L448 13.3Z"/><path d="M455.9 59.4 486.8 13.3H506.8L538 59.4H518.2L513.6 52.4H480.2L475.7 59.4ZM506.7 41.6 496.9 26.5 487.1 41.6Z"/><path d="M607.1 41.3V13.3H625.1V59.4H607.1L559.6 31.9V59.4H541.6V13.3H559.6Z"/><path d="M675 60.8Q665.6 60.8 657.8 59.7Q650 58.6 644.3 55.9Q638.6 53.2 635.4 48.5Q632.3 43.8 632.3 36.7Q632.3 29.6 635.5 24.8Q638.6 20 644.6 17.2Q650.5 14.3 658.8 13.1Q667 11.9 677.2 11.9Q690.5 11.9 699.5 14.3Q708.6 16.8 713.3 21.3Q718.1 25.8 718.4 32H699.7Q698.8 30.4 696.5 28.9Q694.2 27.4 689.6 26.5Q685 25.6 677.2 25.6Q667.9 25.6 662.2 26.7Q656.4 27.8 653.8 30.2Q651.1 32.7 651.1 36.7Q651.1 40.2 653.8 42.6Q656.6 44.9 662.6 46Q668.7 47.2 678.6 47.2Q685.6 47.2 690.7 46.5Q695.9 45.9 700.1 44.6Q702.3 44 704.4 43.1H681V35.6H719.4V59.4H705.3Q705.3 57.2 705.9 54.5Q706.5 51.8 707.4 48.7Q707.6 48 707.8 47.3Q703.7 53 697 56.4Q688.2 60.8 675 60.8Z"/></svg></a><nav class="cs-run" aria-label="All works"><a class="d" href="colab.html" aria-label="CoLab" aria-current="page"><span></span></a><a class="p" href="gyn-dashboard.html" aria-label="Gyn Research Dashboard"><span></span></a><a class="p" href="chunks.html" aria-label="Chunks"><span></span></a><a class="p" href="this-site.html" aria-label="This Portfolio"><span></span></a><a class="d" href="anno.html" aria-label="ANNO"><span></span></a><a class="d" href="vivid.html" aria-label="VividXperience"><span></span></a><a class="d" href="whisper.html" aria-label="Whisperfield"><span></span></a><a class="p" href="investment.html" aria-label="Investment Assistant"><span></span></a></nav><a class="cs-next" href="gyn-dashboard.html">Gyn Research Dashboard <span aria-hidden="true">→</span></a></header>
+<main>
+<section class="cs-hero"><div class="cs-col">
+<p class="cs-tag">Education Platform · 2025</p>
+<h1>CoLab</h1>
+<p class="cs-sub">A learning experience as refreshing as a sip of Coke.</p>
+<dl class="cs-meta"><div><dt>Role</dt><dd>UI/UX · Frontend</dd></div><div><dt>Year</dt><dd>2025</dd></div><div><dt>Type</dt><dd>Hybrid Learning</dd></div><div><dt>Tools</dt><dd>Figma · Web</dd></div></dl>
+</div></section>
+<section class="cs-proto"><figure class="proto-fig"><div class="proto" id="proto"></div><figcaption>Playable Lecture</figcaption></figure></section>
+<section class="cs-sec"><div class="cs-col">
+<p class="cs-eye">Overview</p>
+<h2>What is CoLab?</h2>
+<p>CoLab is a hybrid learning platform for international design students, exhibited at the University of Sydney's graduation exhibition and used by the university as a reference. It pairs standardized online lectures and quizzes with an in-person tutorial space — letting students freely form skill-based teams, follow lectures at their own pace, and ask questions in real time through an embedded AI assistant and live chat.</p>
+</div></section>
+<section class="cs-sec"><div class="cs-col">
+<p class="cs-eye">Lecture</p>
+<h2>A lecture you can touch.</h2>
+<p>Lectures are standardised and delivered online, so every student gets the same content and can replay it at their own pace. The slide is not a video frame: in the grid lecture, each chapter sets the columns, gutter and margin of a live layout, and the student can drag the same three values while the lecturer talks about them.</p>
+<p>A short quiz closes each lecture. Attendance is marked at 60% correct or more.</p>
+</div></section>
+<section class="cs-proto"><figure class="proto-fig"><div class="proto" id="proto2"></div><figcaption>Hover a Term</figcaption></figure></section>
+<section class="cs-sec"><div class="cs-col">
+<p class="cs-eye">Tutorial</p>
+<h2>Ask without interrupting the class.</h2>
+<p>In the live tutorial every student has the whiteboard on their own screen. Design terms in the session are highlighted; hovering one gives a plain explanation and a translation, next to a live chat. An international student can check a word in two seconds and stay with the room.</p>
+</div></section>
+<section class="cs-proto"><figure class="proto-fig"><div class="proto" id="proto3"></div><figcaption>Team Coverage</figcaption></figure></section>
+<section class="cs-sec"><div class="cs-col">
+<p class="cs-eye">Team-up</p>
+<h2>Teams built from skills, not from seats.</h2>
+<p>Each student builds a card: a character, then traits for personality, strengths and team role. In Team-up they browse the cohort, save people, and form a team on purpose, instead of joining whoever sits nearby.</p>
+</div></section>
+<section class="cs-shots"><img src="../Assets/colab-cover.jpg" alt="CoLab screens" loading="lazy"/></section>
+<section class="cs-sec"><div class="cs-col">
+<p class="cs-eye">Live Site</p>
+<h2>The full build is online.</h2>
+<p>CoLab was my graduation studio project, built with my team and shown at the University of Sydney graduation exhibition.</p>
+<a class="cs-link" href="https://li1aid.github.io/Graduation-Studio/">Open CoLab <span aria-hidden="true">↗</span></a>
+</div></section>
+</main>
+<footer class="cs-end" style="--next-lane: #D9412C"><div class="cs-end-row"><span>Next</span><span>02 / 08</span></div><a class="cs-big" href="gyn-dashboard.html"><i></i>Gyn Research Dashboard</a><a class="cs-back" href="../index.html">← All works</a></footer>
+<div class="cs-chat-wrap"><div id="chat" role="region" aria-label="Chat with AI Aiden" data-qs="Chat with AI Aiden|Why did you build CoLab?|What was the hardest part?|What would you do next?">
+<div class="chat-log"><div class="chat-top"><button type="button" class="chat-close" aria-label="Close conversation"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12"/></svg></button></div><div class="chat-msgs" aria-live="polite"></div></div>
+<form><span class="chat-dot" aria-hidden="true"></span><input type="text" aria-label="Ask AI Aiden" placeholder="Chat with AI Aiden" autocomplete="off"><button type="submit" aria-label="Send"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></button></form>
+</div></div>
+<script src="../chat.js"></script>
+<script src="proto/kit.js"></script>
+<script src="proto/colab.js"></script>
+</body>
 </html>

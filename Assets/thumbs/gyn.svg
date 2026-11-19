@@ -2,11 +2,10 @@
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a0a12"/><stop offset="1" stop-color="#1c1410"/></linearGradient>
     <radialGradient id="g1" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#d49a4f" stop-opacity="0.22"/><stop offset="1" stop-color="#d49a4f" stop-opacity="0"/></radialGradient>
-    <filter id="sh" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="30" stdDeviation="30" flood-color="#000" flood-opacity="0.6"/></filter>
+    <filter id="sh" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="30" stdDeviation="30" flood-color="#000" flood-opacity="0.32"/></filter>
     <clipPath id="sheet"><rect x="0" y="0" width="980" height="900" rx="16"/></clipPath>
   </defs>
-  <rect width="1600" height="900" fill="url(#bg)"/>
-  <circle cx="800" cy="520" r="640" fill="url(#g1)"/>
+  <rect width="1600" height="900" fill="#EFEDE7"/>
 
   <!-- sheets behind: neat stack, each inset and lifted -->
   <rect x="342" y="112" width="916" height="900" rx="14" fill="#d9d1b8"/>
@@ -14,7 +13,7 @@
 
   <!-- today's sheet -->
   <g transform="translate(310 140)" filter="url(#sh)">
-    <rect x="0" y="0" width="980" height="900" rx="16" fill="#faf8f3"/>
+    <rect x="0" y="0" width="980" height="900" rx="16" fill="#faf8f3" stroke="#cfc7b0" stroke-width="1.5"/>
     <g clip-path="url(#sheet)">
       <g transform="translate(40 0)">
         <text x="0" y="52" fill="#8b2c2c" font-size="12" font-family="'Times New Roman', 'Songti SC', 'STSong', Georgia, serif" letter-spacing="4">GYNAECOLOGY · FRONTIER WATCH</text>

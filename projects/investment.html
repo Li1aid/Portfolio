@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
@@ -18,336 +17,42 @@
 <meta content="Flask + SQLite on Railway. Six market types, four currencies, a ledger that drives day P&amp;L, and an API a scheduled Claude agent reads every weekday morning." property="og:description"/>
 <meta content="https://aidenyang.me/Assets/investment-poster.svg" property="og:image"/>
 <meta content="Aiden Yang Portfolio" property="og:site_name"/>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
-<link href="../style.css" rel="stylesheet"/>
-<link href="project.css" rel="stylesheet"/>
-<link href="this-site.css" rel="stylesheet"/>
-<link href="case.css" rel="stylesheet"/><link href="../chat.css" rel="stylesheet"/></head>
-<body class="project-page case lane-products">
-<canvas id="particles-canvas"></canvas>
-<div class="grid-background"></div>
-<div class="cursor"><div class="cursor-glow"></div></div>
-<div class="cursor-dot"></div>
-<nav class="project-nav">
-<a class="project-nav-btn project-nav-back" href="../index.html#showcase">
-<span class="arrow">←</span>
-<span data-en="Back to Works" data-zh="返回作品">Back to Works</span>
-</a>
-<button class="lang-toggle" id="langToggle">
-<span class="lang-option active" data-lang="en">EN</span>
-<span class="lang-divider">/</span>
-<span class="lang-option" data-lang="zh">中</span>
-</button>
-<a class="project-nav-btn project-nav-home" href="../index.html">
-<span data-en="Visit Main Site" data-zh="进入主页">Visit Main Site</span>
-<span class="arrow">→</span>
-</a>
-</nav><header class="cs-head"><a aria-label="Aiden Yang, home" class="cs-name" href="../index.html"><svg aria-hidden="true" fill="#141414" viewbox="0 10 720 52"><path d="M0.7 59.4 31.6 13.3H51.6L82.8 59.4H63L58.5 52.4H25L20.5 59.4ZM51.5 41.6 41.7 26.5 32 41.6Z"></path><path d="M87.5 13.3H105.5V59.4H87.5Z"></path><path d="M166.3 13.3Q176 13.3 182.4 15.2Q188.7 17.1 192.3 20.3Q195.9 23.5 197.4 27.7Q198.9 31.8 198.9 36.4Q198.9 40.9 197.2 45Q195.5 49.2 191.8 52.4Q188 55.7 181.8 57.5Q175.5 59.4 166.3 59.4H114.5V13.3ZM132.5 45H165.6Q169.6 45 172.4 44.5Q175.2 43.9 176.9 42.8Q178.6 41.8 179.4 40.1Q180.1 38.5 180.1 36.4Q180.1 34.2 179.4 32.6Q178.6 31 176.9 29.9Q175.2 28.8 172.4 28.3Q169.6 27.7 165.6 27.7H132.5Z"></path><path d="M224.1 40V45.7H278.8V59.4H206.1V13.3H278.6V27H224.1V32.8H268.7V40Z"></path><path d="M351.5 41.3V13.3H369.5V59.4H351.5L304 31.9V59.4H286V13.3H304Z"></path><path d="M469.2 13.3 440.1 47.7V59.4H422.1V47.7L392.9 13.3H414.1L431.1 34.8L448 13.3Z"></path><path d="M455.9 59.4 486.8 13.3H506.8L538 59.4H518.2L513.6 52.4H480.2L475.7 59.4ZM506.7 41.6 496.9 26.5 487.1 41.6Z"></path><path d="M607.1 41.3V13.3H625.1V59.4H607.1L559.6 31.9V59.4H541.6V13.3H559.6Z"></path><path d="M675 60.8Q665.6 60.8 657.8 59.7Q650 58.6 644.3 55.9Q638.6 53.2 635.4 48.5Q632.3 43.8 632.3 36.7Q632.3 29.6 635.5 24.8Q638.6 20 644.6 17.2Q650.5 14.3 658.8 13.1Q667 11.9 677.2 11.9Q690.5 11.9 699.5 14.3Q708.6 16.8 713.3 21.3Q718.1 25.8 718.4 32H699.7Q698.8 30.4 696.5 28.9Q694.2 27.4 689.6 26.5Q685 25.6 677.2 25.6Q667.9 25.6 662.2 26.7Q656.4 27.8 653.8 30.2Q651.1 32.7 651.1 36.7Q651.1 40.2 653.8 42.6Q656.6 44.9 662.6 46Q668.7 47.2 678.6 47.2Q685.6 47.2 690.7 46.5Q695.9 45.9 700.1 44.6Q702.3 44 704.4 43.1H681V35.6H719.4V59.4H705.3Q705.3 57.2 705.9 54.5Q706.5 51.8 707.4 48.7Q707.6 48 707.8 47.3Q703.7 53 697 56.4Q688.2 60.8 675 60.8Z"></path></svg></a><nav aria-label="All works" class="cs-run"><a aria-label="VividXperience" class="d" href="vivid.html"><span></span></a><a aria-label="ANNO" class="d" href="anno.html"><span></span></a><a aria-label="Whisperfield" class="d" href="whisper.html"><span></span></a><a aria-label="CoLab" class="d" href="colab.html"><span></span></a><a aria-label="Chunks" class="p" href="chunks.html"><span></span></a><a aria-current="page" aria-label="Investment Assistant" class="p" href="investment.html"><span></span></a><a aria-label="Gyn Research Dashboard" class="p" href="gyn-dashboard.html"><span></span></a><a aria-label="This Portfolio" class="p" href="this-site.html"><span></span></a><a aria-label="Prime Bilingual" class="x" href="prime-bilingual.html"><span></span></a></nav><a class="cs-next" href="gyn-dashboard.html">Gyn Research Dashboard <span aria-hidden="true">→</span></a></header>
-<!-- ─── Hero ─── -->
-<section class="project-hero">
-<div class="project-hero-inner">
-<div class="project-tagline" data-en="PERSONAL TOOL · IN PRODUCTION · 2026" data-zh="个人工具 · 线上运行中 · 2026">PERSONAL TOOL · IN PRODUCTION · 2026</div>
-<h1 class="project-title-xl">Investment Assistant</h1>
-<p class="project-subtitle" data-en="A production dashboard for my multi-market portfolio — built for me, and for my agent." data-zh="一个真正在线上跑的跨市场持仓面板，给我自己用，也给我的 agent 用。">
-                A production dashboard for my multi-market portfolio — built for me, and for my agent.
-            </p>
-<div class="project-meta-grid">
-<div class="meta-cell">
-<div class="meta-label" data-en="USE" data-zh="用途">USE</div>
-<div class="meta-value" data-en="Personal · in production" data-zh="个人 · 线上运行">Personal · in production</div>
-</div>
-<div class="meta-cell">
-<div class="meta-label" data-en="STACK" data-zh="技术栈">STACK</div>
-<div class="meta-value">Flask · SQLite · Alpine.js</div>
-</div>
-<div class="meta-cell">
-<div class="meta-label" data-en="HOSTING" data-zh="部署">HOSTING</div>
-<div class="meta-value">Railway</div>
-</div>
-<div class="meta-cell">
-<div class="meta-label" data-en="DATA" data-zh="数据">DATA</div>
-<div class="meta-value" data-en="Private · single user" data-zh="私有 · 单用户">Private · single user</div>
-</div>
-</div>
-</div>
-<div class="project-cover">
-<img alt="Investment Assistant — poster" src="../Assets/investment-poster.svg"/>
-<div class="project-cover-overlay"></div>
-</div>
-</section>
-<!-- ─── What it does (features) ─── -->
-<section class="project-section bg-dark">
-<div class="project-container"><div class="cs-col"><div class="section-eyebrow" data-en="WHAT IT DOES" data-zh="功能">WHAT IT DOES</div><h2 class="project-h2" data-en="One screen for six markets." data-zh="六个市场，一屏看全。">
-                One screen for six markets.
-            </h2><p class="project-lead" data-en="My holdings are scattered across US stocks, A-share ETFs, Hong Kong, mainland funds, the ASX and physical gold — in four currencies. This is the one place they all add up." data-zh="我的持仓散落在美股、A 股 ETF、港股、内地基金、澳股和实物黄金里，涉及四种货币。只有在这里，它们才能加成一个数。">
-                My holdings are scattered across US stocks, A-share ETFs, Hong Kong, mainland funds, the ASX and physical gold — in four currencies. This is the one place they all add up.
-            </p><div class="features-grid">
-<div class="feature">
-<div class="feature-num">01</div>
-<h3 class="feature-title" data-en="Cross-market holdings + FX" data-zh="跨市场持仓 + 汇率">Cross-market holdings + FX</h3>
-<p class="feature-body" data-en="Six market types, four currencies (CNY · AUD · USD · HKD), converted via direct, inverted or cross-via-CNY FX rates — one total that actually means something." data-zh="六类市场、四种货币（CNY · AUD · USD · HKD），汇率可以直接换、倒过来换，或者经 CNY 交叉换算，最后得到一个真正有意义的总数。">Six market types, four currencies (CNY · AUD · USD · HKD), converted via direct, inverted or cross-via-CNY FX rates — one total that actually means something.</p>
-</div>
-<div class="feature">
-<div class="feature-num">02</div>
-<h3 class="feature-title" data-en="Ledger-driven day P&amp;L" data-zh="由账本算出的日盈亏">Ledger-driven day P&amp;L</h3>
-<p class="feature-body" data-en="The transactions ledger is the single source of trade entry: buys update weighted-average cost, sells accrue realized P&amp;L, and day P&amp;L stays correct even when I trade the same day — measured against my fill, not yesterday's close." data-zh="所有交易只从账本录入：买入更新加权平均成本，卖出累计已实现盈亏。就算当天有交易，日盈亏也照样准确，因为它对照的是我的成交价，而不是昨天的收盘价。">The transactions ledger is the single source of trade entry: buys update weighted-average cost, sells accrue realized P&amp;L, and day P&amp;L stays correct even when I trade the same day — measured against my fill, not yesterday's close.</p>
-</div>
-<div class="feature">
-<div class="feature-num">03</div>
-<h3 class="feature-title" data-en="P&amp;L calendar" data-zh="盈亏日历">P&amp;L calendar</h3>
-<p class="feature-body" data-en="A cron job computes each day's P&amp;L 15 minutes after the US close and paints it green or red on a calendar — the shape of a month at a glance, with win/loss day counts." data-zh="美股收盘 15 分钟后，定时任务算出当天盈亏，在日历上涂成绿或红。一个月过得怎么样一眼就能看出来，还附带盈亏天数。">A cron job computes each day's P&amp;L 15 minutes after the US close and paints it green or red on a calendar — the shape of a month at a glance, with win/loss day counts.</p>
-</div>
-<div class="feature">
-<div class="feature-num">04</div>
-<h3 class="feature-title" data-en="Buckets (资金池)" data-zh="资金池">Buckets (资金池)</h3>
-<p class="feature-body" data-en="Per-currency deposit and withdrawal logs track how much principal actually lives in each market — so returns are measured against real money in, not guesses." data-zh="按币种记录每一笔出入金，追踪每个市场里到底放了多少本金，收益率对照的是真金白银，不是估的。">Per-currency deposit and withdrawal logs track how much principal actually lives in each market — so returns are measured against real money in, not guesses.</p>
-</div>
-<div class="feature">
-<div class="feature-num">05</div>
-<h3 class="feature-title" data-en="Multi-source quotes that degrade, not die" data-zh="多个行情源，会降级，不会挂">Multi-source quotes that degrade, not die</h3>
-<p class="feature-body" data-en="Tencent qt for A-shares and HK in one batched call, yfinance for US/ASX/FX, akshare for fund NAVs and Shanghai gold. Every source is wrapped: a dead feed marks its rows 'no price' — it never breaks the refresh." data-zh="A 股和港股用腾讯 qt 一次批量拉取，美股/澳股/汇率走 yfinance，基金净值和上海金走 akshare。每个数据源都包了一层：哪个源挂了，只是对应的行显示「无价格」，绝不会拖垮整次刷新。">Tencent qt for A-shares and HK in one batched call, yfinance for US/ASX/FX, akshare for fund NAVs and Shanghai gold. Every source is wrapped: a dead feed marks its rows 'no price' — it never breaks the refresh.</p>
-</div>
-<div class="feature">
-<div class="feature-num">06</div>
-<h3 class="feature-title" data-en="An API my agent reads every morning" data-zh="每天早上我的 agent 都会来读的 API">An API my agent reads every morning</h3>
-<p class="feature-body" data-en="Every weekday at 09:20 Beijing time — ten minutes before the A-share open — a scheduled Claude agent reads four API endpoints and writes me a pre-market briefing. The dashboard was designed to be consumed by an agent as well as a person." data-zh="每个工作日北京时间 09:20，也就是 A 股开盘前十分钟，一个定时运行的 Claude agent 会读四个 API 接口，给我写一份盘前简报。这个面板从一开始就是设计给人和 agent 一起用的。">Every weekday at 09:20 Beijing time — ten minutes before the A-share open — a scheduled Claude agent reads four API endpoints and writes me a pre-market briefing. The dashboard was designed to be consumed by an agent as well as a person.</p>
-</div>
-</div></div></div>
-</section>
-<!-- ─── Live Demo (synthetic data) ─── -->
-<section class="project-section bg-medium">
-<div class="project-container"><div class="cs-col"><div class="section-eyebrow" data-en="DEMO" data-zh="演示">DEMO</div><h2 class="project-h2" data-en="Try it — synthetic data, real interactions." data-zh="试试看：数据是假的，交互是真的。">
-                Try it — synthetic data, real interactions.
-            </h2><p class="project-lead this-site-arch-intro" data-en="The dashboard below mirrors the real app's interactions. Holdings, prices and P&amp;L are all fabricated for this demo — but the currency switcher, ledger, calendar and live updates work like the original." data-zh="下面这个面板复刻了真实 app 的交互。持仓、价格、盈亏全是为演示编的，但币种切换、账本、日历和实时刷新，都和原版一样能用。">
-                The dashboard below mirrors the real app's interactions. Holdings, prices and P&amp;L are all fabricated for this demo — but the currency switcher, ledger, calendar and live updates work like the original.
-            </p></div><div class="cs-media"><div class="demo-frame">
-<div class="demo-chrome">
-<span class="demo-dot red"></span><span class="demo-dot yellow"></span><span class="demo-dot green"></span>
-<span class="demo-url">invest.aidenyang.me · demo</span>
-</div>
-<div class="demo-app" id="invest-demo">
-<!-- Header -->
-<header class="demo-header">
-<div>
-<h3 class="demo-title">Investment Assistant <span class="demo-subtitle" data-en="demo" data-zh="演示">demo</span></h3>
-<p class="demo-meta" data-en="Prices updated just now · 1 AUD = 4.72 CNY" data-zh="行情刚刚更新 · 1 AUD = 4.72 CNY" id="demo-meta">Prices updated just now · 1 AUD = 4.72 CNY</p>
-</div>
-<div class="demo-actions">
-<div aria-label="display currency" class="demo-ccy-switch" role="group">
-<button class="demo-ccy active" data-ccy="CNY">CNY</button>
-<button class="demo-ccy" data-ccy="AUD">AUD</button>
-</div>
-<button class="demo-btn-ghost" data-en="Refresh prices" data-zh="刷新行情" id="demo-refresh-btn">Refresh prices</button>
-</div>
-</header>
-<!-- Totals -->
-<section class="demo-totals">
-<div class="demo-card demo-card-total">
-<div class="demo-label" data-en="Total value" data-zh="总资产">Total value</div>
-<div class="demo-total-amount" id="demo-total">¥ 0</div>
-<div class="demo-total-pnl" id="demo-total-pnl">—</div>
-</div>
-<div class="demo-card demo-card-pnl pos">
-<div class="demo-label" data-en="Today · CNY assets" data-zh="今日 · CNY 资产">Today · CNY assets</div>
-<div class="demo-pnl-value pos" id="demo-pnl-cny">+¥ 0</div>
-<div class="demo-pnl-pct pos" id="demo-pnl-cny-pct">+0.00%</div>
-</div>
-<div class="demo-card demo-card-pnl neg">
-<div class="demo-label" data-en="Today · AUD assets" data-zh="今日 · AUD 资产">Today · AUD assets</div>
-<div class="demo-pnl-value neg" id="demo-pnl-aud">A$ 0</div>
-<div class="demo-pnl-pct neg" id="demo-pnl-aud-pct">0.00%</div>
-</div>
-</section>
-<!-- Holdings -->
-<section class="demo-panel">
-<div class="demo-panel-head">
-<div class="demo-label" data-en="Holdings" data-zh="持仓">Holdings</div>
-<span class="demo-hint" data-en="Auto-refresh every 4s here · every 5 min in the real app" data-zh="这里每 4 秒刷新一次 · 真实 app 是每 5 分钟">Auto-refresh every 4s here · every 5 min in the real app</span>
-</div>
-<table class="demo-table">
-<thead>
-<tr>
-<th data-en="Name" data-zh="标的">Name</th>
-<th data-en="Qty" data-zh="数量">Qty</th>
-<th data-en="Price" data-zh="现价">Price</th>
-<th data-en="Day" data-zh="日内">Day</th>
-<th data-en="Value" data-zh="市值">Value</th>
-</tr>
-</thead>
-<tbody id="demo-rows"></tbody>
-</table>
-</section>
-<!-- P&L calendar + Transactions ledger side-by-side -->
-<div class="demo-two-col-equal">
-<section class="demo-panel">
-<div class="demo-panel-head">
-<div class="demo-label" data-en="P&amp;L calendar · this month" data-zh="盈亏日历 · 本月">P&amp;L calendar · this month</div>
-<span class="demo-hint" data-en="computed 15 min after US close" data-zh="美股收盘 15 分钟后计算">computed 15 min after US close</span>
-</div>
-<div class="demo-cal" id="demo-cal"></div>
-<p class="demo-cal-foot" id="demo-cal-foot"></p>
-</section>
-<section class="demo-panel">
-<div class="demo-panel-head">
-<div class="demo-label" data-en="Transactions" data-zh="交易记录">Transactions</div>
-<span class="demo-hint" data-en="Add a trade below" data-zh="在下面记一笔">Add a trade below</span>
-</div>
-<ul class="demo-log-list" id="demo-log"></ul>
-<form class="demo-log-form" id="demo-log-form">
-<label><span data-en="Symbol" data-zh="标的">Symbol</span>
-<select id="log-symbol"></select>
-</label>
-<label><span data-en="Side" data-zh="方向">Side</span>
-<select id="log-side">
-<option data-en="BUY" data-zh="买入" value="buy">BUY</option>
-<option data-en="SELL" data-zh="卖出" value="sell">SELL</option>
-</select>
-</label>
-<label><span data-en="Qty" data-zh="数量">Qty</span>
-<input id="log-qty" min="1" step="1" type="number" value="100"/>
-</label>
-<button data-en="Log it" data-zh="记一笔" type="submit">Log it</button>
-</form>
-</section>
-</div>
-</div>
-</div></div></div>
-</section>
-<!-- ─── Architecture (interactive) ─── -->
-<section class="project-section bg-dark">
-<div class="project-container"><div class="cs-col"><div class="section-eyebrow" data-en="THE ARCHITECTURE" data-zh="系统架构">THE ARCHITECTURE</div><h2 class="project-h2" data-en="One container, two clocks, two consumers." data-zh="一个容器，两个时钟，两个使用者。">
-                One container, two clocks, two consumers.
-            </h2><p class="project-lead this-site-arch-intro" data-en="Everything runs in one Railway container — Flask, the scheduler, and SQLite on a persistent volume. Two things read it: me on my phone, and a scheduled Claude agent every weekday morning. Tap a node to see why each choice was made." data-zh="所有东西都跑在一个 Railway 容器里：Flask、调度器，还有挂在持久卷上的 SQLite。读它的有两位：手机上的我，和每个工作日早上定时跑的 Claude agent。点一下节点，看每个选择背后的原因。">
-                Everything runs in one Railway container — Flask, the scheduler, and SQLite on a persistent volume. Two things read it: me on my phone, and a scheduled Claude agent every weekday morning. Tap a node to see why each choice was made.
-            </p></div><div class="cs-media"><div class="arch-interactive" id="arch-diagram">
-<div class="arch-stage">
-<svg class="arch-svg" id="arch-svg" viewbox="0 0 800 560">
-<defs>
-<filter height="130%" id="archGlow" width="130%" x="-15%" y="-15%">
-<fegaussianblur result="b" stddeviation="1.2"></fegaussianblur>
-<femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge>
-</filter>
-</defs>
-<g opacity="0.3" stroke="#1f1f2c" stroke-width="1">
-<path d="M0 200 H800 M0 400 H800"></path>
-<path d="M200 0 V560 M400 0 V560 M600 0 V560"></path>
-</g>
-<!-- ─── BOUNDARY: Railway container ─── -->
-<rect fill="#ffffff" fill-opacity="0.04" height="290" rx="14" stroke="#ffffff" stroke-dasharray="6 6" stroke-opacity="0.55" stroke-width="1.3" width="380" x="390" y="180"></rect>
-<rect fill="#16161e" height="22" rx="4" stroke="#ffffff" stroke-opacity="0.55" stroke-width="1" width="300" x="402" y="170"></rect>
-<text fill="#ffffff" font-family="ui-monospace, monospace" font-size="10" letter-spacing="0.14em" x="412" y="185">RAILWAY CONTAINER · /data VOLUME</text>
-<!-- ─── Lines ─── -->
-<line class="arch-line arch-line-request" stroke="#ffffff" stroke-opacity="0.85" stroke-width="2" x1="134" x2="440" y1="300" y2="300"></line>
-<line class="arch-line arch-line-data" stroke="#ffffff" stroke-opacity="0.9" stroke-width="2" x1="600" x2="640" y1="290" y2="290"></line>
-<line class="arch-line arch-line-external" stroke="#888888" stroke-opacity="0.85" stroke-width="2" x1="540" x2="525" y1="140" y2="260"></line>
-<line class="arch-line arch-line-cron" stroke="#ffffff" stroke-dasharray="5 5" stroke-opacity="0.55" stroke-width="1.6" x1="520" x2="520" y1="420" y2="340"></line>
-<line class="arch-line arch-line-agent" stroke="#aaa" stroke-opacity="0.7" stroke-width="1.6" x1="290" x2="440" y1="470" y2="330"></line>
-<!-- arrowheads -->
-<g fill="#ffffff">
-<polygon opacity="0.85" points="440,300 432,295 432,305"></polygon>
-<polygon opacity="0.9" points="640,290 632,285 632,295"></polygon>
-<polygon opacity="0.55" points="520,340 515,332 525,332"></polygon>
-</g>
-<polygon fill="#888888" opacity="0.85" points="525,260 518,251 530,249"></polygon>
-<polygon fill="#aaa" opacity="0.7" points="440,330 429,328 434,338"></polygon>
-<!-- DNS label on the request line -->
-<g>
-<rect fill="#16161e" height="16" rx="3" stroke="#33333f" stroke-width="1" width="128" x="220" y="278"></rect>
-<text fill="#888" font-family="ui-monospace, monospace" font-size="8.5" letter-spacing="0.08em" text-anchor="middle" x="284" y="290">via Cloudflare DNS</text>
-</g>
-<!-- ─── Nodes ─── -->
-<g class="arch-node" data-node="me" filter="url(#archGlow)">
-<circle cx="90" cy="300" fill="#16161e" r="44" stroke="#aaa" stroke-width="1.3"></circle>
-<text fill="#e6e6ec" font-family="ui-monospace, monospace" font-size="12" letter-spacing="0.12em" text-anchor="middle" x="90" y="296">ME</text>
-<text fill="#888" font-family="ui-monospace, monospace" font-size="8" letter-spacing="0.12em" text-anchor="middle" x="90" y="312">PHONE · BROWSER</text>
-</g>
-<g class="arch-node" data-node="upstreams" filter="url(#archGlow)">
-<rect fill="#16161e" height="60" rx="8" stroke="#888888" stroke-width="1" width="300" x="420" y="80"></rect>
-<text fill="#aaa" font-family="ui-monospace, monospace" font-size="11" text-anchor="middle" x="570" y="106">Tencent qt · yfinance · akshare</text>
-<text fill="#888" font-family="ui-monospace, monospace" font-size="8" letter-spacing="0.1em" text-anchor="middle" x="570" y="124">QUOTES · READ-ONLY PULL</text>
-</g>
-<g class="arch-node" data-node="flask" filter="url(#archGlow)">
-<rect fill="#16161e" height="80" rx="10" stroke="#ffffff" stroke-width="1.5" width="160" x="440" y="260"></rect>
-<text fill="#e6e6ec" font-family="ui-monospace, monospace" font-size="12" text-anchor="middle" x="520" y="290">Flask</text>
-<text fill="#888" font-family="ui-monospace, monospace" font-size="9" letter-spacing="0.1em" text-anchor="middle" x="520" y="306">GUNICORN · 8 BLUEPRINTS</text>
-<text fill="#aaa" font-family="ui-monospace, monospace" font-size="9" text-anchor="middle" x="520" y="324">/api/* · one SPA view</text>
-</g>
-<g class="arch-node" data-node="db" filter="url(#archGlow)">
-<rect fill="#16161e" height="60" rx="8" stroke="#ffffff" stroke-width="1" width="110" x="640" y="260"></rect>
-<text fill="#aaa" font-family="ui-monospace, monospace" font-size="11" text-anchor="middle" x="695" y="284">portfolio.db</text>
-<text fill="#888" font-family="ui-monospace, monospace" font-size="8" letter-spacing="0.1em" text-anchor="middle" x="695" y="302">SQLITE · WAL</text>
-</g>
-<g class="arch-node" data-node="sched" filter="url(#archGlow)">
-<rect fill="#16161e" height="50" rx="8" stroke="#ffffff" stroke-dasharray="4 4" stroke-opacity="0.6" stroke-width="1.2" width="160" x="440" y="420"></rect>
-<text fill="#e6e6ec" font-family="ui-monospace, monospace" font-size="11" text-anchor="middle" x="520" y="442">APScheduler × 2</text>
-<text fill="#888" font-family="ui-monospace, monospace" font-size="8" letter-spacing="0.1em" text-anchor="middle" x="520" y="458">IN-PROCESS CRON</text>
-</g>
-<g class="arch-node" data-node="agent" filter="url(#archGlow)">
-<rect fill="#16161e" height="60" rx="8" stroke="#aaa" stroke-width="1.2" width="230" x="60" y="440"></rect>
-<text fill="#e6e6ec" font-family="ui-monospace, monospace" font-size="11" text-anchor="middle" x="175" y="464">Scheduled Claude agent</text>
-<text fill="#888" font-family="ui-monospace, monospace" font-size="8" letter-spacing="0.1em" text-anchor="middle" x="175" y="482">COWORK + CHROME PLUGIN · GET /api/*</text>
-</g>
-<!-- Legend -->
-<g font-family="ui-monospace, monospace" font-size="10" letter-spacing="0.1em">
-<rect fill="none" height="10" rx="2" stroke="#ffffff" stroke-dasharray="2 2" stroke-width="1" width="14" x="50" y="535"></rect>
-<text data-en="RAILWAY BOUNDARY" data-zh="RAILWAY 边界" fill="#888" x="72" y="544">RAILWAY BOUNDARY</text>
-<circle cx="240" cy="540" fill="#888888" r="4"></circle>
-<text data-en="EXTERNAL PULL" data-zh="外部拉取" fill="#888" x="252" y="544">EXTERNAL PULL</text>
-</g>
-</svg>
-</div>
-<div class="arch-panel" id="arch-panel">
-<div class="arch-panel-content" data-node-detail="default">
-<div class="arch-panel-eyebrow" data-en="TIP" data-zh="提示">TIP</div>
-<h3 class="arch-panel-title" data-en="Tap a node" data-zh="点击任意节点">Tap a node</h3>
-<p data-en="Click on any block in the diagram to see what it does and why I picked it." data-zh="点一下图里任意一个方块，看看它负责什么，以及我为什么选它。">Click on any block in the diagram to see what it does and why I picked it.</p>
-</div>
-</div>
-</div></div></div>
-</section>
-<!-- ─── Trade-offs ─── -->
-<section class="project-section bg-medium">
-<div class="project-container"><div class="cs-col"><div class="section-eyebrow" data-en="TRADE-OFFS" data-zh="取舍">TRADE-OFFS</div><h2 class="project-h2" data-en="Honest edges." data-zh="几条坦白的边界。">
-                Honest edges.
-            </h2><div class="features-grid">
-<div class="feature">
-<div class="feature-num">01</div>
-<h3 class="feature-title" data-en="Reads are open, writes are gated" data-zh="读开放，写上锁">Reads are open, writes are gated</h3>
-<p class="feature-body" data-en="Every mutating route requires a bearer token; GETs stay public so the morning agent can read without credentials. A deliberate trade for a single-user tool — the next step would be a signed agent identity." data-zh="所有会改数据的路由都要 bearer token；GET 保持开放，早上的 agent 不用凭证就能读。对单用户工具来说这是有意的取舍，下一步会给 agent 一个签名身份。">Every mutating route requires a bearer token; GETs stay public so the morning agent can read without credentials. A deliberate trade for a single-user tool — the next step would be a signed agent identity.</p>
-</div>
-<div class="feature">
-<div class="feature-num">02</div>
-<h3 class="feature-title" data-en="I deleted my own equity curve" data-zh="我删掉了自己的资金曲线">I deleted my own equity curve</h3>
-<p class="feature-body" data-en="An earlier version had a snapshot subsystem and an equity-curve chart. When I simplified the app, the chart ended up with zero callers — so I retired the whole subsystem instead of keeping dead weight. The calendar answers the real question: what kind of month was it." data-zh="早期版本有一套快照子系统和一张资金曲线图。app 精简之后，这张图再没有任何地方用到，我索性把整个子系统删了，不留死代码。真正的问题日历就能回答：这个月过得怎么样。">An earlier version had a snapshot subsystem and an equity-curve chart. When I simplified the app, the chart ended up with zero callers — so I retired the whole subsystem instead of keeping dead weight. The calendar answers the real question: what kind of month was it.</p>
-</div>
-<div class="feature">
-<div class="feature-num">03</div>
-<h3 class="feature-title" data-en="What I'd do next" data-zh="下一步想做的">What I'd do next</h3>
-<p class="feature-body" data-en="Runtime failover for HK quotes (Tencent → Yahoo is supported but not wired), and surfacing the two-clock model in the UI — the ET trading day vs Sydney display logic is the app's subtlest code and deserves to be visible." data-zh="给港股行情加上运行时故障切换（腾讯 → Yahoo 已经支持，只是还没接上），再把「双时钟」模型在界面上显性化：美东交易日和悉尼显示时间之间的逻辑，是整个 app 最微妙的一段代码，值得让人看见。">Runtime failover for HK quotes (Tencent → Yahoo is supported but not wired), and surfacing the two-clock model in the UI — the ET trading day vs Sydney display logic is the app's subtlest code and deserves to be visible.</p>
-</div>
-</div></div></div>
-</section>
-<section class="project-end">
-<a class="project-end-link" href="../index.html#showcase">
-<span class="arrow">←</span>
-<span data-en="Back to all works" data-zh="返回全部作品">Back to all works</span>
-</a>
-</section><footer class="cs-end" style="--next-lane: #D9412C"><div class="cs-end-row"><span>Next</span><span>07 / 09</span></div><a class="cs-big" href="gyn-dashboard.html"><i></i>Gyn Research Dashboard</a><a class="cs-back" href="../index.html">← All works</a></footer>
-<script src="../script.js"></script>
-<script src="investment.js"></script>
-<script src="investment-demo.js"></script>
-<script>
-        document.body.classList.add('loaded');
-        const loaderEl = document.querySelector('.loader');
-        if (loaderEl) loaderEl.remove();
-    </script>
-<div class="cs-chat-wrap"><div aria-label="Chat with AI Aiden" data-qs="Chat with AI Aiden|Why did you build Investment Assistant?|What was the hardest part?|What would you do next?" id="chat" role="region">
-<div class="chat-log"><div class="chat-top"><button aria-label="Close conversation" class="chat-close" type="button"><svg aria-hidden="true" fill="none" height="14" stroke="currentColor" stroke-width="1.5" viewbox="0 0 14 14" width="14"><path d="M2 2l10 10M12 2L2 12"></path></svg></button></div><div aria-live="polite" class="chat-msgs"></div></div>
-<form><span aria-hidden="true" class="chat-dot"></span><input aria-label="Ask AI Aiden" autocomplete="off" placeholder="Chat with AI Aiden" type="text"/><button aria-label="Send" type="submit"><svg aria-hidden="true" fill="none" height="18" stroke="currentColor" stroke-width="1.6" viewbox="0 0 16 16" width="18"><path d="M2 8h11M9 4l4 4-4 4"></path></svg></button></form>
-</div></div><script src="../chat.js"></script></body>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&amp;display=swap"/>
+<link rel="stylesheet" href="case.css"/>
+<link rel="stylesheet" href="../chat.css"/>
+</head>
+<body class="case lane-products">
+<header class="cs-head"><a class="cs-name" href="../index.html" aria-label="Aiden Yang, home"><svg viewBox="0 10 720 52" aria-hidden="true" fill="#141414"><path d="M0.7 59.4 31.6 13.3H51.6L82.8 59.4H63L58.5 52.4H25L20.5 59.4ZM51.5 41.6 41.7 26.5 32 41.6Z"/><path d="M87.5 13.3H105.5V59.4H87.5Z"/><path d="M166.3 13.3Q176 13.3 182.4 15.2Q188.7 17.1 192.3 20.3Q195.9 23.5 197.4 27.7Q198.9 31.8 198.9 36.4Q198.9 40.9 197.2 45Q195.5 49.2 191.8 52.4Q188 55.7 181.8 57.5Q175.5 59.4 166.3 59.4H114.5V13.3ZM132.5 45H165.6Q169.6 45 172.4 44.5Q175.2 43.9 176.9 42.8Q178.6 41.8 179.4 40.1Q180.1 38.5 180.1 36.4Q180.1 34.2 179.4 32.6Q178.6 31 176.9 29.9Q175.2 28.8 172.4 28.3Q169.6 27.7 165.6 27.7H132.5Z"/><path d="M224.1 40V45.7H278.8V59.4H206.1V13.3H278.6V27H224.1V32.8H268.7V40Z"/><path d="M351.5 41.3V13.3H369.5V59.4H351.5L304 31.9V59.4H286V13.3H304Z"/><path d="M469.2 13.3 440.1 47.7V59.4H422.1V47.7L392.9 13.3H414.1L431.1 34.8L448 13.3Z"/><path d="M455.9 59.4 486.8 13.3H506.8L538 59.4H518.2L513.6 52.4H480.2L475.7 59.4ZM506.7 41.6 496.9 26.5 487.1 41.6Z"/><path d="M607.1 41.3V13.3H625.1V59.4H607.1L559.6 31.9V59.4H541.6V13.3H559.6Z"/><path d="M675 60.8Q665.6 60.8 657.8 59.7Q650 58.6 644.3 55.9Q638.6 53.2 635.4 48.5Q632.3 43.8 632.3 36.7Q632.3 29.6 635.5 24.8Q638.6 20 644.6 17.2Q650.5 14.3 658.8 13.1Q667 11.9 677.2 11.9Q690.5 11.9 699.5 14.3Q708.6 16.8 713.3 21.3Q718.1 25.8 718.4 32H699.7Q698.8 30.4 696.5 28.9Q694.2 27.4 689.6 26.5Q685 25.6 677.2 25.6Q667.9 25.6 662.2 26.7Q656.4 27.8 653.8 30.2Q651.1 32.7 651.1 36.7Q651.1 40.2 653.8 42.6Q656.6 44.9 662.6 46Q668.7 47.2 678.6 47.2Q685.6 47.2 690.7 46.5Q695.9 45.9 700.1 44.6Q702.3 44 704.4 43.1H681V35.6H719.4V59.4H705.3Q705.3 57.2 705.9 54.5Q706.5 51.8 707.4 48.7Q707.6 48 707.8 47.3Q703.7 53 697 56.4Q688.2 60.8 675 60.8Z"/></svg></a><nav class="cs-run" aria-label="All works"><a class="d" href="colab.html" aria-label="CoLab"><span></span></a><a class="p" href="gyn-dashboard.html" aria-label="Gyn Research Dashboard"><span></span></a><a class="p" href="chunks.html" aria-label="Chunks"><span></span></a><a class="p" href="this-site.html" aria-label="This Portfolio"><span></span></a><a class="d" href="anno.html" aria-label="ANNO"><span></span></a><a class="d" href="vivid.html" aria-label="VividXperience"><span></span></a><a class="d" href="whisper.html" aria-label="Whisperfield"><span></span></a><a class="p" href="investment.html" aria-label="Investment Assistant" aria-current="page"><span></span></a></nav><a class="cs-next" href="colab.html">CoLab <span aria-hidden="true">→</span></a></header>
+<main>
+<section class="cs-hero"><div class="cs-col">
+<p class="cs-tag">Personal Tool · In Production · 2026</p>
+<h1>Investment Assistant</h1>
+<p class="cs-sub">A production dashboard for my multi-market portfolio — built for me, and for my agent.</p>
+<dl class="cs-meta"><div><dt>Use</dt><dd>Personal · in production</dd></div><div><dt>Stack</dt><dd>Flask · SQLite · Alpine.js</dd></div><div><dt>Hosting</dt><dd>Railway</dd></div><div><dt>Data</dt><dd>Private · single user</dd></div></dl>
+</div></section>
+<section class="cs-proto"><figure class="proto-fig"><div class="proto" id="proto"></div><figcaption>One Pool · sample data</figcaption></figure></section>
+<section class="cs-sec"><div class="cs-col">
+<p class="cs-eye">What It Does</p>
+<h2>One screen for six markets.</h2>
+<p>My holdings are scattered across US stocks, A-share ETFs, Hong Kong, mainland funds, the ASX and physical gold — in four currencies. This is the one place they all add up.</p>
+<ol class="cs-list"><li><h3>Cross-market holdings + FX</h3><p>Six market types, four currencies (CNY · AUD · USD · HKD), converted via direct, inverted or cross-via-CNY FX rates — one total that actually means something.</p></li><li><h3>Ledger-driven day P&amp;L</h3><p>The transactions ledger is the single source of trade entry: buys update weighted-average cost, sells accrue realized P&amp;L, and day P&amp;L stays correct even when I trade the same day — measured against my fill, not yesterday's close.</p></li><li><h3>P&amp;L calendar</h3><p>A cron job computes each day's P&amp;L 15 minutes after the US close and paints it green or red on a calendar — the shape of a month at a glance, with win/loss day counts.</p></li><li><h3>Buckets (资金池)</h3><p>Per-currency deposit and withdrawal logs track how much principal actually lives in each market — so returns are measured against real money in, not guesses.</p></li><li><h3>Multi-source quotes that degrade, not die</h3><p>Tencent qt for A-shares and HK in one batched call, yfinance for US/ASX/FX, akshare for fund NAVs and Shanghai gold. Every source is wrapped: a dead feed marks its rows 'no price' — it never breaks the refresh.</p></li><li><h3>An API my agent reads every morning</h3><p>Every weekday at 09:20 Beijing time — ten minutes before the A-share open — a scheduled Claude agent reads four API endpoints and writes me a pre-market briefing. The dashboard was designed to be consumed by an agent as well as a person.</p></li></ol>
+</div></section>
+<section class="cs-shots"><img src="../Assets/investment-poster.svg" alt="Investment Assistant poster" loading="lazy"/></section>
+<section class="cs-sec"><div class="cs-col">
+<p class="cs-eye">Trade-Offs</p>
+<h2>Honest edges.</h2>
+<ol class="cs-list"><li><h3>Reads are open, writes are gated</h3><p>Every mutating route requires a bearer token; GETs stay public so the morning agent can read without credentials. A deliberate trade for a single-user tool — the next step would be a signed agent identity.</p></li><li><h3>I deleted my own equity curve</h3><p>An earlier version had a snapshot subsystem and an equity-curve chart. When I simplified the app, the chart ended up with zero callers — so I retired the whole subsystem instead of keeping dead weight. The calendar answers the real question: what kind of month was it.</p></li><li><h3>What I'd do next</h3><p>Runtime failover for HK quotes (Tencent → Yahoo is supported but not wired), and surfacing the two-clock model in the UI — the ET trading day vs Sydney display logic is the app's subtlest code and deserves to be visible.</p></li></ol>
+</div></section>
+</main>
+<footer class="cs-end" style="--next-lane: #2247C9"><div class="cs-end-row"><span>Next</span><span>01 / 08</span></div><a class="cs-big" href="colab.html"><i></i>CoLab</a><a class="cs-back" href="../index.html">← All works</a></footer>
+<div class="cs-chat-wrap"><div id="chat" role="region" aria-label="Chat with AI Aiden" data-qs="Chat with AI Aiden|Why did you build Investment Assistant?|What was the hardest part?|What would you do next?">
+<div class="chat-log"><div class="chat-top"><button type="button" class="chat-close" aria-label="Close conversation"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12"/></svg></button></div><div class="chat-msgs" aria-live="polite"></div></div>
+<form><span class="chat-dot" aria-hidden="true"></span><input type="text" aria-label="Ask AI Aiden" placeholder="Chat with AI Aiden" autocomplete="off"><button type="submit" aria-label="Send"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></button></form>
+</div></div>
+<script src="../chat.js"></script>
+<script src="proto/kit.js"></script>
+<script src="proto/investment.js"></script>
+</body>
 </html>

@@ -157,8 +157,6 @@ a{color:#141414}a:hover{color:#141414}
 .rule{transform-origin:left center;animation:grow 1.2s cubic-bezier(.6,0,.2,1) both}
 .strip{scrollbar-width:none}
 .strip::-webkit-scrollbar{display:none}
-.clip .shot img{filter:grayscale(calc(1 - var(--f, 0)))}
-.clip:hover .shot img{filter:none}
 .lnk:hover{opacity:.6}
 #ask::placeholder{color:#6A6862}
 @media (prefers-reduced-motion:reduce){.fade,.lift,.rule,.write,.drift{animation:none}.draw{animation:none;stroke-dashoffset:0}.nm{animation:none;stroke-dashoffset:0;fill-opacity:1}}
@@ -174,14 +172,14 @@ a{color:#141414}a:hover{color:#141414}
 <header class="fade" style="position: absolute; left: 0; right: 0; top: 0; height: 56px; z-index: 6; box-sizing: border-box; padding: 0 20px; display: flex; justify-content: center; align-items: center">
 <nav id="tl-mini" aria-label="Timeline" style="position: relative; display: flex; align-items: center; height: 44px">
 <button type="button" data-i="0" aria-label="Start" style="width: 20px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><span style="display: block; width: 10px; height: 10px; border-radius: 50%; background: #141414; pointer-events: none"></span></button>
-<button type="button" data-i="1" aria-label="VividXperience" style="width: 20px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><span style="display: block; width: 10px; height: 10px; background: var(--c1); pointer-events: none"></span></button>
-<button type="button" data-i="2" aria-label="ANNO" style="width: 20px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><span style="display: block; width: 10px; height: 10px; background: var(--c1); pointer-events: none"></span></button>
-<button type="button" data-i="3" aria-label="Whisperfield" style="width: 20px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><span style="display: block; width: 10px; height: 10px; background: var(--c1); pointer-events: none"></span></button>
-<button type="button" data-i="4" aria-label="CoLab" style="width: 20px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><span style="display: block; width: 10px; height: 10px; background: var(--c1); pointer-events: none"></span></button>
-<button type="button" data-i="5" aria-label="Chunks" style="width: 20px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><span style="display: block; width: 10px; height: 10px; background: var(--c2); pointer-events: none"></span></button>
-<button type="button" data-i="6" aria-label="Investment Assistant" style="width: 20px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><span style="display: block; width: 10px; height: 10px; background: var(--c2); pointer-events: none"></span></button>
-<button type="button" data-i="7" aria-label="Gyn Research Dashboard" style="width: 20px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><span style="display: block; width: 10px; height: 10px; background: var(--c2); pointer-events: none"></span></button>
-<button type="button" data-i="8" aria-label="This Portfolio" style="width: 20px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><span style="display: block; width: 10px; height: 10px; background: var(--c2); pointer-events: none"></span></button>
+<button type="button" data-i="1" aria-label="CoLab" style="width: 20px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><span style="display: block; width: 10px; height: 10px; background: var(--c1); pointer-events: none"></span></button>
+<button type="button" data-i="2" aria-label="Gyn Research Dashboard" style="width: 20px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><span style="display: block; width: 10px; height: 10px; background: var(--c2); pointer-events: none"></span></button>
+<button type="button" data-i="3" aria-label="Chunks" style="width: 20px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><span style="display: block; width: 10px; height: 10px; background: var(--c2); pointer-events: none"></span></button>
+<button type="button" data-i="4" aria-label="This Portfolio" style="width: 20px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><span style="display: block; width: 10px; height: 10px; background: var(--c2); pointer-events: none"></span></button>
+<button type="button" data-i="5" aria-label="ANNO" style="width: 20px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><span style="display: block; width: 10px; height: 10px; background: var(--c1); pointer-events: none"></span></button>
+<button type="button" data-i="6" aria-label="VividXperience" style="width: 20px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><span style="display: block; width: 10px; height: 10px; background: var(--c1); pointer-events: none"></span></button>
+<button type="button" data-i="7" aria-label="Whisperfield" style="width: 20px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><span style="display: block; width: 10px; height: 10px; background: var(--c1); pointer-events: none"></span></button>
+<button type="button" data-i="8" aria-label="Investment Assistant" style="width: 20px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><span style="display: block; width: 10px; height: 10px; background: var(--c2); pointer-events: none"></span></button>
 <button type="button" data-i="9" aria-label="Contact" style="width: 20px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="12" height="11" viewBox="0 0 12 11" style="display: block; pointer-events: none"><path d="M6 1L11 10H1Z" fill="var(--c3)" stroke="#141414" stroke-width="1" stroke-linejoin="miter"></path></svg></button>
 <span id="tl-track" aria-hidden="true" style="position: absolute; left: 1px; top: 13px; width: 18px; height: 18px; box-sizing: border-box; border: 1.5px solid #141414; pointer-events: none; transform: translateX(0px)"></span>
 </nav>
@@ -190,22 +188,10 @@ a{color:#141414}a:hover{color:#141414}
 <main id="tl-scroller" class="strip" aria-label="Works by Aiden Yang, 2024 to now. Scroll sideways." style="position: absolute; left: 0; right: 0; top: 56px; bottom: 88px; overflow-x: auto; overflow-y: hidden; transition: bottom .45s cubic-bezier(.2,.8,.2,1)">
 <div style="display: flex; width: max-content; height: 100%">
 
-<div id="tl-stage" style="--z: 1.09; --iz: 0.917; --po: 0; --cy: calc(50vh - 72px); position: sticky; left: 0; flex: 0 0 auto; width: 100vw; height: 100%; overflow: hidden">
+<div id="tl-stage" style="--z: 1.09; --iz: 0.917; --po: 0; --in: 0; --sh: 0px; --cy: calc(50vh - 72px); position: sticky; left: 0; flex: 0 0 auto; width: 100vw; height: 100%; overflow: hidden">
 
 <div id="tl-world" style="position: absolute; left: 0; top: 0; width: 0; height: 0; transform-origin: 0 0; transform: translate(50vw, calc(50vh - 72px)) scale(1.09) translate(-644px, -242px)">
-
-
-
-<span aria-hidden="true" style="position: absolute; left: 1260px; top: -48px; width: 2565px; height: 8px; background: repeating-linear-gradient(90deg, #141414 0px, #141414 1px, transparent 1px, transparent 26.1px)"></span>
-<span aria-hidden="true" style="position: absolute; left: 1260px; top: -62px; width: 1px; height: 22px; background: #141414"></span>
-<span style="position: absolute; left: 1267px; top: -64px; font-size: 12px; font-weight: 500; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: translateY(-100%) scale(var(--iz))">2024</span>
-<span aria-hidden="true" style="position: absolute; left: 2219px; top: -62px; width: 1px; height: 22px; background: #141414"></span>
-<span style="position: absolute; left: 2226px; top: -64px; font-size: 12px; font-weight: 500; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: translateY(-100%) scale(var(--iz))">2025</span>
-<span aria-hidden="true" style="position: absolute; left: 2552px; top: -62px; width: 1px; height: 22px; background: #141414"></span>
-<span style="position: absolute; left: 2559px; top: -64px; font-size: 12px; font-weight: 500; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: translateY(-100%) scale(var(--iz))">2026</span>
-<span aria-hidden="true" style="position: absolute; left: 3824px; top: -62px; width: 1px; height: 22px; background: #141414"></span>
-<span style="position: absolute; left: 3831px; top: -64px; font-size: 12px; font-weight: 500; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: translateY(-100%) scale(var(--iz))">Now</span>
-
+<span aria-hidden="true" style="translate: var(--sh, 0px) 0; position: absolute; left: 1260px; top: -48px; width: 2565px; height: 8px; background: repeating-linear-gradient(90deg, #141414 0px, #141414 1px, transparent 1px, transparent 26.1px)"></span>
 <span data-pin="1" data-lane="1" data-side="pre" data-a="0" data-b="1260" aria-hidden="true" style="position: absolute; left: 0; top: 0; height: 220px; overflow: hidden; pointer-events: none; transform: translateX(20px)"><span class="lift" style="animation-delay: .1s; margin-top: 2px; height: 220px; line-height: 220px; padding-right: 0.05em; font-size: 288px; font-weight: 600; letter-spacing: -0.04em; color: var(--c1); white-space: nowrap">DESIGN</span></span>
 <span data-pin="1" data-lane="2" data-side="pre" data-a="0" data-b="2552" aria-hidden="true" style="position: absolute; left: 0; top: 264px; height: 220px; overflow: hidden; pointer-events: none; transform: translateX(20px)"><span class="lift" style="animation-delay: .25s; margin-top: 2px; height: 220px; line-height: 220px; padding-right: 0.05em; font-size: 288px; font-weight: 600; letter-spacing: -0.04em; color: var(--c2); white-space: nowrap">PRODUCTS</span></span>
 
@@ -241,38 +227,37 @@ a{color:#141414}a:hover{color:#141414}
 </span>
 </span>
 
-<a class="clip" data-clip="1" data-lane="1" href="projects/vivid.html" style="position: absolute; left: 1260px; top: 0; width: 293px; height: 220px; display: block; text-decoration: none">
-<span style="position: absolute; left: 0; bottom: 100%; margin-bottom: 8px; font-size: 12px; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: scale(var(--iz))">VividXperience</span>
-<span class="shot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; background: #DAD7CF; display: block"><img src="Assets/thumbs/vivid.jpg" alt="VividXperience: Vivid Sydney seen through a headset" style="width: 100%; height: 100%; object-fit: cover; display: block"></span>
-</a>
-<a class="clip" data-clip="1" data-lane="1" href="projects/anno.html" style="position: absolute; left: 1573px; top: 0; width: 293px; height: 220px; display: block; text-decoration: none">
-<span style="position: absolute; left: 0; bottom: 100%; margin-bottom: 8px; font-size: 12px; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: scale(var(--iz))">ANNO</span>
-<span class="shot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; background: #DAD7CF; display: block"><img src="Assets/thumbs/anno.jpg" alt="ANNO: a white companion robot dog" style="width: 100%; height: 100%; object-fit: cover; display: block"></span>
-</a>
-<a class="clip" data-clip="1" data-lane="1" href="projects/whisper.html" style="position: absolute; left: 1886px; top: 0; width: 293px; height: 220px; display: block; text-decoration: none">
-<span style="position: absolute; left: 0; bottom: 100%; margin-bottom: 8px; font-size: 12px; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: scale(var(--iz))">Whisperfield</span>
-<span class="shot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; background: #DAD7CF; display: block"><img src="Assets/thumbs/whisperfield.jpg" alt="Whisperfield: people resting in a projected meadow" style="width: 100%; height: 100%; object-fit: cover; display: block"></span>
-</a>
-<a class="clip" data-clip="1" data-lane="1" href="projects/colab.html" style="position: absolute; left: 2219px; top: 0; width: 293px; height: 220px; display: block; text-decoration: none">
+<a class="clip" data-clip="1" data-lane="1" href="projects/colab.html" style="position: absolute; left: 1260px; top: 0; width: 293px; height: 220px; display: block; text-decoration: none">
 <span style="position: absolute; left: 0; bottom: 100%; margin-bottom: 8px; font-size: 12px; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: scale(var(--iz))">CoLab</span>
 <span class="shot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; background: #DAD7CF; display: block"><img src="Assets/thumbs/colab.jpg" alt="CoLab: learning platform screens on a tablet" style="width: 100%; height: 100%; object-fit: cover; display: block"></span>
 </a>
-
-<a class="clip" data-clip="1" data-lane="2" href="projects/chunks.html" style="position: absolute; left: 2552px; top: 264px; width: 293px; height: 220px; display: block; text-decoration: none">
-<span style="position: absolute; left: 0; bottom: 100%; margin-bottom: 8px; font-size: 12px; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: scale(var(--iz))">Chunks</span>
-<span class="shot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; background: #DAD7CF; display: block"><img src="Assets/thumbs/chunks.svg" alt="Chunks: the app on a phone with flashcards" style="width: 100%; height: 100%; object-fit: cover; display: block"></span>
-</a>
-<a class="clip" data-clip="1" data-lane="2" href="projects/investment.html" style="position: absolute; left: 2865px; top: 264px; width: 293px; height: 220px; display: block; text-decoration: none">
-<span style="position: absolute; left: 0; bottom: 100%; margin-bottom: 8px; font-size: 12px; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: scale(var(--iz))">Investment Assistant</span>
-<span class="shot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; background: #DAD7CF; display: block"><img src="Assets/thumbs/investment.svg" alt="Investment Assistant: a portfolio dashboard" style="width: 100%; height: 100%; object-fit: cover; display: block"></span>
-</a>
-<a class="clip" data-clip="1" data-lane="2" href="projects/gyn-dashboard.html" style="position: absolute; left: 3178px; top: 264px; width: 293px; height: 220px; display: block; text-decoration: none">
+<a class="clip" data-clip="1" data-lane="1" href="projects/gyn-dashboard.html" style="position: absolute; left: 1573px; top: 0; width: 293px; height: 220px; display: block; text-decoration: none">
 <span style="position: absolute; left: 0; bottom: 100%; margin-bottom: 8px; font-size: 12px; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: scale(var(--iz))">Gyn Research Dashboard</span>
 <span class="shot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; background: #DAD7CF; display: block"><img src="Assets/thumbs/gyn.svg" alt="Gyn Research Dashboard: a daily list of graded papers" style="width: 100%; height: 100%; object-fit: cover; display: block"></span>
 </a>
-<a class="clip" data-clip="1" data-lane="2" href="projects/this-site.html" style="position: absolute; left: 3491px; top: 264px; width: 293px; height: 220px; display: block; text-decoration: none">
+<a class="clip" data-clip="1" data-lane="1" href="projects/chunks.html" style="position: absolute; left: 1886px; top: 0; width: 293px; height: 220px; display: block; text-decoration: none">
+<span style="position: absolute; left: 0; bottom: 100%; margin-bottom: 8px; font-size: 12px; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: scale(var(--iz))">Chunks</span>
+<span class="shot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; background: #DAD7CF; display: block"><img src="Assets/thumbs/chunks.svg" alt="Chunks: the app on a phone with flashcards" style="width: 100%; height: 100%; object-fit: cover; display: block"></span>
+</a>
+<a class="clip" data-clip="1" data-lane="1" href="projects/this-site.html" style="position: absolute; left: 2199px; top: 0; width: 293px; height: 220px; display: block; text-decoration: none">
 <span style="position: absolute; left: 0; bottom: 100%; margin-bottom: 8px; font-size: 12px; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: scale(var(--iz))">This Portfolio</span>
-<span class="shot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; background: #DAD7CF; display: block"><img src="Assets/thumbs/portfolio.svg" alt="This Portfolio: the site with its AI chat" style="width: 100%; height: 100%; object-fit: cover; display: block"></span>
+<span class="shot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; background: #DAD7CF; display: block"><img src="Assets/thumbs/portfolio.jpg" alt="This Portfolio: the site with its AI chat" style="width: 100%; height: 100%; object-fit: cover; display: block"></span>
+</a>
+<a class="clip" data-clip="1" data-lane="2" href="projects/anno.html" style="position: absolute; left: 2552px; top: 264px; width: 293px; height: 220px; display: block; text-decoration: none">
+<span style="position: absolute; left: 0; bottom: 100%; margin-bottom: 8px; font-size: 12px; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: scale(var(--iz))">ANNO</span>
+<span class="shot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; background: #DAD7CF; display: block"><img src="Assets/thumbs/anno.jpg" alt="ANNO: a white companion robot dog" style="width: 100%; height: 100%; object-fit: cover; display: block"></span>
+</a>
+<a class="clip" data-clip="1" data-lane="2" href="projects/vivid.html" style="position: absolute; left: 2865px; top: 264px; width: 293px; height: 220px; display: block; text-decoration: none">
+<span style="position: absolute; left: 0; bottom: 100%; margin-bottom: 8px; font-size: 12px; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: scale(var(--iz))">VividXperience</span>
+<span class="shot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; background: #DAD7CF; display: block"><img src="Assets/thumbs/vivid.jpg" alt="VividXperience: Vivid Sydney seen through a headset" style="width: 100%; height: 100%; object-fit: cover; display: block"></span>
+</a>
+<a class="clip" data-clip="1" data-lane="2" href="projects/whisper.html" style="position: absolute; left: 3178px; top: 264px; width: 293px; height: 220px; display: block; text-decoration: none">
+<span style="position: absolute; left: 0; bottom: 100%; margin-bottom: 8px; font-size: 12px; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: scale(var(--iz))">Whisperfield</span>
+<span class="shot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; background: #DAD7CF; display: block"><img src="Assets/thumbs/whisperfield.jpg" alt="Whisperfield: people resting in a projected meadow" style="width: 100%; height: 100%; object-fit: cover; display: block"></span>
+</a>
+<a class="clip" data-clip="1" data-lane="2" href="projects/investment.html" style="position: absolute; left: 3491px; top: 264px; width: 293px; height: 220px; display: block; text-decoration: none">
+<span style="position: absolute; left: 0; bottom: 100%; margin-bottom: 8px; font-size: 12px; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: scale(var(--iz))">Investment Assistant</span>
+<span class="shot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; background: #DAD7CF; display: block"><img src="Assets/thumbs/investment.svg" alt="Investment Assistant: a portfolio dashboard" style="width: 100%; height: 100%; object-fit: cover; display: block"></span>
 </a>
 
 <span aria-hidden="true" style="position: absolute; left: 3944px; top: 264px; width: 2600px; height: 220px; background: var(--c3)"></span>
@@ -288,10 +273,10 @@ a{color:#141414}a:hover{color:#141414}
 
 </div>
 
-<span class="rule" aria-hidden="true" style="position: absolute; left: 0; right: 0; top: calc(var(--cy) + -242px * var(--z)); height: 1px; background: #141414; pointer-events: none; z-index: 2"></span>
-<span class="rule" aria-hidden="true" style="animation-delay: .08s; position: absolute; left: 0; right: 0; top: calc(var(--cy) + -22px * var(--z)); height: 1px; background: #141414; pointer-events: none; z-index: 2"></span>
-<span class="rule" aria-hidden="true" style="animation-delay: .16s; position: absolute; left: 0; right: 0; top: calc(var(--cy) + 22px * var(--z)); height: 1px; background: #141414; pointer-events: none; z-index: 2"></span>
-<span class="rule" aria-hidden="true" style="animation-delay: .24s; position: absolute; left: 0; right: 0; top: calc(var(--cy) + 242px * var(--z)); height: 1px; background: #141414; pointer-events: none; z-index: 2"></span>
+<span class="rule" aria-hidden="true" style="position: absolute; left: 0; right: 0; top: calc(var(--cy) + -242px * var(--z)); height: 1px; background: #141414; opacity: var(--in, 1); pointer-events: none; z-index: 2"></span>
+<span class="rule" aria-hidden="true" style="animation-delay: .08s; position: absolute; left: 0; right: 0; top: calc(var(--cy) + -22px * var(--z)); height: 1px; background: #141414; opacity: var(--in, 1); pointer-events: none; z-index: 2"></span>
+<span class="rule" aria-hidden="true" style="animation-delay: .16s; position: absolute; left: 0; right: 0; top: calc(var(--cy) + 22px * var(--z)); height: 1px; background: #141414; opacity: var(--in, 1); pointer-events: none; z-index: 2"></span>
+<span class="rule" aria-hidden="true" style="animation-delay: .24s; position: absolute; left: 0; right: 0; top: calc(var(--cy) + 242px * var(--z)); height: 1px; background: #141414; opacity: var(--in, 1); pointer-events: none; z-index: 2"></span>
 
 <span aria-hidden="true" style="position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: #141414; opacity: var(--po); pointer-events: none; z-index: 3"></span>
 
@@ -336,14 +321,14 @@ var clips = [], lanes = { 1: [], 2: [] }, pins = [], obst = [], frames = {}, sto
 var endW = 1296, designW = 956;
 var S = { W: 0, H: 0, z0: 1, z1: 1, zE: 1, cx: 0, cy: 0, p0: 644, pend: 4588, max: 3944 };
 var REPLIES = [
-[/chunks/i, 5, "Type a Chinese sentence; Chunks returns natural English and extracts the reusable “chunks”. Each becomes a spaced-repetition flashcard. The PWA is in daily use and a native iOS app is in progress."],
-[/invest/i, 6, "A multi-market, multi-currency portfolio dashboard, with a daily briefing written by an AI that reads it every morning."],
-[/gyn|research|paper/i, 7, "A daily literature radar built for a medical researcher. Dual-route PubMed retrieval plus 26 society and news sources; Claude grades every paper and writes a structured reading card in Chinese."],
-[/vivid/i, 1, "A Vision Pro-based remote participation platform that lets global audiences immerse in Vivid Sydney through multimodal interaction and spatial storytelling."],
-[/anno/i, 2, "A companion-based smart health system for older adults living alone, blending emotional support with medication management through gentle, voice-driven interactions."],
-[/whisper/i, 3, "An ADHD-focused immersive meditation experience with gentle delays, natural rhythms and responsive environments designed for neurodivergent people."],
-[/colab/i, 4, "A concept learning platform for international design students: standardized lectures, real-time tutorial support and skill-based teams."],
-[/site|portfolio|built|website/i, 8, "A portfolio that talks back. Static front-end on GitHub, AI chat on Cloudflare's edge, real-time signal detection in the admin. Vibecoded with Claude, running for about $3 a month."]
+[/chunks/i, 3, "Type a Chinese sentence; Chunks returns natural English and extracts the reusable “chunks”. Each becomes a spaced-repetition flashcard. The PWA is in daily use and a native iOS app is in progress."],
+[/invest/i, 8, "A multi-market, multi-currency portfolio dashboard, with a daily briefing written by an AI that reads it every morning."],
+[/gyn|research|paper/i, 2, "A daily literature radar built for a medical researcher. Dual-route PubMed retrieval plus 26 society and news sources; Claude grades every paper and writes a structured reading card in Chinese."],
+[/vivid/i, 6, "A Vision Pro-based remote participation platform that lets global audiences immerse in Vivid Sydney through multimodal interaction and spatial storytelling."],
+[/anno/i, 5, "A companion-based smart health system for older adults living alone, blending emotional support with medication management through gentle, voice-driven interactions."],
+[/whisper/i, 7, "An ADHD-focused immersive meditation experience with gentle delays, natural rhythms and responsive environments designed for neurodivergent people."],
+[/colab/i, 1, "A concept learning platform for international design students: standardized lectures, real-time tutorial support and skill-based teams."],
+[/site|portfolio|built|website/i, 4, "A portfolio that talks back. Static front-end on GitHub, AI chat on Cloudflare's edge, real-time signal detection in the admin. Vibecoded with Claude, running for about $3 a month."]
 ];
 var q = function (sel) { return Array.prototype.slice.call(root.querySelectorAll(sel)); };
 function collect() {
@@ -375,6 +360,7 @@ S.z0 = Math.min(S.H * 0.7 / STACK, (S.W - 2 * M) / designW);
 S.z1 = S.z0 * 0.72;
 S.zE = Math.min(S.z0, (S.W - 2 * M) / endW);
 S.p0 = STARTX + (S.cx - M) / S.z0;
+S.sh = Math.max(0, STARTX + (S.W - M) / S.z0 + 24 - 1260);
 S.pend = ENDX + (S.cx - M) / S.zE;
 S.max = Math.max(ZLEN * 2 + 200, S.pend - S.p0);
 if (ghost) ghost.style.flexBasis = S.max.toFixed(0) + 'px';
@@ -401,6 +387,9 @@ stage.style.setProperty('--z', z.toFixed(4));
 stage.style.setProperty('--iz', iz.toFixed(4));
 stage.style.setProperty('--po', (k1 * (1 - k2) * 0.55).toFixed(3));
 stage.style.setProperty('--cy', S.cy.toFixed(1) + 'px');
+var sh = (S.sh || 0) * (1 - k1);
+stage.style.setProperty('--sh', sh.toFixed(1) + 'px');
+stage.style.setProperty('--in', k1.toFixed(3));
 world.style.transform = 'translate(' + S.cx.toFixed(1) + 'px,' + S.cy.toFixed(1) + 'px) scale(' + z.toFixed(4) + ') translate(' + (-P).toFixed(1) + 'px,' + (-CY) + 'px)';
 var ln, i, c, L, E, pre, fo, v;
 for (ln = 1; ln <= 2; ln++) {
@@ -414,7 +403,7 @@ E += c.e * Math.max(0, Math.min(1, (P - c.x0) / c.w0));
 for (i = 0; i < L.length; i++) {
 c = L[i];
 c.x = c.x0 + pre - E; c.w = c.w0 + c.e; pre += c.e;
-v = Math.round((c.x - c.x0) * 10) / 10;
+v = Math.round((c.x - c.x0 + sh) * 10) / 10;
 if (v !== c.dx) { c.el.style.transform = 'translateX(' + v + 'px)'; c.dx = v; }
 v = Math.round(c.w * 10) / 10;
 if (v !== c.wv) { c.el.style.width = v + 'px'; c.wv = v; }
@@ -426,7 +415,7 @@ var f, a, b, tx, want = P - (S.cx - M) * iz;
 for (i = 0; i < pins.length; i++) {
 f = pins[i]; L = lanes[f.lane];
 a = (f.side === 'post' && L.length) ? L[L.length - 1].x + L[L.length - 1].w : f.a;
-b = (f.side === 'pre' && L.length) ? L[0].x : f.b;
+b = (f.side === 'pre' && L.length) ? L[0].x + sh : f.b;
 tx = clamp(want, a + 20, b - f.w - 20);
 f.el.style.transform = 'translateX(' + tx.toFixed(1) + 'px)';
 }
@@ -462,7 +451,7 @@ if (pose !== self.pose) {
 for (key in frames) frames[key].style.display = key === pose ? '' : 'none';
 self.pose = pose;
 }
-if (squash) squash.style.transform = 'scaleX(' + Math.max(0, Math.min(1, 1 - (push - hi) / 150)).toFixed(3) + ')';
+if (squash) squash.style.opacity = Math.max(0, Math.min(1, 1 - (tx + 100 - (SC0 + 1150)) / 140)).toFixed(3);
 }
 var pc = P - (SC0 + SCW / 2);
 if (far) far.style.transform = 'translateX(' + clamp(0.7 * pc, -1320, 1320).toFixed(1) + 'px)';
