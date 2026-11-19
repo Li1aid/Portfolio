@@ -1,0 +1,40 @@
+# Deploys the AI Aiden worker whenever its code or the knowledge base changes on main.
+# Needs two repository secrets: CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID.
+# Worker secrets set with `wrangler secret put` (AI keys, etc.) are kept between deploys.
+name: Deploy AI Aiden worker
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - knowledge.md
+      - worker/**
+      - .github/workflows/deploy-worker.yml
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-worker
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install
+        working-directory: worker
+        run: npm ci
+      - name: Bundle the knowledge base
+        working-directory: worker
+        run: npm run build-knowledge
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: worker
+          command: deploy
