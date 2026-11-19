@@ -33,7 +33,7 @@
       var el = P.h('div', { 'class': 'cl', text: n[0], style: 'left:' + n[2] + 'px;top:' + (n[1] === 1 ? 70 : 160) + 'px;width:' + BASEW + 'px;background:' + (n[3] ? P.red : P.blue) }, wd);
       lanes[n[1]].push({ el: el, x0: n[2], c0: n[2] + BASEW / 2, x: n[2], w: BASEW });
     });
-    var pins = [P.h('div', { 'class': 'pin', text: 'DESIGN', style: 'top:70px;color:' + P.blue }, wd), P.h('div', { 'class': 'pin', text: 'PRODUCTS', style: 'top:160px;color:' + P.red }, wd)];
+    var pins = [P.h('div', { 'class': 'pin', text: 'DESIGNS', style: 'top:70px;color:' + P.blue }, wd), P.h('div', { 'class': 'pin', text: 'PRODUCTS', style: 'top:160px;color:' + P.red }, wd)];
     P.h('div', { style: 'position:absolute;left:' + ENDX + 'px;top:160px;width:900px;height:70px;background:' + P.yellow }, wd);
     P.h('div', { 'class': 'ph' }, st);
     var ct = P.h('div', { 'class': 'ct' }, root);

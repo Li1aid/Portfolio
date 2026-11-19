@@ -11,7 +11,7 @@ Keep these answers to the usual length (2–3 sentences): give the core idea, an
 
 - **Order of the work on the homepage** (top row, left to right, then bottom row): 1 CoLab, 2 Gyn Research Dashboard, 3 Chunks, 4 This Portfolio; then 5 ANNO, 6 VividXperience, 7 Whisperfield, 8 Investment Assistant. This is the order Aiden chose to show them in, not a date order. The detail pages follow the same order.
 - **Layout:** the homepage looks like a video-editing timeline: two rows of project clips on one ruler, and a playhead. Scrolling moves the playhead; every visual on the page is computed from that one scroll value, so it plays the same forwards and backwards.
-- **Opening screen:** only the name AIDEN YANG (black letters on a yellow band) and two big words, DESIGN in blue and PRODUCTS in red. The clips slide in from the right as you scroll.
+- **Opening screen:** only the name AIDEN YANG (black letters on a yellow band) and two big words, DESIGNS in blue and PRODUCTS in red. Read top to bottom it is one sentence: "Aiden Yang designs products." The two rows are not categories: the top row holds the four projects Aiden would show first, the bottom row the rest. The clips slide in from the right as you scroll.
 - **The knight:** a small pixel-art game in an empty stretch of the top row, nothing more. The playhead pushes a knight to the right, three different skeletons stand in his way and fall over when he reaches them, and he fades out with the scenery. It is a playful detail, not a metaphor or symbol — do not attach a meaning to it.
 - **How it was built:** plain HTML, CSS and JavaScript on GitHub Pages, no framework and no build step. Aiden set the direction and judged each version; Claude wrote the code and a small Python rig that generated the knight and skeleton sprites. The full explanation is in section 4.4 and on https://aidenyang.me/projects/this-site.html
 - **Phones:** a separate upright version that scrolls top to bottom, with one column of large clips.
@@ -136,10 +136,10 @@ Each detail page has one or more small interactive prototypes written for that p
 **The idea:** the homepage is laid out the way a video editor sees a project — two tracks of clips on one ruler, with a playhead. Scrolling moves the playhead instead of moving a page. Everything on screen is calculated from that one scroll value, so the page plays the same forwards and backwards at any speed; there are no scroll-triggered animations waiting to fire. The reference was rauno.me: Aiden wanted its logic (motion tied to scroll), not its look.
 
 **How the homepage visuals work:**
-- Opening: only the name and two words, DESIGN (blue) and PRODUCTS (red), are on screen. The timeline waits just off the right edge and slides in as you scroll.
+- Opening: only the name and two words, DESIGNS (blue) and PRODUCTS (red), are on screen, reading as one sentence: "Aiden Yang designs products." The timeline waits just off the right edge and slides in as you scroll.
 - Zoom: the first stretch of scroll pulls the camera back to 72% so the giant words shrink to track height; the end pushes back in for "READY TO START?".
 - Accordion: the clip under the playhead grows wider and pushes later clips along; its width depends on its distance from the playhead.
-- Pinned words: DESIGN and PRODUCTS stay at the left edge until the first clip of their row pushes them off.
+- Pinned words: DESIGNS and PRODUCTS stay at the left edge until the first clip of their row pushes them off.
 - Parallax: two background layers move at 0.7 and 0.4 of the scroll.
 - The knight: an empty stretch of the top row holds a small game. The playhead pushes a pixel knight right; three different skeletons (sword and shield, spear, horned axe) stand in his way. He has eight frames (one idle, four running, three attacking); the frame depends only on how far he has been pushed, so he runs backwards when you scroll back. Each skeleton notices him, tips over and becomes a pile of bones. The knight then fades out with the scenery.
 - The sprites were generated, not hand-drawn: a small Python rig builds each pose from joints with a one-pixel outline per part and exports frames as SVG rectangles, so they stay sharp at any zoom.
