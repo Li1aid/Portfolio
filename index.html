@@ -159,6 +159,7 @@ a{color:#141414}a:hover{color:#141414}
 .strip::-webkit-scrollbar{display:none}
 .lnk:hover{opacity:.6}
 #ask::placeholder{color:#6A6862}
+@media (max-width:700px){#tl-root,#tl-scroller{touch-action:pan-x}.ends{transform:translateY(-100%) scale(calc(var(--iz) * .75)) !important;transform-origin:left bottom;gap:26px !important}.ends .lnk{display:inline-block;padding:12px 0}}
 @media (prefers-reduced-motion:reduce){.fade,.lift,.rule,.write,.drift{animation:none}.draw{animation:none;stroke-dashoffset:0}.nm{animation:none;stroke-dashoffset:0;fill-opacity:1}}
 </style>
 </head>
@@ -265,7 +266,7 @@ a{color:#141414}a:hover{color:#141414}
 <span id="tl-end" aria-hidden="true" style="position: absolute; left: 3964px; top: 0; height: 220px; padding-right: 0.05em">READY TO</span>
 <span aria-hidden="true" style="position: absolute; left: 3964px; top: 264px; height: 220px">START?</span>
 </h2>
-<div style="position: absolute; left: 3964px; top: -22px; display: flex; gap: 36px; font-size: 22px; line-height: 1.2; font-weight: 500; white-space: nowrap; transform: translateY(-100%)">
+<div class="ends" style="position: absolute; left: 3964px; top: -22px; display: flex; gap: 36px; font-size: 22px; line-height: 1.2; font-weight: 500; white-space: nowrap; transform: translateY(-100%)">
 <a class="lnk" href="mailto:AidenYang5995@gmail.com" style="text-underline-offset: 5px">Send a message</a>
 <a class="lnk" href="https://www.linkedin.com/in/aiden-yang-ty" style="text-underline-offset: 5px">LinkedIn</a>
 <a class="lnk" href="https://github.com/Li1aid" style="text-underline-offset: 5px">GitHub</a>
@@ -318,7 +319,7 @@ var STARTX = 20, ENDX = 3964, ZLEN = 560, CY = 242, STACK = 484, M = 40;
 var BASEW = 293, EXTRA = 98, R = BASEW * 0.9, STEP = 20, SC0 = 2620, SCW = 1304, BACK = 48, FRONT = 138, RUN = ['r0', 'r1', 'r2', 'r3'];
 var reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 var clips = [], lanes = { 1: [], 2: [] }, pins = [], obst = [], frames = {}, stops = [];
-var endW = 1296, designW = 956;
+var endW = 1296, designW = 956, wordW = 956, mob = false, DX = 20, DY = 18.5, DS = 0.26, mini = $('tl-mini');
 var S = { W: 0, H: 0, z0: 1, z1: 1, zE: 1, cx: 0, cy: 0, p0: 644, pend: 4588, max: 3944 };
 var REPLIES = [
 [/chunks/i, 3, "Type a Chinese sentence; Chunks returns natural English and extracts the reusable “chunks”. Each becomes a spaced-repetition flashcard. The PWA is in daily use and a native iOS app is in progress."],
@@ -344,6 +345,8 @@ pins = q('[data-pin]').map(function (el) {
 return { el: el, w: el.offsetWidth, lane: el.getAttribute('data-lane') === '2' ? 2 : 1, side: el.getAttribute('data-side'), a: +el.getAttribute('data-a'), b: +el.getAttribute('data-b') };
 });
 for (i = 0; i < pins.length; i++) { if (pins[i].lane === 1 && pins[i].side === 'pre' && pins[i].w > 50) designW = pins[i].w; }
+wordW = designW;
+for (i = 0; i < pins.length; i++) { if (pins[i].side === 'pre' && pins[i].w > wordW) wordW = pins[i].w; }
 obst = q('[data-sk]').map(function (el) {
 return { el: el, x: (parseFloat(el.style.left) || 0) + (+el.getAttribute('data-cx') || 86), body: el.querySelector('[data-sf="body"]'), s0: el.querySelector('[data-sf="s0"]'), s1: el.querySelector('[data-sf="s1"]'), pile: el.querySelector('[data-sf="p"]'), st: null };
 });
@@ -356,8 +359,11 @@ if (ew && ew.offsetWidth > 50) endW = ew.offsetWidth;
 function measure() {
 S.W = stage.clientWidth; S.H = stage.clientHeight;
 S.cx = S.W / 2; S.cy = S.H / 2;
-S.z0 = Math.min(S.H * 0.7 / STACK, (S.W - 2 * M) / designW);
-S.z1 = S.z0 * 0.72;
+// phones: fit both words at the start, then zoom in so one clip is about two thirds of the screen
+mob = S.W < 700; M = mob ? 20 : 40; DX = mob ? 16 : 20; DS = mob ? 0.2 : 0.26; DY = mob ? 20.8 : 18.5;
+S.z0 = Math.min(S.H * 0.7 / STACK, (S.W - 2 * M) / (mob ? wordW : designW));
+S.z1 = mob ? Math.max(S.z0, Math.min(1, S.H * 0.64 / STACK)) : S.z0 * 0.72;
+if (mini && mini.parentNode) { mini.parentNode.style.justifyContent = mob ? 'flex-end' : 'center'; mini.parentNode.style.padding = mob ? '0 8px' : '0 20px'; }
 S.zE = Math.min(S.z0, (S.W - 2 * M) / endW);
 S.p0 = STARTX + (S.cx - M) / S.z0;
 S.sh = Math.max(0, STARTX + (S.W - M) / S.z0 + 24 - 1260);
@@ -460,7 +466,7 @@ if (nameEl) {
 var ruleY = 56 + S.cy - 242 * S.z0;
 var s0 = Math.max(0.45, Math.min(1.25, 1.09 * S.z0));
 var x0 = M + 15 * S.z0, y0 = Math.max(2, ruleY - 16 - 72 * s0);
-nameEl.style.transform = 'translate(' + (x0 + (20 - x0) * k1).toFixed(1) + 'px,' + (y0 + (18.5 - y0) * k1).toFixed(1) + 'px) scale(' + (s0 + (0.26 - s0) * k1).toFixed(3) + ')';
+nameEl.style.transform = 'translate(' + (x0 + (DX - x0) * k1).toFixed(1) + 'px,' + (y0 + (DY - y0) * k1).toFixed(1) + 'px) scale(' + (s0 + (DS - s0) * k1).toFixed(3) + ')';
 }
 if (track) {
 var idx = stops.length - 1;
@@ -527,6 +533,8 @@ home: function (e) {
 if (e && e.preventDefault) e.preventDefault();
 glide(0);
 },
+stop: function () { self.target = scroller.scrollLeft; },
+fling: function (d) { glide(scroller.scrollLeft + d); },
 send: function (e) {
 if (e && e.preventDefault) e.preventDefault();
 var text = ask ? ask.value.replace(/^\s+|\s+$/g, '') : '';
@@ -627,6 +635,29 @@ home: this.h.home, send: this.h.send, close: this.h.close
       var f = parseFloat(a.style.getPropertyValue('--f')) || 0;
       if (f > 0.85) return;                 // already in focus: open the case study
       c.api.pick(e);                        // otherwise bring it into focus first
+    });
+    // phones: a vertical swipe also moves the timeline (horizontal swipes scroll natively)
+    var root = $('tl-root'), sc = $('tl-scroller'), t0 = null;
+    root.addEventListener('touchstart', function (e) {
+      if (e.touches.length !== 1 || (e.target.closest && e.target.closest('#chat, #tl-mini'))) { t0 = null; return; }
+      var t = e.touches[0];
+      t0 = { x: t.clientX, y: t.clientY, s: sc.scrollLeft, axis: 0, ly: t.clientY, lt: e.timeStamp, v: 0 };
+      c.api.stop();
+    }, { passive: true });
+    root.addEventListener('touchmove', function (e) {
+      if (!t0) return;
+      var t = e.touches[0], dx = t.clientX - t0.x, dy = t.clientY - t0.y;
+      if (!t0.axis) { if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return; t0.axis = Math.abs(dy) > Math.abs(dx) ? 2 : 1; }
+      if (t0.axis !== 2) return;
+      if (e.cancelable) e.preventDefault();
+      sc.scrollLeft = t0.s - dy * 1.6;
+      var dt = e.timeStamp - t0.lt;
+      if (dt > 0) t0.v = 0.7 * t0.v + 0.3 * ((t0.ly - t.clientY) / dt);
+      t0.ly = t.clientY; t0.lt = e.timeStamp;
+    }, { passive: false });
+    root.addEventListener('touchend', function () {
+      if (t0 && t0.axis === 2 && Math.abs(t0.v) > 0.15) c.api.fling(t0.v * 1.6 * 300);
+      t0 = null;
     });
     window.addEventListener('chat:resize', function () { setTimeout(c.api.sync, 470); });
     window.addEventListener('chat:reply', function (e) { if (c.api.goto) c.api.goto(e.detail.question); });
