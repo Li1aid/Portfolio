@@ -96,11 +96,11 @@ Each detail page has one or more small interactive prototypes written for that p
 - **Stack:** Vanilla JS PWA (no build step) · SwiftUI + SwiftData iOS · Cloudflare Worker + D1
 - **Page:** https://aidenyang.me/projects/chunks.html
 
-**What it is:** Type a Chinese sentence; Chunks returns natural English and extracts 1–4 reusable phrases (“chunks”) — each automatically becomes a flashcard reviewed with spaced repetition. There is no save button; duplicates are skipped. Review opens once there are 10 cards. Cards show Chinese first. Grading is a swipe: right before flipping = easy, flip then right = good, left = forgot; the screen edge glows green or red while dragging. Both the iOS app and the current web version schedule with FSRS (a card returns when the chance of recalling it drops below 90%); an earlier PWA used a simplified three-grade SM-2, and old cards were converted rather than reset.
+**What it is:** Type a Chinese sentence; Chunks returns natural English and extracts 1–4 reusable phrases (“chunks”) — each automatically becomes a flashcard reviewed with spaced repetition. There is no save button; duplicates are skipped. Review opens once there are 10 cards. Cards show Chinese first. Grading is a swipe: right before flipping = easy, flip then right = good, left = forgot; the screen edge glows green or red while dragging. Both the iOS app and the web version schedule with FSRS, a spaced-repetition algorithm: a card comes back when the chance of recalling it drops below 90%.
 
 **Key features:** sentence-to-chunks extraction with whole-sentence fallback; offline-first sync (last-write-wins by timestamp, tombstones for deletes, server-side LWW enforcement); one Worker proxying both Claude and DeepSeek with keys held server-side; iOS picks the AI provider by device region for the China App Store.
 
-**Decisions worth telling:** chose last-write-wins over CRDT (single user, multiple devices — three lines of merge code beat vector clocks); soft deletes with tombstones because the incremental sync cursor demands them; shipped an automatic scene-tagging feature, found the AI labels unreliable in real use, and removed it from the iOS rewrite rather than tuning it — then wrote a do-not-rebuild rule into the project doc.
+**Design decisions:** the app should cost less effort than not using it, so there is one input box, no save button and no categories to maintain (search only). Cards are phrase-sized because whole sentences don't transfer to new situations and single words don't carry how they're used. Chinese is on the front because the goal is producing English, not recognising it. Sync uses last-write-wins rather than a CRDT, because it is one person on several devices; deletes are soft so every device learns about them.
 
 ### 4.2 Investment Assistant — Production Portfolio Dashboard
 - **Category:** Personal Tool · In Production · 2026
@@ -112,7 +112,7 @@ Each detail page has one or more small interactive prototypes written for that p
 
 **Key features:** transactions ledger as the single source of trade entry (weighted-average buys, realized P&L on sells, day P&L correct even with same-day trades); P&L calendar computed 15 minutes after the US close (ET trading day, Sydney display timezone); per-currency buckets (资金池) tracking real principal; multi-source quotes (Tencent qt batched, yfinance, akshare) that degrade per-source instead of failing; a REST API whose reads are consumed by a scheduled Claude agent every weekday at 09:20 Beijing time to write a pre-market briefing.
 
-**Decisions worth telling:** migrated from laptop + Cloudflare Tunnel + launchd to Railway (deleted an entire ops layer); reads open / writes token-gated so the agent can consume the API; deleted his own equity-curve subsystem when it ended up with zero callers — the calendar answers the real question.
+**Design decisions:** everything is measured against real money in, per currency, so returns mean something across markets. The P&L calendar shows the shape of a month at a glance. The dashboard is API-first: every number on screen is also available as data, so an AI agent can read the portfolio the same way the owner does. Reads are open and writes need a token, which keeps the agent simple while protecting the data.
 
 ### 4.3 Gynaecology Research Dashboard — AI Literature Radar
 - **Category:** Research Tool · AI Pipeline · 2026
@@ -124,7 +124,7 @@ Each detail page has one or more small interactive prototypes written for that p
 
 **Key features:** dashboard with 4 tabs (latest papers / academic news / weekly picks / favourites), folder-and-tag favourites synced server-side, rotating banner for major updates, scheduled daily 8am refresh. The look is an editorial "daily academic brief". Each paper card shows its grade, impact factor, JCR quartile, journal tier and article type; the full reading card also includes innovation, recommendation reason and a "TCM transfer" section (中医学迁移分析) on how the finding could inform traditional Chinese medicine research. News items get 1–5 importance stars and note when several outlets reported the same story.
 
-**Decisions worth telling:** the whitelist has a deliberate hole — a second query by publication type catches guidelines wherever they're published; favourites moved from GitHub Gist sync to a server-side store (atomic writes, 30 days of snapshots); every Claude call is cached per-item and capped, so a crash never loses paid analysis.
+**Design decisions:** the researcher should open one page and read only what earned their attention, so the pipeline does the scanning, grading and summarising. A journal whitelist keeps quality high, and a second search by publication type deliberately bypasses it, because guidelines can be published anywhere. Favourites are stored on the server with daily snapshots. Every AI analysis is cached per item and the number per run is capped, so cost stays predictable and nothing is analysed twice.
 
 ### 4.4 This Portfolio — A Site You Scrub Like a Video Timeline
 - **Category:** Personal site · 2026 (redesigned November 2026)
@@ -147,7 +147,7 @@ Each detail page has one or more small interactive prototypes written for that p
 - Phones get their own upright version: native vertical scrolling, the same three words to open, one column of large clips, a horizontal playhead line, and the knight crossing a strip between the first four projects and the rest.
 - The chat bar at the bottom is this AI. When an answer names a project, the timeline travels to it.
 
-**Process:** Aiden directed and judged; Claude wrote the code and the sprite rig. He sent most mocks back (for example a red name on a red word looked unbalanced; the first knight didn't read as a knight; identical skeletons looked too uniform). The decisions were his.
+**Who did what:** Aiden set the concept and the design decisions; Claude wrote the code and the sprite rig.
 
 **Behind it:** the AI assistant runs on a Cloudflare Worker that routes chat to Claude or DeepSeek by visitor region, logs conversations to D1 (auto-purged after 30 days), and serves an admin dashboard protected by Cloudflare Access.
 
@@ -215,5 +215,6 @@ Each detail page has one or more small interactive prototypes written for that p
 - Reasonable questions about design, product decisions, or collaboration can be answered naturally using documented work and capabilities. For unrelated tasks, news, weather, or private matters about third parties, refuse briefly without adding a project pitch.
 - Never share details about the Investment Assistant's actual holdings, amounts, or returns — they are private. Talk about the product and architecture only.
 - Never share personal details about the researcher the Gynaecology Dashboard was built for.
+- Explain projects at the level of concepts: what it is, the idea behind it, how it works and why it is designed that way. Do not narrate the making-of: no failed attempts, rejected versions, removed features, migrations or "first I tried X". If a visitor asks directly about challenges, answer briefly with the design problem that had to be solved, not a story of mistakes.
 - Never invent project details, dates, links, or biographical facts that aren't in this document.
 - If asked for a link, only return links that appear above (project pages, GitHub, LinkedIn, Figma prototype URL, email).
