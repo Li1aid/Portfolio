@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="sh" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="30" stdDeviation="30" flood-color="#000" flood-opacity="0.55"/></filter>
+    <filter id="sh2" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#000" flood-opacity="0.45"/></filter>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a0a12"/><stop offset="1" stop-color="#15151f"/></linearGradient>
+    <radialGradient id="g1" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff" stop-opacity="0.14"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0V48" fill="none" stroke="#ffffff" stroke-opacity="0.05"/></pattern>
+    <clipPath id="wc"><rect x="0" y="0" width="1100" height="660" rx="20"/></clipPath>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="url(#grid)"/>
+  <circle cx="800" cy="500" r="640" fill="url(#g1)"/>
+  <g transform="translate(250 150)" filter="url(#sh)" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Helvetica Neue', sans-serif">
+    <rect x="0" y="0" width="1100" height="660" rx="20" fill="#0d0d15" stroke="#2a2a36" stroke-width="1.5"/>
+    <g clip-path="url(#wc)">
+      <rect x="0" y="0" width="1100" height="48" fill="#16161e"/>
+      <circle cx="24" cy="24" r="6" fill="#ff5f57"/><circle cx="44" cy="24" r="6" fill="#febc2e"/><circle cx="64" cy="24" r="6" fill="#28c840"/>
+      <rect x="400" y="13" width="300" height="22" rx="6" fill="#0a0a12"/>
+      <text x="550" y="28" text-anchor="middle" fill="#8e8e93" font-size="12" font-family="ui-monospace, 'SF Mono', Menlo, monospace">aidenyang.me</text>
+      <text x="60" y="170" fill="#f5f5f7" font-size="42" font-weight="700" letter-spacing="-1.5">Building products</text>
+      <text x="60" y="222" fill="#f5f5f7" font-size="42" font-weight="700" letter-spacing="-1.5">with clarity and purpose</text>
+      <text x="60" y="282" fill="#6e6e78" font-size="12" font-family="ui-monospace, 'SF Mono', Menlo, monospace" letter-spacing="3">DESIGN ENGINEER · SYDNEY</text>
+      <rect x="60" y="340" width="300" height="180" rx="14" fill="#16161e" stroke="#25252e"/>
+      <rect x="380" y="340" width="300" height="180" rx="14" fill="#16161e" stroke="#25252e"/>
+      <text x="80" y="500" fill="#8e8e93" font-size="13">Chunks</text>
+      <text x="400" y="500" fill="#8e8e93" font-size="13">Investment Assistant</text>
+      <!-- chat panel -->
+      <rect x="740" y="120" width="320" height="520" rx="18" fill="#141420" stroke="#2a2a38"/>
+      <rect x="740" y="120" width="320" height="50" rx="18" fill="#1b1b27"/><rect x="740" y="150" width="320" height="20" fill="#1b1b27"/>
+      <circle cx="766" cy="145" r="6" fill="#34c759"/>
+      <text x="782" y="150" fill="#f5f5f7" font-size="14" font-weight="600">Chat with AI Aiden</text>
+      <rect x="758" y="196" width="230" height="48" rx="14" fill="#23232f"/>
+      <text x="774" y="216" fill="#e6e6ec" font-size="13">Hi — ask me anything</text>
+      <text x="774" y="234" fill="#e6e6ec" font-size="13">about Aiden's work.</text>
+      <rect x="826" y="262" width="216" height="36" rx="14" fill="#007aff"/>
+      <text x="934" y="285" text-anchor="middle" fill="#fff" font-size="13">What did he build with Claude?</text>
+      <rect x="758" y="316" width="262" height="90" rx="14" fill="#23232f"/>
+      <text x="774" y="338" fill="#e6e6ec" font-size="13">Four products — a language app,</text>
+      <text x="774" y="356" fill="#e6e6ec" font-size="13">an investment tracker, a research</text>
+      <text x="774" y="374" fill="#e6e6ec" font-size="13">dashboard, and this site.</text>
+      <text x="774" y="392" fill="#e6e6ec" font-size="13">Want details on one?</text>
+      <rect x="758" y="582" width="284" height="40" rx="12" fill="#0a0a12" stroke="#2a2a38"/>
+      <text x="774" y="607" fill="#666" font-size="13">Ask anything…</text>
+    </g>
+  </g>
+</svg>

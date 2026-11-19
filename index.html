@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -130,533 +129,521 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Press+Start+2P&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js" defer></script>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="chat.css">
+
+
+<style>
+html,body{margin:0;height:100%;overflow:hidden;background:#EFEDE7}
+#tl-scroller{transition:bottom .45s cubic-bezier(.2,.8,.2,1)}
+html.chat-open #tl-scroller{bottom:348px !important}
+.cs-chat-wrap{position:absolute;left:0;right:0;bottom:0;z-index:6;padding:0 20px 20px;display:flex;justify-content:center;pointer-events:none}
+
+body{margin:0;background:#EFEDE7}
+a{color:#141414}a:hover{color:#141414}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes lift{from{transform:translateY(104%)}to{transform:translateY(0)}}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes write{from{clip-path:inset(-30% 100% -30% -5%)}to{clip-path:inset(-30% -5% -30% -5%)}}
+@keyframes draw{to{stroke-dashoffset:0}}
+.fade{animation:fade 1s ease .7s both}
+.write{animation:write 1.1s cubic-bezier(.6,0,.3,1) .5s both}
+.draw{animation:draw .7s cubic-bezier(.6,0,.2,1) 1.5s forwards}
+@keyframes nm{0%{stroke-dashoffset:var(--l);fill-opacity:0}62%{stroke-dashoffset:0;fill-opacity:0}100%{stroke-dashoffset:0;fill-opacity:1}}
+.nm{stroke-dasharray:var(--l);stroke-dashoffset:var(--l);fill-opacity:0;animation:nm 1.15s cubic-bezier(.5,0,.2,1) forwards}
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(-60px)}}
+.drift{animation:drift 14s ease-in-out infinite alternate}
+.lift{display:block;animation:lift 1.1s cubic-bezier(.2,.8,.2,1) both}
+.rule{transform-origin:left center;animation:grow 1.2s cubic-bezier(.6,0,.2,1) both}
+.strip{scrollbar-width:none}
+.strip::-webkit-scrollbar{display:none}
+.clip .shot img{filter:grayscale(calc(1 - var(--f, 0)))}
+.clip:hover .shot img{filter:none}
+.lnk:hover{opacity:.6}
+#ask::placeholder{color:#6A6862}
+@media (prefers-reduced-motion:reduce){.fade,.lift,.rule,.write,.drift{animation:none}.draw{animation:none;stroke-dashoffset:0}.nm{animation:none;stroke-dashoffset:0;fill-opacity:1}}
+</style>
 </head>
-
 <body>
-    <!-- Animated Background -->
-    <canvas id="particles-canvas"></canvas>
-    <div class="grid-background"></div>
+<div id="tl-root" style="--c1: #2247C9; --c2: #D9412C; --c3: #F2C12E; position: relative; height: 100vh; min-height: 560px; overflow: hidden; background: #EFEDE7; color: #141414; font-family: 'Inter Tight', 'Helvetica Neue', Helvetica, Arial, sans-serif">
 
-    <!-- Custom Cursor -->
-    <div class="cursor">
-        <div class="cursor-glow"></div>
-    </div>
-    <div class="cursor-dot"></div>
+<a id="tl-name" href="#tl-root" aria-label="Aiden Yang, back to start" style="position: absolute; left: 0; top: 0; z-index: 7; display: block; width: 720px; height: 72px; transform-origin: left top; transform: translate(51px, 58px) scale(0.78); text-decoration: none">
+<svg aria-hidden="true" width="720" height="72" viewBox="0 0 720 72" fill="#141414" stroke="#141414" stroke-width="1" stroke-linejoin="round" style="display: block; overflow: visible"><path class="nm" style="--l: 278; animation-delay: 0.30s" d="M0.7 59.4 31.6 13.3H51.6L82.8 59.4H63L58.5 52.4H25L20.5 59.4ZM51.5 41.6 41.7 26.5 32 41.6Z"></path><path class="nm" style="--l: 130; animation-delay: 0.40s" d="M87.5 13.3H105.5V59.4H87.5Z"></path><path class="nm" style="--l: 364; animation-delay: 0.50s" d="M166.3 13.3Q176 13.3 182.4 15.2Q188.7 17.1 192.3 20.3Q195.9 23.5 197.4 27.7Q198.9 31.8 198.9 36.4Q198.9 40.9 197.2 45Q195.5 49.2 191.8 52.4Q188 55.7 181.8 57.5Q175.5 59.4 166.3 59.4H114.5V13.3ZM132.5 45H165.6Q169.6 45 172.4 44.5Q175.2 43.9 176.9 42.8Q178.6 41.8 179.4 40.1Q180.1 38.5 180.1 36.4Q180.1 34.2 179.4 32.6Q178.6 31 176.9 29.9Q175.2 28.8 172.4 28.3Q169.6 27.7 165.6 27.7H132.5Z"></path><path class="nm" style="--l: 438; animation-delay: 0.60s" d="M224.1 40V45.7H278.8V59.4H206.1V13.3H278.6V27H224.1V32.8H268.7V40Z"></path><path class="nm" style="--l: 332; animation-delay: 0.70s" d="M351.5 41.3V13.3H369.5V59.4H351.5L304 31.9V59.4H286V13.3H304Z"></path><path class="nm" style="--l: 231; animation-delay: 0.80s" d="M469.2 13.3 440.1 47.7V59.4H422.1V47.7L392.9 13.3H414.1L431.1 34.8L448 13.3Z"></path><path class="nm" style="--l: 278; animation-delay: 0.90s" d="M455.9 59.4 486.8 13.3H506.8L538 59.4H518.2L513.6 52.4H480.2L475.7 59.4ZM506.7 41.6 496.9 26.5 487.1 41.6Z"></path><path class="nm" style="--l: 332; animation-delay: 1.00s" d="M607.1 41.3V13.3H625.1V59.4H607.1L559.6 31.9V59.4H541.6V13.3H559.6Z"></path><path class="nm" style="--l: 455; animation-delay: 1.10s" d="M675 60.8Q665.6 60.8 657.8 59.7Q650 58.6 644.3 55.9Q638.6 53.2 635.4 48.5Q632.3 43.8 632.3 36.7Q632.3 29.6 635.5 24.8Q638.6 20 644.6 17.2Q650.5 14.3 658.8 13.1Q667 11.9 677.2 11.9Q690.5 11.9 699.5 14.3Q708.6 16.8 713.3 21.3Q718.1 25.8 718.4 32H699.7Q698.8 30.4 696.5 28.9Q694.2 27.4 689.6 26.5Q685 25.6 677.2 25.6Q667.9 25.6 662.2 26.7Q656.4 27.8 653.8 30.2Q651.1 32.7 651.1 36.7Q651.1 40.2 653.8 42.6Q656.6 44.9 662.6 46Q668.7 47.2 678.6 47.2Q685.6 47.2 690.7 46.5Q695.9 45.9 700.1 44.6Q702.3 44 704.4 43.1H681V35.6H719.4V59.4H705.3Q705.3 57.2 705.9 54.5Q706.5 51.8 707.4 48.7Q707.6 48 707.8 47.3Q703.7 53 697 56.4Q688.2 60.8 675 60.8Z"></path></svg>
+</a>
 
-    <!-- Progress Indicator -->
-    <div class="scroll-progress">
-        <div class="scroll-progress-bar"></div>
-    </div>
+<header class="fade" style="position: absolute; left: 0; right: 0; top: 0; height: 56px; z-index: 6; box-sizing: border-box; padding: 0 20px; display: flex; justify-content: center; align-items: center">
+<nav id="tl-mini" aria-label="Timeline" style="position: relative; display: flex; align-items: center; height: 44px">
+<button type="button" data-i="0" aria-label="Start" style="width: 20px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><span style="display: block; width: 10px; height: 10px; border-radius: 50%; background: #141414; pointer-events: none"></span></button>
+<button type="button" data-i="1" aria-label="VividXperience" style="width: 20px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><span style="display: block; width: 10px; height: 10px; background: var(--c1); pointer-events: none"></span></button>
+<button type="button" data-i="2" aria-label="ANNO" style="width: 20px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><span style="display: block; width: 10px; height: 10px; background: var(--c1); pointer-events: none"></span></button>
+<button type="button" data-i="3" aria-label="Whisperfield" style="width: 20px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><span style="display: block; width: 10px; height: 10px; background: var(--c1); pointer-events: none"></span></button>
+<button type="button" data-i="4" aria-label="CoLab" style="width: 20px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><span style="display: block; width: 10px; height: 10px; background: var(--c1); pointer-events: none"></span></button>
+<button type="button" data-i="5" aria-label="Chunks" style="width: 20px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><span style="display: block; width: 10px; height: 10px; background: var(--c2); pointer-events: none"></span></button>
+<button type="button" data-i="6" aria-label="Investment Assistant" style="width: 20px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><span style="display: block; width: 10px; height: 10px; background: var(--c2); pointer-events: none"></span></button>
+<button type="button" data-i="7" aria-label="Gyn Research Dashboard" style="width: 20px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><span style="display: block; width: 10px; height: 10px; background: var(--c2); pointer-events: none"></span></button>
+<button type="button" data-i="8" aria-label="This Portfolio" style="width: 20px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><span style="display: block; width: 10px; height: 10px; background: var(--c2); pointer-events: none"></span></button>
+<button type="button" data-i="9" aria-label="Contact" style="width: 20px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="12" height="11" viewBox="0 0 12 11" style="display: block; pointer-events: none"><path d="M6 1L11 10H1Z" fill="var(--c3)" stroke="#141414" stroke-width="1" stroke-linejoin="miter"></path></svg></button>
+<span id="tl-track" aria-hidden="true" style="position: absolute; left: 1px; top: 13px; width: 18px; height: 18px; box-sizing: border-box; border: 1.5px solid #141414; pointer-events: none; transform: translateX(0px)"></span>
+</nav>
+</header>
 
-    <!-- Page Navigation Dots -->
-    <nav class="page-nav">
-        <a href="#hero" class="page-nav-dot active" data-label="Home"></a>
-        <a href="#about" class="page-nav-dot" data-label="About"></a>
-        <a href="#showcase" class="page-nav-dot" data-label="Works"></a>
-        <a href="#skills" class="page-nav-dot" data-label="Skills"></a>
-        <a href="#contact" class="page-nav-dot" data-label="Contact"></a>
-    </nav>
+<main id="tl-scroller" class="strip" aria-label="Works by Aiden Yang, 2024 to now. Scroll sideways." style="position: absolute; left: 0; right: 0; top: 56px; bottom: 88px; overflow-x: auto; overflow-y: hidden; transition: bottom .45s cubic-bezier(.2,.8,.2,1)">
+<div style="display: flex; width: max-content; height: 100%">
 
-    <!-- Navigation -->
-    <nav class="main-nav">
-        <div class="nav-inner">
-            <div class="nav-logo">
-                <span class="logo-text">A.</span>
-            </div>
-            <div class="nav-links">
-                <a href="#hero" class="nav-link">
-                    <span class="nav-link-text" data-en="Home" data-zh="首页">Home</span>
-                </a>
-                <a href="#about" class="nav-link">
-                    <span class="nav-link-text" data-en="About" data-zh="关于">About</span>
-                </a>
-                <a href="#showcase" class="nav-link">
-                    <span class="nav-link-text" data-en="Works" data-zh="作品">Works</span>
-                </a>
-                <a href="#skills" class="nav-link">
-                    <span class="nav-link-text" data-en="Skills" data-zh="技能">Skills</span>
-                </a>
-                <a href="#contact" class="nav-link">
-                    <span class="nav-link-text" data-en="Contact" data-zh="联系">Contact</span>
-                </a>
-            </div>
-            <div class="nav-right">
-                <button class="lang-toggle" id="langToggle">
-                    <span class="lang-option active" data-lang="en">EN</span>
-                    <span class="lang-divider">/</span>
-                    <span class="lang-option" data-lang="zh">中</span>
-                </button>
-                <button class="nav-burger" id="navBurger" aria-label="Menu" aria-expanded="false">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </div>
-        </div>
-    </nav>
+<div id="tl-stage" style="--z: 1.09; --iz: 0.917; --po: 0; --cy: calc(50vh - 72px); position: sticky; left: 0; flex: 0 0 auto; width: 100vw; height: 100%; overflow: hidden">
 
-    <!-- Hero Section (Transparent BG) -->
-    <section class="hero" id="hero">
-        <canvas id="matrix-canvas"></canvas>
-        <div class="hero-container">
-            <h1 class="hero-main-title">
-                <span class="title-line-1" data-en='Building <span class="emphasis-text">products</span>' data-zh='打造<span class="emphasis-text">产品</span>'>Building <span class="emphasis-text">products</span></span>
-                <span class="title-line-2" data-en='with <span class="emphasis-text">clarity</span> and <span class="emphasis-text">purpose</span>' data-zh='思路<span class="emphasis-text">清晰</span>，<span class="emphasis-text">目的</span>明确'>with <span class="emphasis-text">clarity</span> and <span class="emphasis-text">purpose</span></span>
-            </h1>
+<div id="tl-world" style="position: absolute; left: 0; top: 0; width: 0; height: 0; transform-origin: 0 0; transform: translate(50vw, calc(50vh - 72px)) scale(1.09) translate(-644px, -242px)">
 
-            <div class="hero-info-grid">
-                <div class="info-column">
-                    <div class="info-label" data-en="ROLE" data-zh="身份">ROLE</div>
-                    <div class="info-content" data-en="Design Engineer" data-zh="Design Engineer">Design Engineer</div>
-                </div>
-                <div class="info-column">
-                    <div class="info-label" data-en="FOCUS" data-zh="方向">FOCUS</div>
-                    <div class="info-content" data-en="Product Design &<br>VibeCoding" data-zh="产品设计 &<br>VibeCoding">Product Design &<br>VibeCoding</div>
-                </div>
-                <div class="info-column">
-                    <div class="info-label" data-en="AVAILABILITY" data-zh="当前状态">AVAILABILITY</div>
-                    <div class="info-content" id="availability-content">
-                        <span class="status-dot available" id="status-dot"></span> <span id="status-text" data-en="Open for new projects" data-zh="接新项目中">Open for new projects</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- About Section (Dark Transparent Grey Background) -->
-    <section class="about bg-medium" id="about">
-        <div class="about-container">
-            <div class="about-content">
-                <div class="about-avatar">
-                    <img src="Assets/selfie.png" alt="Xuejian (Aiden) Yang · 杨雪健 — Sydney-based design engineer">
-                    <div class="avatar-glow"></div>
-                </div>
-                <div class="about-text">
-                    <h2 class="about-title" data-en="ABOUT ME" data-zh="关于我">ABOUT ME</h2>
-                    <p class="about-signature" data-en="Xuejian Yang · 杨雪健 (Aiden) — Sydney, Australia" data-zh="杨雪健 · Xuejian Yang (Aiden) — 澳大利亚悉尼">Xuejian Yang · 杨雪健 (Aiden) — Sydney, Australia</p>
-                    <p class="about-description" data-en="I'm Aiden Yang, a design engineer who ships. Since 2025 I've designed, built and deployed four AI products solo — from a language-learning app to an investment dashboard in production." data-zh="我是杨雪健（Aiden），一个真正把产品做出来的 Design Engineer。2025 年至今，我一个人完成了四个 AI 产品的设计、开发和上线——从语言学习应用，到正在线上跑的投资面板。">
-                        <span class="about-line" data-en="I'm Aiden Yang," data-zh="我是杨雪健（Aiden），">I'm <span class="keyword">Aiden Yang</span>,</span>
-                        <span class="about-line" data-en="a design engineer who ships." data-zh="一个真正把产品做出来的 Design Engineer。">a <span class="keyword">design engineer</span> who ships.</span>
-                        <span class="about-line" data-en="Since 2025 I've designed, built and" data-zh="2025 年至今，我一个人完成了">Since 2025 I've designed, built and</span>
-                        <span class="about-line" data-en="deployed four AI products solo —" data-zh="四个 AI 产品的设计、开发和上线——">deployed <span class="keyword">four AI products</span> solo —</span>
-                        <span class="about-line" data-en="from a language-learning app to an" data-zh="从语言学习应用，">from a language-learning app to an</span>
-                        <span class="about-line" data-en="investment dashboard in production." data-zh="到正在线上跑的投资面板。">investment dashboard <span class="keyword">in production</span>.</span>
-                    </p>
-                    <p class="about-description" data-en="Before design, I grew a Weibo account to 200K followers and ran overseas content at Camera360 — I know what makes people stop scrolling, and I build that instinct into products." data-zh="做设计之前，我把一个微博账号做到 20 万粉丝，也在 Camera360 负责过海外内容。我知道什么能让人停下刷屏的手指，也会把这种直觉放进产品里。">
-                        <span class="about-line" data-en="Before design, I grew a Weibo account" data-zh="做设计之前，我把一个微博账号">Before design, I grew a Weibo account</span>
-                        <span class="about-line" data-en="to 200K followers and ran overseas" data-zh="做到 20 万粉丝，也在 Camera360">to <span class="keyword">200K followers</span> and ran overseas</span>
-                        <span class="about-line" data-en="content at Camera360 — I know what" data-zh="负责过海外内容。我知道什么">content at Camera360 — I know what</span>
-                        <span class="about-line" data-en="makes people stop scrolling, and I" data-zh="能让人停下刷屏的手指，">makes people <span class="keyword">stop scrolling</span>, and I</span>
-                        <span class="about-line" data-en="build that instinct into products." data-zh="也会把这种直觉放进产品里。">build that instinct into products.</span>
-                    </p>
-                </div>
-            </div>
 
-            <!-- Experience Grid: Philosophy + Timeline -->
-            <div class="experience-grid">
-                <!-- Left Column: Design Philosophy -->
-                <div class="philosophy-section">
-                    <h3 class="philosophy-title" data-en="DESIGN PHILOSOPHY" data-zh="设计理念">DESIGN PHILOSOPHY</h3>
+<span aria-hidden="true" style="position: absolute; left: 1260px; top: -48px; width: 2565px; height: 8px; background: repeating-linear-gradient(90deg, #141414 0px, #141414 1px, transparent 1px, transparent 26.1px)"></span>
+<span aria-hidden="true" style="position: absolute; left: 1260px; top: -62px; width: 1px; height: 22px; background: #141414"></span>
+<span style="position: absolute; left: 1267px; top: -64px; font-size: 12px; font-weight: 500; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: translateY(-100%) scale(var(--iz))">2024</span>
+<span aria-hidden="true" style="position: absolute; left: 2219px; top: -62px; width: 1px; height: 22px; background: #141414"></span>
+<span style="position: absolute; left: 2226px; top: -64px; font-size: 12px; font-weight: 500; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: translateY(-100%) scale(var(--iz))">2025</span>
+<span aria-hidden="true" style="position: absolute; left: 2552px; top: -62px; width: 1px; height: 22px; background: #141414"></span>
+<span style="position: absolute; left: 2559px; top: -64px; font-size: 12px; font-weight: 500; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: translateY(-100%) scale(var(--iz))">2026</span>
+<span aria-hidden="true" style="position: absolute; left: 3824px; top: -62px; width: 1px; height: 22px; background: #141414"></span>
+<span style="position: absolute; left: 3831px; top: -64px; font-size: 12px; font-weight: 500; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: translateY(-100%) scale(var(--iz))">Now</span>
 
-                    <div class="philosophy-item">
-                        <div class="philosophy-number">01</div>
-                        <div class="philosophy-content">
-                            <h4 class="philosophy-keyword" data-en="Practicality" data-zh="务实">Practicality</h4>
-                            <p class="philosophy-desc" data-en="Solving real problems with tools that genuinely improve everyday life." data-zh="解决真问题，做真正能让日常生活变好的工具。">Solving real problems with tools that genuinely improve everyday life.</p>
-                        </div>
-                    </div>
+<span data-pin="1" data-lane="1" data-side="pre" data-a="0" data-b="1260" aria-hidden="true" style="position: absolute; left: 0; top: 0; height: 220px; overflow: hidden; pointer-events: none; transform: translateX(20px)"><span class="lift" style="animation-delay: .1s; margin-top: 2px; height: 220px; line-height: 220px; padding-right: 0.05em; font-size: 288px; font-weight: 600; letter-spacing: -0.04em; color: var(--c1); white-space: nowrap">DESIGN</span></span>
+<span data-pin="1" data-lane="2" data-side="pre" data-a="0" data-b="2552" aria-hidden="true" style="position: absolute; left: 0; top: 264px; height: 220px; overflow: hidden; pointer-events: none; transform: translateX(20px)"><span class="lift" style="animation-delay: .25s; margin-top: 2px; height: 220px; line-height: 220px; padding-right: 0.05em; font-size: 288px; font-weight: 600; letter-spacing: -0.04em; color: var(--c2); white-space: nowrap">PRODUCTS</span></span>
 
-                    <div class="philosophy-item">
-                        <div class="philosophy-number">02</div>
-                        <div class="philosophy-content">
-                            <h4 class="philosophy-keyword" data-en="AI-Driven" data-zh="AI 驱动">AI-Driven</h4>
-                            <p class="philosophy-desc" data-en="Intelligence as an extension of design capability, not a gimmick." data-zh="AI 是设计能力的延伸，不是噱头。">Intelligence as an extension of design capability, not a gimmick.</p>
-                        </div>
-                    </div>
+<span aria-hidden="true" style="position: absolute; left: 2620px; top: 0; width: 1304px; height: 220px; overflow: hidden; pointer-events: none; -webkit-mask-image: linear-gradient(90deg, transparent 0px, #000 80px, #000 1150px, transparent 1290px); mask-image: linear-gradient(90deg, transparent 0px, #000 80px, #000 1150px, transparent 1290px)">
+<span id="tl-far" style="position: absolute; left: -1320px; top: 0; width: 3944px; height: 220px; display: block; transform: translateX(0px)"><svg class="drift" viewBox="0 0 3944 220" shape-rendering="crispEdges" style="display: block; width: 3944px; height: 220px"><path d="M80 60h20v10h-20zM60 70h60v10h-60zM510 60h40v10h-40zM490 70h80v10h-80zM480 80h100v10h-100zM790 60h40v10h-40zM770 70h80v10h-80zM760 80h100v10h-100zM1200 40h20v10h-20zM1180 50h60v10h-60zM1490 80h40v10h-40zM1470 90h80v10h-80zM1460 100h100v10h-100zM1830 60h40v10h-40zM1810 70h80v10h-80zM1800 80h100v10h-100zM2100 60h20v10h-20zM2080 70h60v10h-60zM2530 80h40v10h-40zM2510 90h80v10h-80zM2500 100h100v10h-100zM2870 60h40v10h-40zM2850 70h80v10h-80zM2840 80h100v10h-100zM3200 40h20v10h-20zM3180 50h60v10h-60zM3480 60h20v10h-20zM3460 70h60v10h-60zM3770 20h40v10h-40zM3750 30h80v10h-80zM3740 40h100v10h-100z" fill="#D8D4CA"></path></svg></span>
+<span id="tl-mid" style="position: absolute; left: -750px; top: 0; width: 2804px; height: 220px; display: block; transform: translateX(0px)"><svg viewBox="0 0 2804 220" shape-rendering="crispEdges" style="display: block; width: 2804px; height: 220px"><path d="M50 140h20v10h-20zM50 150h20v10h-20zM40 160h40v10h-40zM40 170h40v10h-40zM30 180h60v10h-60zM30 190h60v10h-60zM50 200h20v20h-20zM280 140h20v10h-20zM270 150h40v10h-40zM260 160h60v10h-60zM260 170h60v10h-60zM270 180h40v10h-40zM280 190h20v30h-20zM550 140h20v10h-20zM540 150h40v10h-40zM530 160h60v10h-60zM530 170h60v10h-60zM540 180h40v10h-40zM550 190h20v30h-20zM740 140h20v10h-20zM730 150h40v10h-40zM720 160h60v10h-60zM720 170h60v10h-60zM730 180h40v10h-40zM740 190h20v30h-20zM890 140h20v10h-20zM880 150h40v10h-40zM870 160h60v10h-60zM870 170h60v10h-60zM880 180h40v10h-40zM890 190h20v30h-20zM1160 140h20v10h-20zM1160 150h20v10h-20zM1150 160h40v10h-40zM1150 170h40v10h-40zM1140 180h60v10h-60zM1140 190h60v10h-60zM1160 200h20v20h-20zM1390 140h20v10h-20zM1380 150h40v10h-40zM1370 160h60v10h-60zM1370 170h60v10h-60zM1380 180h40v10h-40zM1390 190h20v30h-20zM1580 140h20v10h-20zM1580 150h20v10h-20zM1570 160h40v10h-40zM1570 170h40v10h-40zM1560 180h60v10h-60zM1560 190h60v10h-60zM1580 200h20v20h-20zM1800 170h20v10h-20zM1790 180h40v10h-40zM1790 190h40v10h-40zM1800 200h20v20h-20zM2000 140h20v10h-20zM1990 150h40v10h-40zM1980 160h60v10h-60zM1980 170h60v10h-60zM1990 180h40v10h-40zM2000 190h20v30h-20zM2230 140h20v10h-20zM2230 150h20v10h-20zM2220 160h40v10h-40zM2220 170h40v10h-40zM2210 180h60v10h-60zM2210 190h60v10h-60zM2230 200h20v20h-20zM2370 170h20v10h-20zM2360 180h40v10h-40zM2360 190h40v10h-40zM2370 200h20v20h-20zM2610 140h20v10h-20zM2610 150h20v10h-20zM2600 160h40v10h-40zM2600 170h40v10h-40zM2590 180h60v10h-60zM2590 190h60v10h-60zM2610 200h20v20h-20z" fill="#BDB9AE"></path></svg></span>
+<span style="position: absolute; left: 0; top: 214px; width: 1304px; height: 3px; background: repeating-linear-gradient(90deg, #141414 0px, #141414 8px, transparent 8px, transparent 71px), repeating-linear-gradient(90deg, transparent 0px, transparent 30px, #141414 30px, #141414 34px, transparent 34px, transparent 113px)"></span>
+</span>
+<span data-sk="1" data-cx="86" aria-hidden="true" style="position: absolute; left: 2894px; top: 82px; width: 141px; height: 141px; pointer-events: none; clip-path: inset(-300px -400px 0px -400px)">
+<span data-sf="body" style="position: absolute; left: 0; top: 0; width: 141px; height: 141px; display: block; transform-origin: 100px 138px"><svg viewBox="0 0 47 47" shape-rendering="crispEdges" style="position: absolute; left: 0; top: 0; width: 141px; height: 141px; overflow: visible"><g data-sf="s0"><path d="M37 22h1v1h-1zM36 23h2v1h-2zM36 24h1v1h-1zM35 25h2v1h-2zM35 26h2v1h-2zM35 27h1v1h-1zM34 28h2v1h-2zM34 29h2v1h-2zM34 30h1v1h-1zM34 31h1v1h-1z" fill="#F3F1EB"></path><path d="M22 27h1v1h-1zM21 28h3v1h-3zM20 29h5v1h-5zM20 30h1v1h-1zM23 30h2v1h-2zM20 31h1v1h-1zM23 31h2v1h-2zM20 32h5v1h-5z" fill="var(--c1)"></path><path d="M22 30h1v1h-1z" fill="#FAF8F2"></path><path d="M26 15h2v1h-2zM21 30h1v1h-1zM22 31h1v1h-1z" fill="#D2CFC5"></path><path d="M25 14h5v1h-5zM24 15h2v1h-2zM28 15h2v1h-2zM22 16h9v1h-9zM21 26h3v1h-3zM20 27h2v1h-2zM23 27h2v1h-2zM20 28h1v1h-1zM24 28h1v1h-1zM19 29h1v1h-1zM25 29h1v1h-1zM19 30h1v1h-1zM25 30h1v1h-1zM19 31h1v1h-1zM21 31h1v1h-1zM25 31h1v1h-1zM33 31h1v1h-1zM19 32h1v1h-1zM25 32h1v1h-1zM33 32h4v1h-4zM19 33h1v1h-1zM25 33h1v1h-1zM36 33h2v1h-2zM20 34h1v1h-1zM24 34h1v1h-1zM20 35h2v1h-2zM23 35h2v1h-2zM21 36h3v1h-3z" fill="#8C8A84"></path><path d="M33 33h2v1h-2zM33 34h2v1h-2zM34 35h1v1h-1z" fill="#6E695F"></path><path d="M24 18h7v1h-7zM24 19h1v1h-1zM27 19h4v1h-4zM24 20h1v1h-1zM27 20h3v1h-3zM25 21h2v1h-2zM28 21h2v1h-2zM25 22h1v1h-1zM27 22h1v1h-1zM29 22h1v1h-1zM26 23h3v1h-3zM29 25h3v1h-3zM25 26h4v1h-4zM30 26h2v1h-2zM26 27h2v1h-2zM30 27h2v1h-2zM28 28h4v1h-4zM30 29h2v1h-2zM27 30h5v1h-5zM30 31h1v1h-1zM28 32h3v1h-3zM29 33h2v1h-2zM29 34h2v1h-2zM27 35h5v1h-5zM27 36h2v1h-2zM31 36h1v1h-1zM27 38h2v1h-2zM27 39h2v1h-2zM27 40h2v1h-2zM27 41h2v1h-2zM27 42h2v1h-2zM27 43h2v1h-2zM27 44h2v1h-2zM25 45h4v1h-4z" fill="#F8F6F0"></path><path d="M38 22h1v1h-1zM38 23h1v1h-1zM37 24h2v1h-2zM37 25h1v1h-1zM37 26h1v1h-1zM36 27h2v1h-2zM36 28h1v1h-1zM36 29h1v1h-1zM35 30h2v1h-2zM35 31h1v1h-1z" fill="#BDBAB1"></path><path d="M20 33h5v1h-5zM21 34h3v1h-3zM22 35h1v1h-1z" fill="var(--c1)"></path><path d="M20 33h5v1h-5zM21 34h3v1h-3zM22 35h1v1h-1z" fill="#000000" fill-opacity="0.3"></path><path d="M30 15h1v1h-1zM31 16h2v1h-2z" fill="#5E5C57"></path><path d="M31 18h1v1h-1zM31 19h1v1h-1zM30 20h2v1h-2zM30 21h1v1h-1zM30 22h1v1h-1zM29 23h1v1h-1zM32 26h1v1h-1zM32 27h1v1h-1zM34 27h1v1h-1zM32 28h1v1h-1zM32 29h1v1h-1zM32 30h1v1h-1zM31 31h1v1h-1zM31 32h1v1h-1zM35 33h1v1h-1zM32 35h1v1h-1zM32 36h1v1h-1zM30 37h1v1h-1zM30 38h2v1h-2zM31 39h2v1h-2zM31 40h2v1h-2zM31 41h2v1h-2zM31 42h2v1h-2zM32 43h2v1h-2zM32 44h2v1h-2zM30 45h4v1h-4z" fill="#CFCBC0"></path><path d="M25 13h5v1h-5zM24 14h1v1h-1zM30 14h1v1h-1zM22 15h2v1h-2zM31 15h2v1h-2zM21 16h1v1h-1zM33 16h1v1h-1zM22 17h11v1h-11zM23 18h1v1h-1zM32 18h1v1h-1zM23 19h1v1h-1zM25 19h2v1h-2zM32 19h1v1h-1zM23 20h1v1h-1zM25 20h2v1h-2zM32 20h1v1h-1zM24 21h1v1h-1zM27 21h1v1h-1zM31 21h1v1h-1zM37 21h2v1h-2zM24 22h1v1h-1zM26 22h1v1h-1zM28 22h1v1h-1zM31 22h1v1h-1zM36 22h1v1h-1zM39 22h1v1h-1zM25 23h1v1h-1zM30 23h1v1h-1zM35 23h1v1h-1zM39 23h1v1h-1zM26 24h6v1h-6zM35 24h1v1h-1zM39 24h1v1h-1zM21 25h8v1h-8zM32 25h3v1h-3zM38 25h1v1h-1zM20 26h1v1h-1zM24 26h1v1h-1zM29 26h1v1h-1zM33 26h2v1h-2zM38 26h1v1h-1zM19 27h1v1h-1zM25 27h1v1h-1zM28 27h2v1h-2zM33 27h1v1h-1zM38 27h1v1h-1zM19 28h1v1h-1zM25 28h3v1h-3zM33 28h1v1h-1zM37 28h1v1h-1zM18 29h1v1h-1zM26 29h4v1h-4zM33 29h1v1h-1zM37 29h1v1h-1zM18 30h1v1h-1zM26 30h1v1h-1zM33 30h1v1h-1zM37 30h1v1h-1zM18 31h1v1h-1zM26 31h4v1h-4zM32 31h1v1h-1zM36 31h1v1h-1zM18 32h1v1h-1zM26 32h2v1h-2zM32 32h1v1h-1zM37 32h1v1h-1zM18 33h1v1h-1zM26 33h1v1h-1zM28 33h1v1h-1zM31 33h2v1h-2zM38 33h1v1h-1zM19 34h1v1h-1zM25 34h1v1h-1zM27 34h2v1h-2zM31 34h2v1h-2zM35 34h3v1h-3zM19 35h1v1h-1zM25 35h2v1h-2zM33 35h1v1h-1zM35 35h1v1h-1zM20 36h1v1h-1zM24 36h1v1h-1zM26 36h1v1h-1zM29 36h2v1h-2zM33 36h2v1h-2zM21 37h3v1h-3zM26 37h4v1h-4zM31 37h2v1h-2zM26 38h1v1h-1zM29 38h1v1h-1zM32 38h1v1h-1zM26 39h1v1h-1zM29 39h2v1h-2zM33 39h1v1h-1zM26 40h1v1h-1zM29 40h2v1h-2zM33 40h1v1h-1zM26 41h1v1h-1zM29 41h2v1h-2zM33 41h1v1h-1zM26 42h1v1h-1zM29 42h2v1h-2zM33 42h1v1h-1zM26 43h1v1h-1zM29 43h1v1h-1zM31 43h1v1h-1zM34 43h1v1h-1zM25 44h2v1h-2zM29 44h3v1h-3zM34 44h1v1h-1zM24 45h1v1h-1zM29 45h1v1h-1zM34 45h1v1h-1zM25 46h4v1h-4zM30 46h4v1h-4z" fill="#141414"></path></g><g data-sf="s1" style="display: none"><path d="M30 10h2v1h-2zM30 11h2v1h-2zM31 12h1v1h-1zM31 13h1v1h-1zM31 14h2v1h-2zM33 18h1v1h-1z" fill="#F3F1EB"></path><path d="M19 24h3v1h-3zM18 25h5v1h-5zM18 26h5v1h-5zM18 27h1v1h-1zM21 27h2v1h-2zM18 28h1v1h-1zM21 28h2v1h-2z" fill="var(--c1)"></path><path d="M20 27h1v1h-1z" fill="#FAF8F2"></path><path d="M26 15h2v1h-2zM19 27h1v1h-1zM20 28h1v1h-1z" fill="#D2CFC5"></path><path d="M25 14h5v1h-5zM24 15h2v1h-2zM28 15h2v1h-2zM22 16h9v1h-9zM35 18h2v1h-2zM33 19h3v1h-3zM19 23h3v1h-3zM18 24h1v1h-1zM22 24h1v1h-1zM17 25h1v1h-1zM23 25h1v1h-1zM17 26h1v1h-1zM23 26h1v1h-1zM17 27h1v1h-1zM23 27h1v1h-1zM17 28h1v1h-1zM19 28h1v1h-1zM23 28h1v1h-1zM17 29h1v1h-1zM23 29h1v1h-1zM17 30h1v1h-1zM23 30h1v1h-1zM18 31h1v1h-1zM22 31h1v1h-1zM19 32h3v1h-3z" fill="#8C8A84"></path><path d="M33 20h2v1h-2zM33 21h2v1h-2zM34 22h2v1h-2z" fill="#6E695F"></path><path d="M24 18h7v1h-7zM24 19h1v1h-1zM27 19h4v1h-4zM24 20h1v1h-1zM27 20h3v1h-3zM25 21h2v1h-2zM28 21h2v1h-2zM25 22h1v1h-1zM27 22h1v1h-1zM29 22h1v1h-1zM23 23h2v1h-2zM24 24h3v1h-3zM28 24h1v1h-1zM25 25h3v1h-3zM30 25h2v1h-2zM26 26h3v1h-3zM30 26h2v1h-2zM25 27h1v1h-1zM30 27h2v1h-2zM25 28h7v1h-7zM25 29h1v1h-1zM30 29h2v1h-2zM26 30h6v1h-6zM30 31h1v1h-1zM28 32h3v1h-3zM29 33h2v1h-2zM29 34h2v1h-2zM27 35h5v1h-5zM27 36h2v1h-2zM31 36h1v1h-1zM26 38h3v1h-3zM26 39h2v1h-2zM26 40h2v1h-2zM26 41h2v1h-2zM26 42h2v1h-2zM26 43h2v1h-2zM26 44h2v1h-2zM24 45h4v1h-4z" fill="#F8F6F0"></path><path d="M31 8h1v1h-1zM31 9h1v1h-1zM32 10h1v1h-1zM32 11h1v1h-1zM32 12h2v1h-2zM32 13h2v1h-2zM33 14h1v1h-1zM33 15h1v1h-1zM34 16h1v1h-1zM33 17h2v1h-2zM34 18h1v1h-1z" fill="#BDBAB1"></path><path d="M18 29h5v1h-5zM18 30h5v1h-5zM19 31h3v1h-3z" fill="var(--c1)"></path><path d="M18 29h5v1h-5zM18 30h5v1h-5zM19 31h3v1h-3z" fill="#000000" fill-opacity="0.3"></path><path d="M30 15h1v1h-1zM31 16h2v1h-2z" fill="#5E5C57"></path><path d="M31 18h1v1h-1zM31 19h1v1h-1zM30 20h2v1h-2zM30 21h1v1h-1zM32 21h1v1h-1zM30 22h1v1h-1zM29 24h1v1h-1zM32 26h1v1h-1zM32 27h1v1h-1zM32 28h1v1h-1zM32 29h1v1h-1zM32 30h1v1h-1zM31 31h1v1h-1zM31 32h1v1h-1zM32 35h1v1h-1zM32 36h1v1h-1zM30 37h1v1h-1zM31 38h2v1h-2zM31 39h2v1h-2zM32 40h2v1h-2zM32 41h2v1h-2zM33 42h2v1h-2zM33 43h3v1h-3zM34 44h2v1h-2zM32 45h4v1h-4z" fill="#CFCBC0"></path><path d="M31 7h1v1h-1zM30 8h1v1h-1zM32 8h1v1h-1zM30 9h1v1h-1zM32 9h1v1h-1zM29 10h1v1h-1zM33 10h1v1h-1zM29 11h1v1h-1zM33 11h1v1h-1zM30 12h1v1h-1zM34 12h1v1h-1zM25 13h6v1h-6zM34 13h1v1h-1zM24 14h1v1h-1zM30 14h1v1h-1zM34 14h1v1h-1zM22 15h2v1h-2zM31 15h2v1h-2zM34 15h1v1h-1zM21 16h1v1h-1zM33 16h1v1h-1zM35 16h1v1h-1zM22 17h11v1h-11zM35 17h2v1h-2zM23 18h1v1h-1zM32 18h1v1h-1zM37 18h1v1h-1zM23 19h1v1h-1zM25 19h2v1h-2zM32 19h1v1h-1zM36 19h1v1h-1zM23 20h1v1h-1zM25 20h2v1h-2zM32 20h1v1h-1zM35 20h1v1h-1zM24 21h1v1h-1zM27 21h1v1h-1zM31 21h1v1h-1zM35 21h1v1h-1zM19 22h3v1h-3zM23 22h2v1h-2zM26 22h1v1h-1zM28 22h1v1h-1zM31 22h3v1h-3zM36 22h1v1h-1zM18 23h1v1h-1zM22 23h1v1h-1zM25 23h7v1h-7zM34 23h2v1h-2zM17 24h1v1h-1zM23 24h1v1h-1zM27 24h1v1h-1zM30 24h2v1h-2zM16 25h1v1h-1zM24 25h1v1h-1zM28 25h2v1h-2zM32 25h1v1h-1zM16 26h1v1h-1zM24 26h2v1h-2zM29 26h1v1h-1zM33 26h1v1h-1zM16 27h1v1h-1zM24 27h1v1h-1zM26 27h4v1h-4zM33 27h1v1h-1zM16 28h1v1h-1zM24 28h1v1h-1zM33 28h1v1h-1zM16 29h1v1h-1zM24 29h1v1h-1zM26 29h4v1h-4zM33 29h1v1h-1zM16 30h1v1h-1zM24 30h2v1h-2zM33 30h1v1h-1zM17 31h1v1h-1zM23 31h1v1h-1zM26 31h4v1h-4zM32 31h1v1h-1zM18 32h1v1h-1zM22 32h1v1h-1zM27 32h1v1h-1zM32 32h1v1h-1zM19 33h3v1h-3zM28 33h1v1h-1zM31 33h1v1h-1zM27 34h2v1h-2zM31 34h2v1h-2zM26 35h1v1h-1zM33 35h1v1h-1zM26 36h1v1h-1zM29 36h2v1h-2zM33 36h1v1h-1zM26 37h4v1h-4zM31 37h2v1h-2zM25 38h1v1h-1zM29 38h2v1h-2zM33 38h1v1h-1zM25 39h1v1h-1zM28 39h1v1h-1zM30 39h1v1h-1zM33 39h1v1h-1zM25 40h1v1h-1zM28 40h1v1h-1zM31 40h1v1h-1zM34 40h1v1h-1zM25 41h1v1h-1zM28 41h1v1h-1zM31 41h1v1h-1zM34 41h1v1h-1zM25 42h1v1h-1zM28 42h1v1h-1zM32 42h1v1h-1zM35 42h1v1h-1zM25 43h1v1h-1zM28 43h1v1h-1zM32 43h1v1h-1zM36 43h1v1h-1zM24 44h2v1h-2zM28 44h1v1h-1zM32 44h2v1h-2zM36 44h1v1h-1zM23 45h1v1h-1zM28 45h1v1h-1zM31 45h1v1h-1zM36 45h1v1h-1zM24 46h4v1h-4zM32 46h4v1h-4z" fill="#141414"></path></g></svg></span>
+<svg data-sf="p" viewBox="0 0 47 47" shape-rendering="crispEdges" style="position: absolute; left: 0; top: 0; width: 141px; height: 141px; overflow: visible; display: none"><path d="M39 41h5v1h-5zM38 42h2v1h-2zM42 42h3v1h-3zM38 43h2v1h-2zM42 43h3v1h-3z" fill="var(--c1)"></path><path d="M41 42h1v1h-1z" fill="#FAF8F2"></path><path d="M40 42h1v1h-1zM41 43h1v1h-1z" fill="#D2CFC5"></path><path d="M39 40h5v1h-5zM38 41h1v1h-1zM44 41h1v1h-1zM37 42h1v1h-1zM45 42h1v1h-1zM18 43h3v1h-3zM37 43h1v1h-1zM40 43h1v1h-1zM45 43h1v1h-1zM16 44h6v1h-6zM38 44h1v1h-1zM44 44h1v1h-1zM39 45h5v1h-5z" fill="#8C8A84"></path><path d="M26 40h6v1h-6zM25 41h2v1h-2zM29 41h1v1h-1zM32 41h1v1h-1zM35 41h1v1h-1zM22 42h1v1h-1zM25 42h2v1h-2zM29 42h1v1h-1zM32 42h1v1h-1zM34 42h2v1h-2zM22 43h2v1h-2zM25 43h4v1h-4zM30 43h3v1h-3zM35 43h1v1h-1zM23 44h3v1h-3zM27 44h1v1h-1zM29 44h1v1h-1zM31 44h1v1h-1zM33 44h3v1h-3zM24 45h10v1h-10zM35 45h2v1h-2z" fill="#F8F6F0"></path><path d="M39 44h5v1h-5z" fill="var(--c1)"></path><path d="M39 44h5v1h-5z" fill="#000000" fill-opacity="0.3"></path><path d="M26 39h6v1h-6zM39 39h5v1h-5zM25 40h1v1h-1zM32 40h1v1h-1zM35 40h1v1h-1zM38 40h1v1h-1zM44 40h1v1h-1zM22 41h1v1h-1zM24 41h1v1h-1zM27 41h2v1h-2zM30 41h2v1h-2zM33 41h2v1h-2zM36 41h2v1h-2zM45 41h1v1h-1zM18 42h4v1h-4zM23 42h2v1h-2zM27 42h2v1h-2zM30 42h2v1h-2zM33 42h1v1h-1zM36 42h1v1h-1zM46 42h1v1h-1zM16 43h2v1h-2zM21 43h1v1h-1zM24 43h1v1h-1zM29 43h1v1h-1zM33 43h2v1h-2zM36 43h1v1h-1zM46 43h1v1h-1zM15 44h1v1h-1zM22 44h1v1h-1zM26 44h1v1h-1zM28 44h1v1h-1zM30 44h1v1h-1zM32 44h1v1h-1zM36 44h2v1h-2zM45 44h1v1h-1zM16 45h8v1h-8zM34 45h1v1h-1zM37 45h2v1h-2zM44 45h1v1h-1zM20 46h2v1h-2zM24 46h10v1h-10zM35 46h2v1h-2zM38 46h6v1h-6z" fill="#141414"></path></svg>
+</span>
+<span data-sk="1" data-cx="86" aria-hidden="true" style="position: absolute; left: 3204px; top: 82px; width: 141px; height: 141px; pointer-events: none; clip-path: inset(-300px -400px 0px -400px)">
+<span data-sf="body" style="position: absolute; left: 0; top: 0; width: 141px; height: 141px; display: block; transform-origin: 100px 138px"><svg viewBox="0 0 47 47" shape-rendering="crispEdges" style="position: absolute; left: 0; top: 0; width: 141px; height: 141px; overflow: visible"><g data-sf="s0"><path d="M19 6h1v1h-1zM19 7h1v1h-1zM19 8h1v1h-1zM18 9h2v1h-2zM18 10h2v1h-2zM18 11h2v1h-2z" fill="#F3F1EB"></path><path d="M21 13h1v1h-1zM21 14h2v1h-2zM21 15h3v1h-3zM21 16h3v1h-3zM21 17h3v1h-3zM21 18h1v1h-1z" fill="var(--c1)"></path><path d="M28 13h1v1h-1zM28 14h1v1h-1zM27 15h2v1h-2z" fill="#D2CFC5"></path><path d="M28 12h1v1h-1zM27 13h1v1h-1zM29 13h1v1h-1zM26 14h2v1h-2zM29 14h1v1h-1zM26 15h1v1h-1zM29 15h2v1h-2zM26 16h5v1h-5zM24 18h1v1h-1z" fill="#8C8A84"></path><path d="M19 12h2v1h-2zM19 13h2v1h-2zM20 14h1v1h-1zM20 15h1v1h-1zM20 16h1v1h-1zM20 17h1v1h-1zM20 18h1v1h-1zM20 19h1v1h-1zM20 20h1v1h-1zM20 21h2v1h-2zM20 22h2v1h-2zM20 23h2v1h-2zM20 24h2v1h-2zM20 25h2v1h-2zM20 26h1v1h-1zM20 27h1v1h-1zM21 33h1v1h-1zM21 34h1v1h-1zM21 35h1v1h-1zM21 36h2v1h-2zM21 37h2v1h-2zM21 38h2v1h-2zM21 39h2v1h-2zM21 40h2v1h-2zM21 41h2v1h-2zM21 42h2v1h-2zM22 43h1v1h-1z" fill="#6E695F"></path><path d="M26 18h5v1h-5zM27 19h4v1h-4zM24 20h1v1h-1zM27 20h3v1h-3zM25 21h2v1h-2zM28 21h2v1h-2zM25 22h1v1h-1zM27 22h1v1h-1zM29 22h1v1h-1zM26 23h3v1h-3zM29 25h3v1h-3zM22 26h7v1h-7zM30 26h2v1h-2zM22 27h6v1h-6zM30 27h2v1h-2zM22 28h2v1h-2zM28 28h4v1h-4zM21 29h2v1h-2zM25 29h1v1h-1zM30 29h2v1h-2zM21 30h2v1h-2zM26 30h6v1h-6zM21 31h2v1h-2zM30 31h1v1h-1zM28 32h3v1h-3zM29 33h2v1h-2zM29 34h2v1h-2zM27 35h5v1h-5zM27 36h2v1h-2zM31 36h1v1h-1zM27 38h2v1h-2zM27 39h2v1h-2zM27 40h2v1h-2zM27 41h2v1h-2zM27 42h2v1h-2zM27 43h2v1h-2zM27 44h2v1h-2zM25 45h4v1h-4z" fill="#F8F6F0"></path><path d="M20 7h1v1h-1zM20 8h1v1h-1zM20 9h1v1h-1zM20 10h2v1h-2zM20 11h2v1h-2z" fill="#BDBAB1"></path><path d="M23 14h1v1h-1zM24 15h1v1h-1zM24 16h1v1h-1z" fill="var(--c1)"></path><path d="M23 14h1v1h-1zM24 15h1v1h-1zM24 16h1v1h-1z" fill="#000000" fill-opacity="0.3"></path><path d="M30 14h1v1h-1zM31 15h1v1h-1zM31 16h2v1h-2z" fill="#5E5C57"></path><path d="M31 18h1v1h-1zM31 19h1v1h-1zM30 20h2v1h-2zM30 21h1v1h-1zM30 22h1v1h-1zM29 23h1v1h-1zM32 26h1v1h-1zM32 27h1v1h-1zM32 28h1v1h-1zM32 29h1v1h-1zM32 30h1v1h-1zM31 31h1v1h-1zM31 32h1v1h-1zM32 35h1v1h-1zM32 36h1v1h-1zM30 37h1v1h-1zM30 38h2v1h-2zM31 39h2v1h-2zM31 40h2v1h-2zM31 41h2v1h-2zM31 42h2v1h-2zM32 43h2v1h-2zM32 44h2v1h-2zM30 45h4v1h-4z" fill="#CFCBC0"></path><path d="M19 5h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM18 7h1v1h-1zM21 7h1v1h-1zM18 8h1v1h-1zM21 8h1v1h-1zM17 9h1v1h-1zM21 9h1v1h-1zM17 10h1v1h-1zM22 10h1v1h-1zM17 11h1v1h-1zM22 11h1v1h-1zM28 11h1v1h-1zM18 12h1v1h-1zM21 12h1v1h-1zM27 12h1v1h-1zM29 12h1v1h-1zM18 13h1v1h-1zM22 13h2v1h-2zM26 13h1v1h-1zM30 13h1v1h-1zM19 14h1v1h-1zM24 14h2v1h-2zM31 14h1v1h-1zM19 15h1v1h-1zM25 15h1v1h-1zM32 15h1v1h-1zM19 16h1v1h-1zM25 16h1v1h-1zM33 16h1v1h-1zM19 17h1v1h-1zM24 17h9v1h-9zM19 18h1v1h-1zM22 18h2v1h-2zM25 18h1v1h-1zM32 18h1v1h-1zM19 19h1v1h-1zM21 19h1v1h-1zM23 19h4v1h-4zM32 19h1v1h-1zM19 20h1v1h-1zM21 20h1v1h-1zM23 20h1v1h-1zM25 20h2v1h-2zM32 20h1v1h-1zM19 21h1v1h-1zM22 21h1v1h-1zM24 21h1v1h-1zM27 21h1v1h-1zM31 21h1v1h-1zM19 22h1v1h-1zM22 22h1v1h-1zM24 22h1v1h-1zM26 22h1v1h-1zM28 22h1v1h-1zM31 22h1v1h-1zM19 23h1v1h-1zM22 23h1v1h-1zM25 23h1v1h-1zM30 23h1v1h-1zM19 24h1v1h-1zM22 24h1v1h-1zM26 24h6v1h-6zM19 25h1v1h-1zM22 25h7v1h-7zM32 25h1v1h-1zM19 26h1v1h-1zM21 26h1v1h-1zM29 26h1v1h-1zM33 26h1v1h-1zM19 27h1v1h-1zM21 27h1v1h-1zM28 27h2v1h-2zM33 27h1v1h-1zM20 28h2v1h-2zM24 28h4v1h-4zM33 28h1v1h-1zM20 29h1v1h-1zM23 29h2v1h-2zM26 29h4v1h-4zM33 29h1v1h-1zM20 30h1v1h-1zM23 30h1v1h-1zM25 30h1v1h-1zM33 30h1v1h-1zM20 31h1v1h-1zM23 31h1v1h-1zM26 31h4v1h-4zM32 31h1v1h-1zM20 32h3v1h-3zM27 32h1v1h-1zM32 32h1v1h-1zM20 33h1v1h-1zM22 33h1v1h-1zM28 33h1v1h-1zM31 33h1v1h-1zM20 34h1v1h-1zM22 34h1v1h-1zM27 34h2v1h-2zM31 34h2v1h-2zM20 35h1v1h-1zM22 35h1v1h-1zM26 35h1v1h-1zM33 35h1v1h-1zM20 36h1v1h-1zM23 36h1v1h-1zM26 36h1v1h-1zM29 36h2v1h-2zM33 36h1v1h-1zM20 37h1v1h-1zM23 37h1v1h-1zM26 37h4v1h-4zM31 37h2v1h-2zM20 38h1v1h-1zM23 38h1v1h-1zM26 38h1v1h-1zM29 38h1v1h-1zM32 38h1v1h-1zM20 39h1v1h-1zM23 39h1v1h-1zM26 39h1v1h-1zM29 39h2v1h-2zM33 39h1v1h-1zM20 40h1v1h-1zM23 40h1v1h-1zM26 40h1v1h-1zM29 40h2v1h-2zM33 40h1v1h-1zM20 41h1v1h-1zM23 41h1v1h-1zM26 41h1v1h-1zM29 41h2v1h-2zM33 41h1v1h-1zM20 42h1v1h-1zM23 42h1v1h-1zM26 42h1v1h-1zM29 42h2v1h-2zM33 42h1v1h-1zM21 43h1v1h-1zM23 43h1v1h-1zM26 43h1v1h-1zM29 43h1v1h-1zM31 43h1v1h-1zM34 43h1v1h-1zM22 44h1v1h-1zM25 44h2v1h-2zM29 44h3v1h-3zM34 44h1v1h-1zM24 45h1v1h-1zM29 45h1v1h-1zM34 45h1v1h-1zM25 46h4v1h-4zM30 46h4v1h-4z" fill="#141414"></path></g><g data-sf="s1" style="display: none"><path d="M1 27h5v1h-5zM3 28h3v1h-3z" fill="#F3F1EB"></path><path d="M8 25h4v1h-4zM7 26h5v1h-5zM11 27h2v1h-2z" fill="var(--c1)"></path><path d="M28 13h1v1h-1zM28 14h1v1h-1zM27 15h2v1h-2z" fill="#D2CFC5"></path><path d="M28 12h1v1h-1zM27 13h1v1h-1zM29 13h1v1h-1zM26 14h2v1h-2zM29 14h1v1h-1zM25 15h2v1h-2zM29 15h2v1h-2zM24 16h7v1h-7zM24 17h1v1h-1zM24 18h1v1h-1z" fill="#8C8A84"></path><path d="M6 27h5v1h-5zM8 28h10v1h-10zM14 29h5v1h-5zM23 29h1v1h-1zM23 30h2v1h-2zM33 31h2v1h-2zM33 32h2v1h-2z" fill="#6E695F"></path><path d="M26 18h5v1h-5zM27 19h4v1h-4zM24 20h1v1h-1zM27 20h3v1h-3zM25 21h2v1h-2zM28 21h2v1h-2zM25 22h1v1h-1zM27 22h1v1h-1zM29 22h1v1h-1zM28 24h1v1h-1zM22 25h6v1h-6zM30 25h1v1h-1zM22 26h10v1h-10zM21 27h2v1h-2zM28 27h3v1h-3zM21 28h2v1h-2zM25 28h1v1h-1zM27 28h3v1h-3zM31 28h1v1h-1zM20 29h2v1h-2zM26 29h3v1h-3zM31 29h1v1h-1zM20 30h2v1h-2zM26 30h5v1h-5zM29 31h3v1h-3zM30 32h2v1h-2zM29 33h1v1h-1zM29 34h2v1h-2zM27 35h5v1h-5zM27 36h2v1h-2zM31 36h1v1h-1zM26 38h3v1h-3zM26 39h2v1h-2zM26 40h2v1h-2zM26 41h2v1h-2zM26 42h2v1h-2zM26 43h2v1h-2zM26 44h2v1h-2zM24 45h4v1h-4z" fill="#F8F6F0"></path><path d="M3 25h3v1h-3zM0 26h6v1h-6z" fill="#BDBAB1"></path><path d="M10 23h1v1h-1zM9 24h3v1h-3z" fill="var(--c1)"></path><path d="M10 23h1v1h-1zM9 24h3v1h-3z" fill="#000000" fill-opacity="0.3"></path><path d="M30 14h1v1h-1zM31 15h1v1h-1zM31 16h2v1h-2z" fill="#5E5C57"></path><path d="M31 18h1v1h-1zM31 19h1v1h-1zM30 20h2v1h-2zM30 21h1v1h-1zM30 22h1v1h-1zM29 24h1v1h-1zM32 27h1v1h-1zM32 28h1v1h-1zM32 29h1v1h-1zM32 35h1v1h-1zM32 36h1v1h-1zM30 37h1v1h-1zM31 38h2v1h-2zM31 39h2v1h-2zM32 40h2v1h-2zM32 41h2v1h-2zM33 42h2v1h-2zM33 43h3v1h-3zM34 44h2v1h-2zM32 45h4v1h-4z" fill="#CFCBC0"></path><path d="M28 11h1v1h-1zM27 12h1v1h-1zM29 12h1v1h-1zM26 13h1v1h-1zM30 13h1v1h-1zM25 14h1v1h-1zM31 14h1v1h-1zM24 15h1v1h-1zM32 15h1v1h-1zM23 16h1v1h-1zM33 16h1v1h-1zM23 17h1v1h-1zM25 17h8v1h-8zM23 18h1v1h-1zM25 18h1v1h-1zM32 18h1v1h-1zM23 19h4v1h-4zM32 19h1v1h-1zM23 20h1v1h-1zM25 20h2v1h-2zM32 20h1v1h-1zM24 21h1v1h-1zM27 21h1v1h-1zM31 21h1v1h-1zM10 22h1v1h-1zM24 22h1v1h-1zM26 22h1v1h-1zM28 22h1v1h-1zM31 22h1v1h-1zM9 23h1v1h-1zM11 23h1v1h-1zM25 23h6v1h-6zM3 24h3v1h-3zM8 24h1v1h-1zM12 24h1v1h-1zM22 24h6v1h-6zM30 24h2v1h-2zM0 25h3v1h-3zM6 25h2v1h-2zM12 25h1v1h-1zM21 25h1v1h-1zM28 25h2v1h-2zM31 25h2v1h-2zM6 26h1v1h-1zM12 26h1v1h-1zM21 26h1v1h-1zM32 26h2v1h-2zM0 27h1v1h-1zM13 27h5v1h-5zM20 27h1v1h-1zM23 27h5v1h-5zM31 27h1v1h-1zM33 27h1v1h-1zM1 28h2v1h-2zM6 28h2v1h-2zM18 28h3v1h-3zM23 28h2v1h-2zM26 28h1v1h-1zM30 28h1v1h-1zM33 28h1v1h-1zM3 29h3v1h-3zM8 29h6v1h-6zM19 29h1v1h-1zM22 29h1v1h-1zM24 29h2v1h-2zM29 29h2v1h-2zM33 29h1v1h-1zM14 30h6v1h-6zM22 30h1v1h-1zM25 30h1v1h-1zM31 30h4v1h-4zM20 31h9v1h-9zM32 31h1v1h-1zM35 31h1v1h-1zM27 32h3v1h-3zM32 32h1v1h-1zM35 32h1v1h-1zM28 33h1v1h-1zM30 33h2v1h-2zM33 33h2v1h-2zM27 34h2v1h-2zM31 34h2v1h-2zM26 35h1v1h-1zM33 35h1v1h-1zM26 36h1v1h-1zM29 36h2v1h-2zM33 36h1v1h-1zM26 37h4v1h-4zM31 37h2v1h-2zM25 38h1v1h-1zM29 38h2v1h-2zM33 38h1v1h-1zM25 39h1v1h-1zM28 39h1v1h-1zM30 39h1v1h-1zM33 39h1v1h-1zM25 40h1v1h-1zM28 40h1v1h-1zM31 40h1v1h-1zM34 40h1v1h-1zM25 41h1v1h-1zM28 41h1v1h-1zM31 41h1v1h-1zM34 41h1v1h-1zM25 42h1v1h-1zM28 42h1v1h-1zM32 42h1v1h-1zM35 42h1v1h-1zM25 43h1v1h-1zM28 43h1v1h-1zM32 43h1v1h-1zM36 43h1v1h-1zM24 44h2v1h-2zM28 44h1v1h-1zM32 44h2v1h-2zM36 44h1v1h-1zM23 45h1v1h-1zM28 45h1v1h-1zM31 45h1v1h-1zM36 45h1v1h-1zM24 46h4v1h-4zM32 46h4v1h-4z" fill="#141414"></path></g></svg></span>
+<svg data-sf="p" viewBox="0 0 47 47" shape-rendering="crispEdges" style="position: absolute; left: 0; top: 0; width: 141px; height: 141px; overflow: visible; display: none"><path d="M14 44h6v1h-6zM17 45h2v1h-2z" fill="#F3F1EB"></path><path d="M23 41h1v1h-1z" fill="var(--c1)"></path><path d="M41 42h1v1h-1z" fill="#D2CFC5"></path><path d="M41 41h1v1h-1zM40 42h1v1h-1zM42 42h1v1h-1zM39 43h5v1h-5z" fill="#8C8A84"></path><path d="M41 45h1v1h-1z" fill="#6E695F"></path><path d="M26 40h6v1h-6zM25 41h2v1h-2zM29 41h1v1h-1zM32 41h1v1h-1zM35 41h1v1h-1zM22 42h1v1h-1zM25 42h2v1h-2zM29 42h1v1h-1zM32 42h1v1h-1zM34 42h3v1h-3zM21 43h3v1h-3zM25 43h4v1h-4zM30 43h3v1h-3zM35 43h3v1h-3zM22 44h4v1h-4zM27 44h1v1h-1zM29 44h1v1h-1zM31 44h1v1h-1zM33 44h3v1h-3zM38 44h1v1h-1zM20 45h2v1h-2zM24 45h10v1h-10zM35 45h2v1h-2zM38 45h2v1h-2z" fill="#F8F6F0"></path><path d="M18 42h2v1h-2zM15 43h5v1h-5z" fill="#BDBAB1"></path><path d="M24 39h1v1h-1zM23 40h2v1h-2z" fill="var(--c1)"></path><path d="M24 39h1v1h-1zM23 40h2v1h-2z" fill="#000000" fill-opacity="0.3"></path><path d="M24 38h1v1h-1zM23 39h1v1h-1zM25 39h7v1h-7zM22 40h1v1h-1zM25 40h1v1h-1zM32 40h1v1h-1zM35 40h1v1h-1zM41 40h1v1h-1zM18 41h2v1h-2zM21 41h2v1h-2zM24 41h1v1h-1zM27 41h2v1h-2zM30 41h2v1h-2zM33 41h2v1h-2zM36 41h1v1h-1zM40 41h1v1h-1zM42 41h1v1h-1zM15 42h3v1h-3zM20 42h2v1h-2zM23 42h2v1h-2zM27 42h2v1h-2zM30 42h2v1h-2zM33 42h1v1h-1zM37 42h3v1h-3zM43 42h1v1h-1zM14 43h1v1h-1zM20 43h1v1h-1zM24 43h1v1h-1zM29 43h1v1h-1zM33 43h2v1h-2zM38 43h1v1h-1zM44 43h1v1h-1zM13 44h1v1h-1zM20 44h2v1h-2zM26 44h1v1h-1zM28 44h1v1h-1zM30 44h1v1h-1zM32 44h1v1h-1zM36 44h2v1h-2zM39 44h5v1h-5zM14 45h3v1h-3zM19 45h1v1h-1zM22 45h2v1h-2zM34 45h1v1h-1zM37 45h1v1h-1zM40 45h1v1h-1zM42 45h1v1h-1zM17 46h5v1h-5zM24 46h10v1h-10zM35 46h7v1h-7z" fill="#141414"></path></svg>
+</span>
+<span data-sk="1" data-cx="86" aria-hidden="true" style="position: absolute; left: 3514px; top: 82px; width: 141px; height: 141px; pointer-events: none; clip-path: inset(-300px -400px 0px -400px)">
+<span data-sf="body" style="position: absolute; left: 0; top: 0; width: 141px; height: 141px; display: block; transform-origin: 100px 138px"><svg viewBox="0 0 47 47" shape-rendering="crispEdges" style="position: absolute; left: 0; top: 0; width: 141px; height: 141px; overflow: visible"><g data-sf="s0"><path d="M16 32h1v1h-1zM15 33h2v1h-2zM14 34h2v1h-2zM25 34h1v1h-1zM14 35h1v1h-1zM25 35h2v1h-2zM13 36h2v1h-2zM26 36h1v1h-1zM13 37h2v1h-2zM26 37h1v1h-1zM13 38h2v1h-2zM26 38h1v1h-1zM14 39h1v1h-1zM25 39h2v1h-2zM14 40h1v1h-1zM25 40h1v1h-1zM14 41h1v1h-1zM24 41h2v1h-2zM23 42h2v1h-2z" fill="#F3F1EB"></path><path d="M28 14h2v1h-2zM28 15h2v1h-2zM27 22h1v1h-1zM26 23h2v1h-2zM17 33h1v1h-1zM16 34h1v1h-1zM24 34h1v1h-1zM15 35h1v1h-1zM24 35h1v1h-1zM15 36h1v1h-1zM24 36h2v1h-2zM15 37h1v1h-1zM25 37h1v1h-1zM15 38h1v1h-1zM24 38h2v1h-2zM15 39h1v1h-1zM24 39h1v1h-1zM15 40h2v1h-2zM24 40h1v1h-1zM23 41h1v1h-1z" fill="#D2CFC5"></path><path d="M26 13h6v1h-6zM26 14h2v1h-2zM30 14h2v1h-2zM25 15h3v1h-3zM30 15h2v1h-2zM25 16h7v1h-7zM25 22h2v1h-2zM28 22h1v1h-1zM24 23h2v1h-2zM28 23h1v1h-1zM23 24h5v1h-5zM17 34h2v1h-2zM16 35h2v1h-2zM23 35h1v1h-1zM16 36h2v1h-2zM23 36h1v1h-1zM16 37h2v1h-2zM22 37h3v1h-3zM16 38h2v1h-2zM22 38h2v1h-2zM16 39h2v1h-2zM22 39h2v1h-2zM22 40h2v1h-2zM22 41h1v1h-1z" fill="#8C8A84"></path><path d="M21 29h1v1h-1zM21 30h2v1h-2zM21 31h1v1h-1zM20 32h2v1h-2zM20 33h2v1h-2zM20 34h2v1h-2zM20 35h1v1h-1zM20 36h1v1h-1zM19 37h2v1h-2zM19 38h2v1h-2zM19 39h2v1h-2zM19 40h1v1h-1zM18 41h2v1h-2z" fill="#6E695F"></path><path d="M23 11h1v1h-1zM34 11h1v1h-1zM23 12h1v1h-1zM34 12h1v1h-1zM23 13h2v1h-2zM33 13h2v1h-2zM24 14h2v1h-2zM32 14h2v1h-2zM25 18h1v1h-1zM28 18h3v1h-3zM26 19h2v1h-2zM29 19h2v1h-2zM26 20h1v1h-1zM28 20h1v1h-1zM30 20h1v1h-1zM22 21h2v1h-2zM29 21h1v1h-1zM22 22h2v1h-2zM21 23h2v1h-2zM30 23h3v1h-3zM21 24h1v1h-1zM30 24h3v1h-3zM21 25h2v1h-2zM31 25h2v1h-2zM21 26h3v1h-3zM25 26h2v1h-2zM28 26h5v1h-5zM21 27h3v1h-3zM25 27h1v1h-1zM31 27h2v1h-2zM22 28h1v1h-1zM25 28h8v1h-8zM26 29h1v1h-1zM31 29h2v1h-2zM27 30h5v1h-5zM29 31h2v1h-2zM29 32h2v1h-2zM27 33h6v1h-6zM27 34h2v1h-2zM31 34h2v1h-2zM29 35h2v1h-2zM28 36h2v1h-2zM28 37h2v1h-2zM28 38h2v1h-2zM28 39h2v1h-2zM28 40h2v1h-2zM28 41h2v1h-2zM28 42h2v1h-2zM28 43h2v1h-2zM28 44h2v1h-2zM26 45h4v1h-4z" fill="#F8F6F0"></path><path d="M32 15h1v1h-1zM32 16h1v1h-1zM28 24h1v1h-1zM18 35h2v1h-2zM22 35h1v1h-1zM18 36h2v1h-2zM21 36h2v1h-2zM18 37h1v1h-1zM21 37h1v1h-1zM18 38h1v1h-1zM21 38h1v1h-1zM18 39h1v1h-1zM21 39h1v1h-1zM21 40h1v1h-1z" fill="#5E5C57"></path><path d="M24 12h1v1h-1zM33 12h1v1h-1zM31 18h2v1h-2zM31 19h1v1h-1zM31 20h1v1h-1zM30 21h1v1h-1zM33 24h1v1h-1zM33 25h1v1h-1zM33 26h1v1h-1zM33 27h1v1h-1zM33 28h1v1h-1zM33 29h1v1h-1zM32 30h1v1h-1zM33 33h1v1h-1zM33 34h1v1h-1zM31 36h2v1h-2zM31 37h2v1h-2zM32 38h2v1h-2zM32 39h2v1h-2zM32 40h2v1h-2zM32 41h2v1h-2zM33 42h2v1h-2zM33 43h2v1h-2zM33 44h2v1h-2zM31 45h4v1h-4z" fill="#CFCBC0"></path><path d="M23 10h1v1h-1zM34 10h1v1h-1zM22 11h1v1h-1zM24 11h1v1h-1zM33 11h1v1h-1zM35 11h1v1h-1zM22 12h1v1h-1zM25 12h8v1h-8zM35 12h1v1h-1zM22 13h1v1h-1zM25 13h1v1h-1zM32 13h1v1h-1zM35 13h1v1h-1zM23 14h1v1h-1zM34 14h1v1h-1zM24 15h1v1h-1zM33 15h1v1h-1zM24 16h1v1h-1zM33 16h1v1h-1zM24 17h10v1h-10zM24 18h1v1h-1zM26 18h2v1h-2zM33 18h1v1h-1zM25 19h1v1h-1zM28 19h1v1h-1zM32 19h1v1h-1zM22 20h2v1h-2zM25 20h1v1h-1zM27 20h1v1h-1zM29 20h1v1h-1zM32 20h1v1h-1zM21 21h1v1h-1zM24 21h5v1h-5zM31 21h1v1h-1zM21 22h1v1h-1zM24 22h1v1h-1zM29 22h4v1h-4zM20 23h1v1h-1zM23 23h1v1h-1zM29 23h1v1h-1zM33 23h1v1h-1zM20 24h1v1h-1zM22 24h1v1h-1zM29 24h1v1h-1zM34 24h1v1h-1zM20 25h1v1h-1zM23 25h8v1h-8zM34 25h1v1h-1zM20 26h1v1h-1zM24 26h1v1h-1zM27 26h1v1h-1zM34 26h1v1h-1zM20 27h1v1h-1zM24 27h1v1h-1zM26 27h5v1h-5zM34 27h1v1h-1zM20 28h2v1h-2zM23 28h2v1h-2zM34 28h1v1h-1zM20 29h1v1h-1zM22 29h2v1h-2zM25 29h1v1h-1zM27 29h4v1h-4zM34 29h1v1h-1zM20 30h1v1h-1zM23 30h1v1h-1zM26 30h1v1h-1zM33 30h1v1h-1zM16 31h1v1h-1zM20 31h1v1h-1zM22 31h1v1h-1zM27 31h2v1h-2zM31 31h2v1h-2zM15 32h1v1h-1zM17 32h1v1h-1zM19 32h1v1h-1zM22 32h1v1h-1zM27 32h2v1h-2zM31 32h3v1h-3zM14 33h1v1h-1zM18 33h2v1h-2zM22 33h1v1h-1zM24 33h3v1h-3zM34 33h1v1h-1zM13 34h1v1h-1zM19 34h1v1h-1zM22 34h2v1h-2zM26 34h1v1h-1zM29 34h2v1h-2zM34 34h1v1h-1zM13 35h1v1h-1zM21 35h1v1h-1zM27 35h2v1h-2zM31 35h3v1h-3zM12 36h1v1h-1zM27 36h1v1h-1zM30 36h1v1h-1zM33 36h1v1h-1zM12 37h1v1h-1zM27 37h1v1h-1zM30 37h1v1h-1zM33 37h1v1h-1zM12 38h1v1h-1zM27 38h1v1h-1zM30 38h2v1h-2zM34 38h1v1h-1zM13 39h1v1h-1zM27 39h1v1h-1zM30 39h2v1h-2zM34 39h1v1h-1zM13 40h1v1h-1zM17 40h2v1h-2zM20 40h1v1h-1zM26 40h2v1h-2zM30 40h2v1h-2zM34 40h1v1h-1zM13 41h1v1h-1zM15 41h3v1h-3zM20 41h2v1h-2zM26 41h2v1h-2zM30 41h2v1h-2zM34 41h1v1h-1zM14 42h1v1h-1zM18 42h2v1h-2zM22 42h1v1h-1zM25 42h1v1h-1zM27 42h1v1h-1zM30 42h1v1h-1zM32 42h1v1h-1zM35 42h1v1h-1zM23 43h2v1h-2zM27 43h1v1h-1zM30 43h1v1h-1zM32 43h1v1h-1zM35 43h1v1h-1zM26 44h2v1h-2zM30 44h3v1h-3zM35 44h1v1h-1zM25 45h1v1h-1zM30 45h1v1h-1zM35 45h1v1h-1zM26 46h4v1h-4zM31 46h4v1h-4z" fill="#141414"></path></g><g data-sf="s1" style="display: none"><path d="M35 1h2v1h-2zM34 2h2v1h-2zM33 3h1v1h-1zM32 4h1v1h-1zM31 5h2v1h-2zM31 6h1v1h-1zM43 6h2v1h-2zM31 7h1v1h-1zM43 7h2v1h-2zM31 8h1v1h-1zM43 8h2v1h-2zM43 9h1v1h-1zM43 10h1v1h-1zM42 11h2v1h-2zM41 12h2v1h-2zM39 13h3v1h-3z" fill="#F3F1EB"></path><path d="M36 2h1v1h-1zM34 3h3v1h-3zM33 4h2v1h-2zM33 5h1v1h-1zM32 6h2v1h-2zM42 6h1v1h-1zM32 7h1v1h-1zM42 7h1v1h-1zM32 8h2v1h-2zM42 8h1v1h-1zM42 9h1v1h-1zM41 10h2v1h-2zM40 11h2v1h-2zM38 12h3v1h-3zM28 14h2v1h-2zM28 15h2v1h-2zM27 22h1v1h-1zM26 23h2v1h-2z" fill="#D2CFC5"></path><path d="M37 3h1v1h-1zM35 4h2v1h-2zM34 5h3v1h-3zM34 6h2v1h-2zM41 6h1v1h-1zM33 7h2v1h-2zM41 7h1v1h-1zM34 8h1v1h-1zM40 8h2v1h-2zM39 9h3v1h-3zM39 10h2v1h-2zM38 11h2v1h-2zM26 13h6v1h-6zM26 14h2v1h-2zM30 14h2v1h-2zM25 15h3v1h-3zM30 15h2v1h-2zM25 16h7v1h-7zM25 22h2v1h-2zM28 22h1v1h-1zM24 23h2v1h-2zM28 23h1v1h-1zM23 24h5v1h-5z" fill="#8C8A84"></path><path d="M39 4h2v1h-2zM38 5h2v1h-2zM38 6h2v1h-2zM37 7h2v1h-2zM36 8h2v1h-2zM36 9h2v1h-2zM35 10h2v1h-2z" fill="#6E695F"></path><path d="M23 11h1v1h-1zM34 11h1v1h-1zM23 12h1v1h-1zM34 12h1v1h-1zM23 13h2v1h-2zM33 13h2v1h-2zM24 14h2v1h-2zM32 14h2v1h-2zM25 18h7v1h-7zM24 19h5v1h-5zM25 20h2v1h-2zM30 20h1v1h-1zM31 23h2v1h-2zM30 24h3v1h-3zM31 25h2v1h-2zM24 26h3v1h-3zM28 26h5v1h-5zM24 27h2v1h-2zM31 27h2v1h-2zM25 28h8v1h-8zM26 29h1v1h-1zM31 29h2v1h-2zM27 30h5v1h-5zM29 31h2v1h-2zM29 32h2v1h-2zM27 33h6v1h-6zM27 34h2v1h-2zM31 34h2v1h-2zM29 35h2v1h-2zM28 36h2v1h-2zM27 37h3v1h-3zM27 38h2v1h-2zM26 39h3v1h-3zM26 40h3v1h-3zM27 41h2v1h-2zM27 42h2v1h-2zM27 43h2v1h-2zM27 44h2v1h-2zM25 45h4v1h-4z" fill="#F8F6F0"></path><path d="M37 4h1v1h-1zM37 5h1v1h-1zM36 6h2v1h-2zM40 6h1v1h-1zM35 7h2v1h-2zM39 7h2v1h-2zM35 8h1v1h-1zM38 8h2v1h-2zM38 9h1v1h-1zM37 10h2v1h-2zM32 15h1v1h-1zM32 16h1v1h-1zM28 24h1v1h-1z" fill="#5E5C57"></path><path d="M24 12h1v1h-1zM33 12h1v1h-1zM31 20h1v1h-1zM30 22h1v1h-1zM33 24h1v1h-1zM33 25h1v1h-1zM33 26h1v1h-1zM33 27h1v1h-1zM33 28h1v1h-1zM33 29h1v1h-1zM32 30h1v1h-1zM33 33h1v1h-1zM33 34h1v1h-1zM31 36h2v1h-2zM32 37h2v1h-2zM32 38h2v1h-2zM33 39h2v1h-2zM33 40h2v1h-2zM34 41h2v1h-2zM34 42h2v1h-2zM35 43h2v1h-2zM35 44h2v1h-2zM33 45h4v1h-4z" fill="#CFCBC0"></path><path d="M35 0h2v1h-2zM34 1h1v1h-1zM37 1h1v1h-1zM33 2h1v1h-1zM37 2h1v1h-1zM32 3h1v1h-1zM38 3h3v1h-3zM31 4h1v1h-1zM38 4h1v1h-1zM41 4h1v1h-1zM30 5h1v1h-1zM40 5h5v1h-5zM30 6h1v1h-1zM45 6h1v1h-1zM30 7h1v1h-1zM45 7h1v1h-1zM30 8h1v1h-1zM45 8h1v1h-1zM31 9h5v1h-5zM44 9h1v1h-1zM23 10h1v1h-1zM34 10h1v1h-1zM44 10h1v1h-1zM22 11h1v1h-1zM24 11h1v1h-1zM33 11h1v1h-1zM35 11h3v1h-3zM44 11h1v1h-1zM22 12h1v1h-1zM25 12h8v1h-8zM35 12h3v1h-3zM43 12h1v1h-1zM22 13h1v1h-1zM25 13h1v1h-1zM32 13h1v1h-1zM35 13h1v1h-1zM38 13h1v1h-1zM42 13h1v1h-1zM23 14h1v1h-1zM34 14h1v1h-1zM39 14h3v1h-3zM24 15h1v1h-1zM33 15h2v1h-2zM24 16h1v1h-1zM33 16h1v1h-1zM24 17h10v1h-10zM24 18h1v1h-1zM32 18h2v1h-2zM23 19h1v1h-1zM29 19h4v1h-4zM24 20h1v1h-1zM27 20h3v1h-3zM32 20h1v1h-1zM24 21h8v1h-8zM24 22h1v1h-1zM29 22h1v1h-1zM31 22h2v1h-2zM23 23h1v1h-1zM29 23h2v1h-2zM33 23h1v1h-1zM22 24h1v1h-1zM29 24h1v1h-1zM34 24h1v1h-1zM23 25h8v1h-8zM34 25h1v1h-1zM23 26h1v1h-1zM27 26h1v1h-1zM34 26h1v1h-1zM23 27h1v1h-1zM26 27h5v1h-5zM34 27h1v1h-1zM24 28h1v1h-1zM34 28h1v1h-1zM25 29h1v1h-1zM27 29h4v1h-4zM34 29h1v1h-1zM26 30h1v1h-1zM33 30h1v1h-1zM27 31h2v1h-2zM31 31h2v1h-2zM27 32h2v1h-2zM31 32h3v1h-3zM26 33h1v1h-1zM34 33h1v1h-1zM26 34h1v1h-1zM29 34h2v1h-2zM34 34h1v1h-1zM27 35h2v1h-2zM31 35h3v1h-3zM27 36h1v1h-1zM30 36h1v1h-1zM33 36h1v1h-1zM26 37h1v1h-1zM30 37h2v1h-2zM34 37h1v1h-1zM26 38h1v1h-1zM29 38h1v1h-1zM31 38h1v1h-1zM34 38h1v1h-1zM25 39h1v1h-1zM29 39h1v1h-1zM32 39h1v1h-1zM35 39h1v1h-1zM25 40h1v1h-1zM29 40h1v1h-1zM32 40h1v1h-1zM35 40h1v1h-1zM26 41h1v1h-1zM29 41h1v1h-1zM33 41h1v1h-1zM36 41h1v1h-1zM26 42h1v1h-1zM29 42h1v1h-1zM33 42h1v1h-1zM36 42h1v1h-1zM26 43h1v1h-1zM29 43h1v1h-1zM34 43h1v1h-1zM37 43h1v1h-1zM25 44h2v1h-2zM29 44h1v1h-1zM33 44h2v1h-2zM37 44h1v1h-1zM24 45h1v1h-1zM29 45h1v1h-1zM32 45h1v1h-1zM37 45h1v1h-1zM25 46h4v1h-4zM33 46h4v1h-4z" fill="#141414"></path></g></svg></span>
+<svg data-sf="p" viewBox="0 0 47 47" shape-rendering="crispEdges" style="position: absolute; left: 0; top: 0; width: 141px; height: 141px; overflow: visible; display: none"><path d="M21 39h5v1h-5zM20 40h2v1h-2zM19 41h2v1h-2z" fill="#F3F1EB"></path><path d="M22 40h3v1h-3zM21 41h1v1h-1zM20 42h1v1h-1zM41 43h1v1h-1z" fill="#D2CFC5"></path><path d="M23 41h1v1h-1zM40 42h3v1h-3zM39 43h2v1h-2zM42 43h2v1h-2z" fill="#8C8A84"></path><path d="M22 46h1v1h-1z" fill="#6E695F"></path><path d="M26 40h6v1h-6zM25 41h2v1h-2zM29 41h1v1h-1zM32 41h1v1h-1zM35 41h1v1h-1zM38 41h1v1h-1zM44 41h1v1h-1zM22 42h1v1h-1zM25 42h2v1h-2zM29 42h1v1h-1zM32 42h1v1h-1zM34 42h3v1h-3zM38 42h2v1h-2zM43 42h1v1h-1zM21 43h3v1h-3zM25 43h4v1h-4zM30 43h3v1h-3zM35 43h3v1h-3zM22 44h4v1h-4zM27 44h1v1h-1zM29 44h1v1h-1zM31 44h1v1h-1zM33 44h3v1h-3zM38 44h1v1h-1zM20 45h2v1h-2zM24 45h10v1h-10zM35 45h2v1h-2zM38 45h2v1h-2z" fill="#F8F6F0"></path><path d="M23 46h1v1h-1z" fill="#5E5C57"></path><path d="M44 42h1v1h-1z" fill="#CFCBC0"></path><path d="M21 38h7v1h-7zM20 39h1v1h-1zM26 39h6v1h-6zM19 40h1v1h-1zM25 40h1v1h-1zM32 40h1v1h-1zM35 40h1v1h-1zM38 40h1v1h-1zM44 40h1v1h-1zM18 41h1v1h-1zM22 41h1v1h-1zM24 41h1v1h-1zM27 41h2v1h-2zM30 41h2v1h-2zM33 41h2v1h-2zM36 41h2v1h-2zM39 41h5v1h-5zM45 41h1v1h-1zM19 42h1v1h-1zM21 42h1v1h-1zM23 42h2v1h-2zM27 42h2v1h-2zM30 42h2v1h-2zM33 42h1v1h-1zM37 42h1v1h-1zM45 42h1v1h-1zM20 43h1v1h-1zM24 43h1v1h-1zM29 43h1v1h-1zM33 43h2v1h-2zM38 43h1v1h-1zM44 43h1v1h-1zM20 44h2v1h-2zM26 44h1v1h-1zM28 44h1v1h-1zM30 44h1v1h-1zM32 44h1v1h-1zM36 44h2v1h-2zM39 44h5v1h-5zM19 45h1v1h-1zM22 45h2v1h-2zM34 45h1v1h-1zM37 45h1v1h-1zM40 45h1v1h-1zM19 46h3v1h-3zM24 46h10v1h-10zM35 46h2v1h-2zM38 46h2v1h-2z" fill="#141414"></path></svg>
+</span>
+<span id="tl-runner" aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 258px; height: 220px; pointer-events: none; transform: translateX(2484px)">
+<span id="tl-squash" style="position: absolute; left: 0; top: 0; width: 258px; height: 220px; display: block; transform-origin: 138px 100%">
+<svg id="tl-sprite" viewBox="0 0 86 62" shape-rendering="crispEdges" style="position: absolute; left: 0; top: 37px; width: 258px; height: 186px; overflow: visible">
+<g data-hf="i0"><path d="M38 26h3v1h-3zM41 27h1v1h-1zM33 28h2v1h-2zM42 28h1v1h-1zM33 29h3v1h-3zM42 29h1v1h-1zM33 30h4v1h-4zM43 30h1v1h-1zM33 31h11v1h-11zM33 32h2v1h-2zM43 32h1v1h-1zM34 33h2v1h-2zM43 33h1v1h-1zM35 34h2v1h-2zM42 34h1v1h-1zM38 35h4v1h-4zM39 37h2v1h-2zM31 39h1v1h-1zM37 39h1v1h-1zM32 40h1v1h-1zM36 40h1v1h-1zM39 40h1v1h-1zM38 41h3v1h-3zM44 41h1v1h-1zM38 42h3v1h-3zM43 42h1v1h-1zM34 43h1v1h-1zM40 43h3v1h-3zM34 44h1v1h-1zM34 45h2v1h-2zM38 45h1v1h-1zM41 45h1v1h-1zM43 45h1v1h-1zM35 46h1v1h-1zM38 46h1v1h-1zM41 46h1v1h-1zM43 46h1v1h-1zM35 47h1v1h-1zM41 47h1v1h-1zM44 47h1v1h-1zM36 50h1v1h-1zM38 51h1v1h-1zM38 54h1v1h-1zM38 55h1v1h-1zM38 56h1v1h-1zM38 57h1v1h-1zM38 58h1v1h-1zM37 59h3v1h-3zM37 60h4v1h-4zM43 60h1v1h-1zM38 61h1v1h-1z" fill="#74726B"></path><path d="M18 12h2v1h-2zM19 13h3v1h-3zM20 14h4v1h-4zM21 15h3v1h-3zM21 16h4v1h-4zM22 17h4v1h-4zM23 18h4v1h-4zM24 19h4v1h-4zM25 20h3v1h-3zM26 21h3v1h-3zM26 22h4v1h-4zM27 23h1v1h-1zM32 27h1v1h-1zM31 28h1v1h-1z" fill="#F3F1EB"></path><path d="M32 31h1v1h-1zM32 32h1v1h-1zM32 33h2v1h-2zM33 34h2v1h-2zM38 34h1v1h-1zM40 34h1v1h-1zM31 40h1v1h-1zM37 40h1v1h-1zM33 41h3v1h-3zM33 44h1v1h-1zM40 45h1v1h-1zM34 46h1v1h-1zM40 46h1v1h-1zM34 47h1v1h-1zM40 47h1v1h-1zM42 49h1v1h-1zM35 50h1v1h-1zM36 52h2v1h-2zM37 53h1v1h-1zM37 54h1v1h-1zM37 55h1v1h-1zM37 56h1v1h-1zM37 57h1v1h-1zM37 58h1v1h-1zM37 61h1v1h-1z" fill="#474642"></path><path d="M34 37h2v1h-2zM34 38h1v1h-1z" fill="#FAF8F2"></path><path d="M39 27h2v1h-2zM40 28h2v1h-2zM41 29h1v1h-1zM41 33h2v1h-2zM34 36h3v1h-3zM33 37h1v1h-1zM36 37h2v1h-2zM42 37h1v1h-1zM32 38h2v1h-2zM35 38h2v1h-2zM42 38h2v1h-2zM32 39h4v1h-4zM42 39h2v1h-2zM43 40h1v1h-1zM36 48h1v1h-1zM35 49h2v1h-2zM38 52h2v1h-2zM39 53h1v1h-1z" fill="#D2CFC5"></path><path d="M32 41h1v1h-1zM36 41h1v1h-1zM38 44h6v1h-6z" fill="#2E2D2B"></path><path d="M30 23h4v1h-4zM28 24h8v1h-8zM27 25h5v1h-5zM33 25h4v1h-4zM26 26h4v1h-4zM35 26h2v1h-2zM26 27h3v1h-3zM36 27h1v1h-1zM27 28h1v1h-1zM31 42h1v1h-1zM30 43h3v1h-3zM29 44h3v1h-3zM27 45h6v1h-6zM26 46h6v1h-6zM26 47h5v1h-5zM25 48h6v1h-6zM25 49h5v1h-5zM24 50h2v1h-2zM28 50h1v1h-1zM24 51h1v1h-1zM27 51h1v1h-1z" fill="var(--c2)"></path><path d="M38 27h1v1h-1zM35 28h1v1h-1zM37 28h3v1h-3zM36 29h5v1h-5zM37 30h6v1h-6zM36 33h5v1h-5zM37 34h1v1h-1zM39 34h1v1h-1zM41 34h1v1h-1zM33 36h1v1h-1zM37 36h1v1h-1zM32 37h1v1h-1zM41 37h1v1h-1zM31 38h1v1h-1zM37 38h1v1h-1zM39 38h3v1h-3zM36 39h1v1h-1zM39 39h3v1h-3zM44 39h1v1h-1zM33 40h3v1h-3zM40 40h3v1h-3zM44 40h1v1h-1zM41 41h3v1h-3zM41 42h2v1h-2zM35 43h2v1h-2zM35 44h2v1h-2zM36 45h1v1h-1zM39 45h1v1h-1zM42 45h1v1h-1zM36 46h1v1h-1zM39 46h1v1h-1zM42 46h1v1h-1zM36 47h2v1h-2zM39 47h1v1h-1zM42 47h2v1h-2zM35 48h1v1h-1zM37 48h1v1h-1zM39 48h2v1h-2zM37 49h1v1h-1zM39 49h2v1h-2zM37 50h1v1h-1zM39 50h2v1h-2zM39 51h2v1h-2zM40 52h1v1h-1zM38 53h1v1h-1zM40 53h1v1h-1zM39 54h2v1h-2zM39 55h2v1h-2zM39 56h1v1h-1zM39 57h1v1h-1zM39 58h1v1h-1zM41 60h1v1h-1zM39 61h1v1h-1z" fill="#A5A299"></path><path d="M17 11h1v1h-1zM17 12h1v1h-1zM17 13h2v1h-2zM17 14h3v1h-3zM18 15h3v1h-3zM18 16h3v1h-3zM18 17h3v1h-3zM18 18h4v1h-4zM19 19h4v1h-4zM20 20h3v1h-3zM21 21h3v1h-3zM21 22h4v1h-4zM22 23h4v1h-4zM23 24h4v1h-4zM24 25h2v1h-2zM29 29h2v1h-2zM28 30h3v1h-3zM29 31h2v1h-2zM29 32h2v1h-2zM30 33h1v1h-1zM31 34h1v1h-1zM32 35h1v1h-1z" fill="#BDBAB1"></path><path d="M21 17h1v1h-1zM22 18h1v1h-1zM23 19h1v1h-1zM23 20h2v1h-2zM24 21h2v1h-2zM25 22h1v1h-1zM26 23h1v1h-1zM30 28h1v1h-1zM31 29h1v1h-1zM31 30h1v1h-1z" fill="#8B8880"></path><path d="M32 25h1v1h-1zM30 26h2v1h-2zM34 26h1v1h-1zM29 27h1v1h-1zM28 28h1v1h-1zM32 46h1v1h-1zM31 47h1v1h-1zM31 48h2v1h-2zM30 49h3v1h-3zM29 50h3v1h-3zM28 51h3v1h-3zM27 52h4v1h-4zM26 53h4v1h-4zM26 54h3v1h-3zM25 55h3v1h-3zM25 56h2v1h-2zM25 57h1v1h-1zM24 58h1v1h-1zM24 59h1v1h-1z" fill="var(--c2)"></path><path d="M32 25h1v1h-1zM30 26h2v1h-2zM34 26h1v1h-1zM29 27h1v1h-1zM28 28h1v1h-1zM32 46h1v1h-1zM31 47h1v1h-1zM31 48h2v1h-2zM30 49h3v1h-3zM29 50h3v1h-3zM28 51h3v1h-3zM27 52h4v1h-4zM26 53h4v1h-4zM26 54h3v1h-3zM25 55h3v1h-3zM25 56h2v1h-2zM25 57h1v1h-1zM24 58h1v1h-1zM24 59h1v1h-1z" fill="#000000" fill-opacity="0.26"></path><path d="M17 10h1v1h-1zM16 11h1v1h-1zM18 11h2v1h-2zM16 12h1v1h-1zM20 12h2v1h-2zM16 13h1v1h-1zM22 13h2v1h-2zM16 14h1v1h-1zM24 14h1v1h-1zM17 15h1v1h-1zM24 15h1v1h-1zM17 16h1v1h-1zM25 16h1v1h-1zM17 17h1v1h-1zM26 17h1v1h-1zM17 18h1v1h-1zM27 18h1v1h-1zM18 19h1v1h-1zM28 19h1v1h-1zM19 20h1v1h-1zM28 20h1v1h-1zM20 21h1v1h-1zM29 21h1v1h-1zM20 22h1v1h-1zM30 22h4v1h-4zM21 23h1v1h-1zM28 23h2v1h-2zM34 23h2v1h-2zM22 24h1v1h-1zM27 24h1v1h-1zM36 24h1v1h-1zM23 25h1v1h-1zM26 25h1v1h-1zM37 25h4v1h-4zM24 26h2v1h-2zM32 26h2v1h-2zM37 26h1v1h-1zM41 26h1v1h-1zM24 27h2v1h-2zM30 27h2v1h-2zM33 27h3v1h-3zM37 27h1v1h-1zM42 27h1v1h-1zM25 28h2v1h-2zM29 28h1v1h-1zM32 28h1v1h-1zM36 28h1v1h-1zM43 28h1v1h-1zM26 29h3v1h-3zM32 29h1v1h-1zM43 29h1v1h-1zM27 30h1v1h-1zM32 30h1v1h-1zM44 30h1v1h-1zM28 31h1v1h-1zM31 31h1v1h-1zM44 31h1v1h-1zM28 32h1v1h-1zM31 32h1v1h-1zM35 32h8v1h-8zM44 32h1v1h-1zM29 33h1v1h-1zM31 33h1v1h-1zM44 33h1v1h-1zM30 34h1v1h-1zM32 34h1v1h-1zM43 34h1v1h-1zM31 35h1v1h-1zM33 35h5v1h-5zM42 35h1v1h-1zM31 36h2v1h-2zM38 36h5v1h-5zM31 37h1v1h-1zM38 37h1v1h-1zM43 37h1v1h-1zM30 38h1v1h-1zM38 38h1v1h-1zM44 38h1v1h-1zM30 39h1v1h-1zM38 39h1v1h-1zM45 39h1v1h-1zM30 40h1v1h-1zM38 40h1v1h-1zM45 40h1v1h-1zM31 41h1v1h-1zM37 41h1v1h-1zM45 41h1v1h-1zM30 42h1v1h-1zM32 42h6v1h-6zM44 42h1v1h-1zM29 43h1v1h-1zM33 43h1v1h-1zM37 43h3v1h-3zM43 43h2v1h-2zM27 44h2v1h-2zM32 44h1v1h-1zM37 44h1v1h-1zM26 45h1v1h-1zM33 45h1v1h-1zM37 45h1v1h-1zM44 45h1v1h-1zM25 46h1v1h-1zM33 46h1v1h-1zM37 46h1v1h-1zM44 46h1v1h-1zM25 47h1v1h-1zM32 47h2v1h-2zM38 47h1v1h-1zM45 47h1v1h-1zM24 48h1v1h-1zM33 48h2v1h-2zM38 48h1v1h-1zM41 48h4v1h-4zM24 49h1v1h-1zM33 49h2v1h-2zM38 49h1v1h-1zM41 49h1v1h-1zM43 49h1v1h-1zM23 50h1v1h-1zM26 50h2v1h-2zM32 50h1v1h-1zM34 50h1v1h-1zM38 50h1v1h-1zM41 50h2v1h-2zM23 51h1v1h-1zM25 51h2v1h-2zM31 51h1v1h-1zM35 51h3v1h-3zM41 51h2v1h-2zM24 52h1v1h-1zM26 52h1v1h-1zM31 52h1v1h-1zM35 52h1v1h-1zM41 52h2v1h-2zM25 53h1v1h-1zM30 53h1v1h-1zM36 53h1v1h-1zM41 53h2v1h-2zM25 54h1v1h-1zM29 54h1v1h-1zM36 54h1v1h-1zM41 54h1v1h-1zM24 55h1v1h-1zM28 55h1v1h-1zM36 55h1v1h-1zM41 55h1v1h-1zM24 56h1v1h-1zM27 56h1v1h-1zM36 56h1v1h-1zM40 56h2v1h-2zM24 57h1v1h-1zM26 57h1v1h-1zM36 57h1v1h-1zM40 57h2v1h-2zM23 58h1v1h-1zM25 58h1v1h-1zM36 58h1v1h-1zM40 58h2v1h-2zM23 59h1v1h-1zM25 59h1v1h-1zM36 59h1v1h-1zM40 59h4v1h-4zM24 60h1v1h-1zM36 60h1v1h-1zM42 60h1v1h-1zM44 60h1v1h-1zM36 61h1v1h-1zM40 61h4v1h-4z" fill="#141414"></path></g>
+<g data-hf="r0" style="display: none"><path d="M40 26h3v1h-3zM43 27h1v1h-1zM35 28h2v1h-2zM44 28h1v1h-1zM35 29h3v1h-3zM44 29h1v1h-1zM35 30h4v1h-4zM45 30h1v1h-1zM35 31h11v1h-11zM35 32h2v1h-2zM45 32h1v1h-1zM36 33h2v1h-2zM45 33h1v1h-1zM37 34h2v1h-2zM44 34h1v1h-1zM39 35h5v1h-5zM40 37h2v1h-2zM32 39h1v1h-1zM38 39h1v1h-1zM33 40h1v1h-1zM37 40h1v1h-1zM40 40h1v1h-1zM39 41h3v1h-3zM45 41h1v1h-1zM38 42h4v1h-4zM44 42h1v1h-1zM33 43h1v1h-1zM41 43h3v1h-3zM33 44h1v1h-1zM33 45h1v1h-1zM36 45h1v1h-1zM39 45h1v1h-1zM42 45h1v1h-1zM44 45h1v1h-1zM33 46h1v1h-1zM39 46h1v1h-1zM42 46h1v1h-1zM44 46h1v1h-1zM33 47h1v1h-1zM39 47h1v1h-1zM42 47h1v1h-1zM45 47h1v1h-1zM39 48h2v1h-2zM40 49h2v1h-2zM41 50h3v1h-3zM43 53h1v1h-1zM43 54h1v1h-1zM43 55h1v1h-1zM33 56h1v1h-1zM43 56h1v1h-1zM33 57h1v1h-1zM43 57h1v1h-1zM43 58h2v1h-2zM43 59h3v1h-3z" fill="#74726B"></path><path d="M18 12h2v1h-2zM19 13h3v1h-3zM20 14h4v1h-4zM21 15h3v1h-3zM21 16h4v1h-4zM22 17h4v1h-4zM23 18h4v1h-4zM24 19h4v1h-4zM25 20h3v1h-3zM26 21h3v1h-3zM26 22h4v1h-4zM27 23h3v1h-3zM28 24h1v1h-1zM32 28h2v1h-2zM32 29h2v1h-2zM33 30h1v1h-1z" fill="#F3F1EB"></path><path d="M34 31h1v1h-1zM34 32h1v1h-1zM34 33h2v1h-2zM35 34h2v1h-2zM40 34h1v1h-1zM42 34h1v1h-1zM32 40h1v1h-1zM38 40h1v1h-1zM34 41h3v1h-3zM32 42h1v1h-1zM32 43h1v1h-1zM32 44h1v1h-1zM32 45h1v1h-1zM38 45h1v1h-1zM41 45h1v1h-1zM32 46h1v1h-1zM38 46h1v1h-1zM41 46h1v1h-1zM32 47h1v1h-1zM38 47h1v1h-1zM41 47h1v1h-1zM37 48h2v1h-2zM38 49h2v1h-2zM39 50h2v1h-2zM36 51h3v1h-3zM40 51h2v1h-2zM34 52h6v1h-6zM41 52h1v1h-1zM33 53h5v1h-5zM42 53h1v1h-1zM31 54h6v1h-6zM42 54h1v1h-1zM30 55h5v1h-5zM42 55h1v1h-1zM30 56h3v1h-3zM42 56h1v1h-1zM32 57h1v1h-1zM42 57h1v1h-1z" fill="#474642"></path><path d="M35 37h2v1h-2zM35 38h1v1h-1z" fill="#FAF8F2"></path><path d="M41 27h2v1h-2zM42 28h2v1h-2zM43 29h1v1h-1zM43 33h2v1h-2zM35 36h3v1h-3zM34 37h1v1h-1zM37 37h2v1h-2zM43 37h1v1h-1zM33 38h2v1h-2zM36 38h2v1h-2zM43 38h2v1h-2zM33 39h4v1h-4zM43 39h2v1h-2zM44 40h1v1h-1zM34 48h1v1h-1zM33 49h2v1h-2zM42 51h2v1h-2zM43 52h1v1h-1z" fill="#D2CFC5"></path><path d="M33 41h1v1h-1zM37 41h1v1h-1zM36 44h9v1h-9zM37 50h1v1h-1zM38 53h2v1h-2zM37 54h2v1h-2zM35 55h2v1h-2zM34 56h1v1h-1zM31 57h1v1h-1z" fill="#2E2D2B"></path><path d="M32 23h4v1h-4zM30 24h8v1h-8zM29 25h5v1h-5zM35 25h4v1h-4zM28 26h4v1h-4zM37 26h2v1h-2zM28 27h3v1h-3zM38 27h1v1h-1zM29 28h1v1h-1zM30 38h1v1h-1zM25 39h6v1h-6zM23 40h8v1h-8zM22 41h10v1h-10zM21 42h10v1h-10zM21 43h9v1h-9zM20 44h7v1h-7zM19 45h3v1h-3zM24 45h1v1h-1zM19 46h2v1h-2zM23 46h1v1h-1z" fill="var(--c2)"></path><path d="M40 27h1v1h-1zM37 28h1v1h-1zM39 28h3v1h-3zM38 29h5v1h-5zM39 30h6v1h-6zM38 33h5v1h-5zM39 34h1v1h-1zM41 34h1v1h-1zM43 34h1v1h-1zM34 36h1v1h-1zM38 36h1v1h-1zM33 37h1v1h-1zM42 37h1v1h-1zM32 38h1v1h-1zM38 38h1v1h-1zM40 38h3v1h-3zM37 39h1v1h-1zM40 39h3v1h-3zM45 39h1v1h-1zM34 40h3v1h-3zM41 40h3v1h-3zM45 40h1v1h-1zM42 41h3v1h-3zM42 42h2v1h-2zM34 43h2v1h-2zM34 44h1v1h-1zM34 45h1v1h-1zM37 45h1v1h-1zM40 45h1v1h-1zM43 45h1v1h-1zM34 46h2v1h-2zM37 46h1v1h-1zM40 46h1v1h-1zM43 46h1v1h-1zM34 47h2v1h-2zM37 47h1v1h-1zM40 47h1v1h-1zM43 47h2v1h-2zM33 48h1v1h-1zM35 48h1v1h-1zM41 48h3v1h-3zM42 49h2v1h-2zM44 50h1v1h-1zM44 51h2v1h-2zM42 52h1v1h-1zM44 52h2v1h-2zM44 53h2v1h-2zM44 54h2v1h-2zM44 55h2v1h-2zM44 56h2v1h-2zM44 57h2v1h-2zM45 58h1v1h-1zM47 58h1v1h-1zM46 59h1v1h-1z" fill="#A5A299"></path><path d="M17 11h1v1h-1zM17 12h1v1h-1zM17 13h2v1h-2zM17 14h3v1h-3zM18 15h3v1h-3zM18 16h3v1h-3zM18 17h3v1h-3zM18 18h4v1h-4zM19 19h4v1h-4zM20 20h3v1h-3zM21 21h3v1h-3zM21 22h4v1h-4zM22 23h4v1h-4zM23 24h4v1h-4zM24 25h3v1h-3zM25 26h2v1h-2zM25 27h2v1h-2zM26 28h2v1h-2zM27 29h2v1h-2zM28 30h3v1h-3zM29 31h3v1h-3zM29 32h4v1h-4zM30 33h3v1h-3zM31 34h3v1h-3zM32 35h2v1h-2zM32 36h1v1h-1z" fill="#BDBAB1"></path><path d="M21 17h1v1h-1zM22 18h1v1h-1zM23 19h1v1h-1zM23 20h2v1h-2zM24 21h2v1h-2zM25 22h1v1h-1zM26 23h1v1h-1zM27 24h1v1h-1zM27 25h1v1h-1zM31 29h1v1h-1zM31 30h2v1h-2zM32 31h1v1h-1z" fill="#8B8880"></path><path d="M34 25h1v1h-1zM32 26h2v1h-2zM36 26h1v1h-1zM31 27h1v1h-1zM30 28h1v1h-1zM30 43h1v1h-1zM27 44h4v1h-4zM25 45h6v1h-6zM24 46h7v1h-7zM23 47h7v1h-7zM22 48h5v1h-5zM22 49h3v1h-3zM21 50h3v1h-3zM20 51h3v1h-3zM20 52h2v1h-2zM19 53h2v1h-2zM19 54h1v1h-1z" fill="var(--c2)"></path><path d="M34 25h1v1h-1zM32 26h2v1h-2zM36 26h1v1h-1zM31 27h1v1h-1zM30 28h1v1h-1zM30 43h1v1h-1zM27 44h4v1h-4zM25 45h6v1h-6zM24 46h7v1h-7zM23 47h7v1h-7zM22 48h5v1h-5zM22 49h3v1h-3zM21 50h3v1h-3zM20 51h3v1h-3zM20 52h2v1h-2zM19 53h2v1h-2zM19 54h1v1h-1z" fill="#000000" fill-opacity="0.26"></path><path d="M17 10h1v1h-1zM16 11h1v1h-1zM18 11h2v1h-2zM16 12h1v1h-1zM20 12h2v1h-2zM16 13h1v1h-1zM22 13h2v1h-2zM16 14h1v1h-1zM24 14h1v1h-1zM17 15h1v1h-1zM24 15h1v1h-1zM17 16h1v1h-1zM25 16h1v1h-1zM17 17h1v1h-1zM26 17h1v1h-1zM17 18h1v1h-1zM27 18h1v1h-1zM18 19h1v1h-1zM28 19h1v1h-1zM19 20h1v1h-1zM28 20h1v1h-1zM20 21h1v1h-1zM29 21h1v1h-1zM20 22h1v1h-1zM30 22h1v1h-1zM32 22h4v1h-4zM21 23h1v1h-1zM30 23h2v1h-2zM36 23h2v1h-2zM22 24h1v1h-1zM29 24h1v1h-1zM38 24h1v1h-1zM23 25h1v1h-1zM28 25h1v1h-1zM39 25h4v1h-4zM24 26h1v1h-1zM27 26h1v1h-1zM34 26h2v1h-2zM39 26h1v1h-1zM43 26h1v1h-1zM24 27h1v1h-1zM27 27h1v1h-1zM32 27h6v1h-6zM39 27h1v1h-1zM44 27h1v1h-1zM25 28h1v1h-1zM28 28h1v1h-1zM31 28h1v1h-1zM34 28h1v1h-1zM38 28h1v1h-1zM45 28h1v1h-1zM26 29h1v1h-1zM29 29h2v1h-2zM34 29h1v1h-1zM45 29h1v1h-1zM27 30h1v1h-1zM34 30h1v1h-1zM46 30h1v1h-1zM28 31h1v1h-1zM33 31h1v1h-1zM46 31h1v1h-1zM28 32h1v1h-1zM33 32h1v1h-1zM37 32h8v1h-8zM46 32h1v1h-1zM29 33h1v1h-1zM33 33h1v1h-1zM46 33h1v1h-1zM30 34h1v1h-1zM34 34h1v1h-1zM45 34h1v1h-1zM31 35h1v1h-1zM34 35h5v1h-5zM44 35h1v1h-1zM31 36h1v1h-1zM33 36h1v1h-1zM39 36h5v1h-5zM30 37h3v1h-3zM39 37h1v1h-1zM44 37h1v1h-1zM25 38h5v1h-5zM31 38h1v1h-1zM39 38h1v1h-1zM45 38h1v1h-1zM23 39h2v1h-2zM31 39h1v1h-1zM39 39h1v1h-1zM46 39h1v1h-1zM22 40h1v1h-1zM31 40h1v1h-1zM39 40h1v1h-1zM46 40h1v1h-1zM21 41h1v1h-1zM32 41h1v1h-1zM38 41h1v1h-1zM46 41h1v1h-1zM20 42h1v1h-1zM31 42h1v1h-1zM33 42h5v1h-5zM45 42h1v1h-1zM20 43h1v1h-1zM31 43h1v1h-1zM36 43h5v1h-5zM44 43h1v1h-1zM19 44h1v1h-1zM31 44h1v1h-1zM35 44h1v1h-1zM18 45h1v1h-1zM22 45h2v1h-2zM31 45h1v1h-1zM35 45h1v1h-1zM45 45h1v1h-1zM18 46h1v1h-1zM21 46h2v1h-2zM31 46h1v1h-1zM36 46h1v1h-1zM45 46h1v1h-1zM19 47h2v1h-2zM22 47h1v1h-1zM30 47h2v1h-2zM36 47h1v1h-1zM46 47h1v1h-1zM21 48h1v1h-1zM27 48h3v1h-3zM32 48h1v1h-1zM36 48h1v1h-1zM44 48h2v1h-2zM21 49h1v1h-1zM25 49h2v1h-2zM32 49h1v1h-1zM35 49h3v1h-3zM44 49h1v1h-1zM20 50h1v1h-1zM24 50h1v1h-1zM33 50h2v1h-2zM36 50h1v1h-1zM38 50h1v1h-1zM45 50h1v1h-1zM19 51h1v1h-1zM23 51h1v1h-1zM34 51h2v1h-2zM39 51h1v1h-1zM46 51h1v1h-1zM19 52h1v1h-1zM22 52h1v1h-1zM33 52h1v1h-1zM40 52h1v1h-1zM46 52h1v1h-1zM18 53h1v1h-1zM21 53h1v1h-1zM31 53h2v1h-2zM40 53h2v1h-2zM46 53h1v1h-1zM18 54h1v1h-1zM20 54h1v1h-1zM30 54h1v1h-1zM39 54h1v1h-1zM41 54h1v1h-1zM46 54h1v1h-1zM19 55h1v1h-1zM29 55h1v1h-1zM37 55h2v1h-2zM41 55h1v1h-1zM46 55h1v1h-1zM29 56h1v1h-1zM35 56h2v1h-2zM41 56h1v1h-1zM46 56h1v1h-1zM30 57h1v1h-1zM34 57h1v1h-1zM41 57h1v1h-1zM46 57h2v1h-2zM31 58h3v1h-3zM42 58h1v1h-1zM46 58h1v1h-1zM48 58h1v1h-1zM42 59h1v1h-1zM47 59h1v1h-1zM43 60h4v1h-4z" fill="#141414"></path></g>
+<g data-hf="r1" style="display: none"><path d="M40 25h3v1h-3zM43 26h1v1h-1zM35 27h2v1h-2zM44 27h1v1h-1zM35 28h3v1h-3zM44 28h1v1h-1zM35 29h4v1h-4zM45 29h1v1h-1zM35 30h11v1h-11zM35 31h2v1h-2zM45 31h1v1h-1zM36 32h2v1h-2zM45 32h1v1h-1zM37 33h2v1h-2zM44 33h1v1h-1zM39 34h5v1h-5zM40 36h2v1h-2zM32 38h1v1h-1zM38 38h1v1h-1zM33 39h1v1h-1zM37 39h1v1h-1zM40 39h1v1h-1zM39 40h3v1h-3zM45 40h1v1h-1zM39 41h3v1h-3zM44 41h1v1h-1zM35 42h1v1h-1zM41 42h3v1h-3zM35 43h1v1h-1zM35 44h2v1h-2zM39 44h1v1h-1zM42 44h1v1h-1zM44 44h1v1h-1zM36 45h1v1h-1zM42 45h1v1h-1zM44 45h1v1h-1zM36 46h2v1h-2zM42 46h1v1h-1zM45 46h1v1h-1zM39 50h2v1h-2zM39 53h1v1h-1zM39 54h1v1h-1zM39 55h1v1h-1zM38 56h2v1h-2zM38 57h2v1h-2zM38 58h3v1h-3zM38 59h4v1h-4zM38 60h1v1h-1z" fill="#74726B"></path><path d="M18 11h2v1h-2zM19 12h3v1h-3zM20 13h4v1h-4zM21 14h3v1h-3zM21 15h4v1h-4zM22 16h4v1h-4zM23 17h4v1h-4zM24 18h4v1h-4zM25 19h3v1h-3zM26 20h3v1h-3zM26 21h4v1h-4zM27 22h4v1h-4zM28 23h1v1h-1zM33 27h1v1h-1zM32 28h2v1h-2zM33 29h1v1h-1z" fill="#F3F1EB"></path><path d="M34 30h1v1h-1zM34 31h1v1h-1zM34 32h2v1h-2zM35 33h2v1h-2zM40 33h1v1h-1zM42 33h1v1h-1zM32 39h1v1h-1zM38 39h1v1h-1zM34 40h3v1h-3zM34 42h1v1h-1zM34 43h1v1h-1zM34 44h1v1h-1zM41 44h1v1h-1zM35 45h1v1h-1zM41 45h1v1h-1zM41 46h1v1h-1zM36 47h1v1h-1zM43 48h4v1h-4zM43 49h4v1h-4zM37 50h2v1h-2zM43 50h5v1h-5zM38 51h1v1h-1zM43 51h5v1h-5zM38 52h1v1h-1zM43 52h2v1h-2zM38 53h1v1h-1zM38 54h1v1h-1zM38 55h1v1h-1zM37 58h1v1h-1zM37 59h1v1h-1z" fill="#474642"></path><path d="M35 36h2v1h-2zM35 37h1v1h-1z" fill="#FAF8F2"></path><path d="M41 26h2v1h-2zM42 27h2v1h-2zM43 28h1v1h-1zM43 32h2v1h-2zM35 35h3v1h-3zM34 36h1v1h-1zM37 36h2v1h-2zM43 36h1v1h-1zM33 37h2v1h-2zM36 37h2v1h-2zM43 37h2v1h-2zM33 38h4v1h-4zM43 38h2v1h-2zM44 39h1v1h-1zM38 47h1v1h-1zM37 48h2v1h-2zM39 51h2v1h-2zM40 52h1v1h-1z" fill="#D2CFC5"></path><path d="M33 40h1v1h-1zM37 40h1v1h-1zM39 43h6v1h-6zM34 46h1v1h-1zM45 52h2v1h-2zM43 53h2v1h-2z" fill="#2E2D2B"></path><path d="M33 22h3v1h-3zM31 23h7v1h-7zM29 24h6v1h-6zM36 24h3v1h-3zM28 25h5v1h-5zM37 25h2v1h-2zM29 26h2v1h-2zM38 26h1v1h-1zM29 38h2v1h-2zM28 39h3v1h-3zM27 40h5v1h-5zM26 41h7v1h-7zM25 42h6v1h-6zM24 43h6v1h-6zM23 44h5v1h-5zM21 45h6v1h-6zM20 46h4v1h-4zM25 46h1v1h-1zM24 47h2v1h-2zM24 48h1v1h-1zM23 49h1v1h-1z" fill="var(--c2)"></path><path d="M40 26h1v1h-1zM37 27h1v1h-1zM39 27h3v1h-3zM38 28h5v1h-5zM39 29h6v1h-6zM38 32h5v1h-5zM39 33h1v1h-1zM41 33h1v1h-1zM43 33h1v1h-1zM34 35h1v1h-1zM38 35h1v1h-1zM33 36h1v1h-1zM42 36h1v1h-1zM32 37h1v1h-1zM38 37h1v1h-1zM40 37h3v1h-3zM37 38h1v1h-1zM40 38h3v1h-3zM45 38h1v1h-1zM34 39h3v1h-3zM41 39h3v1h-3zM45 39h1v1h-1zM42 40h3v1h-3zM42 41h2v1h-2zM36 42h2v1h-2zM36 43h2v1h-2zM37 44h1v1h-1zM40 44h1v1h-1zM43 44h1v1h-1zM37 45h2v1h-2zM40 45h1v1h-1zM43 45h1v1h-1zM38 46h1v1h-1zM40 46h1v1h-1zM43 46h2v1h-2zM37 47h1v1h-1zM39 47h1v1h-1zM41 47h1v1h-1zM39 48h1v1h-1zM41 48h1v1h-1zM40 49h2v1h-2zM41 50h1v1h-1zM41 51h1v1h-1zM39 52h1v1h-1zM41 52h1v1h-1zM40 53h2v1h-2zM40 54h2v1h-2zM40 55h1v1h-1zM40 56h1v1h-1zM40 57h1v1h-1zM42 59h1v1h-1zM39 60h1v1h-1z" fill="#A5A299"></path><path d="M17 10h1v1h-1zM17 11h1v1h-1zM17 12h2v1h-2zM17 13h3v1h-3zM18 14h3v1h-3zM18 15h3v1h-3zM18 16h3v1h-3zM18 17h4v1h-4zM19 18h4v1h-4zM20 19h3v1h-3zM21 20h3v1h-3zM21 21h4v1h-4zM22 22h4v1h-4zM23 23h4v1h-4zM24 24h3v1h-3zM25 25h2v1h-2zM25 26h3v1h-3zM26 27h3v1h-3zM27 28h4v1h-4zM28 29h3v1h-3zM29 30h3v1h-3zM29 31h4v1h-4zM30 32h3v1h-3zM31 33h3v1h-3zM32 34h2v1h-2zM32 35h1v1h-1z" fill="#BDBAB1"></path><path d="M21 16h1v1h-1zM22 17h1v1h-1zM23 18h1v1h-1zM23 19h2v1h-2zM24 20h2v1h-2zM25 21h1v1h-1zM26 22h1v1h-1zM27 23h1v1h-1zM27 24h1v1h-1zM31 28h1v1h-1zM31 29h2v1h-2zM32 30h1v1h-1z" fill="#8B8880"></path><path d="M35 24h1v1h-1zM33 25h2v1h-2zM36 25h1v1h-1zM31 26h2v1h-2zM31 42h2v1h-2zM30 43h3v1h-3zM28 44h5v1h-5zM27 45h5v1h-5zM26 46h5v1h-5zM26 47h3v1h-3zM25 48h3v1h-3zM24 49h3v1h-3zM23 50h4v1h-4zM22 51h4v1h-4zM21 52h4v1h-4zM20 53h4v1h-4zM20 54h3v1h-3z" fill="var(--c2)"></path><path d="M35 24h1v1h-1zM33 25h2v1h-2zM36 25h1v1h-1zM31 26h2v1h-2zM31 42h2v1h-2zM30 43h3v1h-3zM28 44h5v1h-5zM27 45h5v1h-5zM26 46h5v1h-5zM26 47h3v1h-3zM25 48h3v1h-3zM24 49h3v1h-3zM23 50h4v1h-4zM22 51h4v1h-4zM21 52h4v1h-4zM20 53h4v1h-4zM20 54h3v1h-3z" fill="#000000" fill-opacity="0.26"></path><path d="M17 9h1v1h-1zM16 10h1v1h-1zM18 10h2v1h-2zM16 11h1v1h-1zM20 11h2v1h-2zM16 12h1v1h-1zM22 12h2v1h-2zM16 13h1v1h-1zM24 13h1v1h-1zM17 14h1v1h-1zM24 14h1v1h-1zM17 15h1v1h-1zM25 15h1v1h-1zM17 16h1v1h-1zM26 16h1v1h-1zM17 17h1v1h-1zM27 17h1v1h-1zM18 18h1v1h-1zM28 18h1v1h-1zM19 19h1v1h-1zM28 19h1v1h-1zM20 20h1v1h-1zM29 20h1v1h-1zM20 21h1v1h-1zM30 21h1v1h-1zM33 21h3v1h-3zM21 22h1v1h-1zM31 22h2v1h-2zM36 22h2v1h-2zM22 23h1v1h-1zM29 23h2v1h-2zM38 23h1v1h-1zM23 24h1v1h-1zM28 24h1v1h-1zM39 24h4v1h-4zM24 25h1v1h-1zM27 25h1v1h-1zM35 25h1v1h-1zM39 25h1v1h-1zM43 25h1v1h-1zM24 26h1v1h-1zM28 26h1v1h-1zM33 26h5v1h-5zM39 26h1v1h-1zM44 26h1v1h-1zM25 27h1v1h-1zM29 27h4v1h-4zM34 27h1v1h-1zM38 27h1v1h-1zM45 27h1v1h-1zM26 28h1v1h-1zM34 28h1v1h-1zM45 28h1v1h-1zM27 29h1v1h-1zM34 29h1v1h-1zM46 29h1v1h-1zM28 30h1v1h-1zM33 30h1v1h-1zM46 30h1v1h-1zM28 31h1v1h-1zM33 31h1v1h-1zM37 31h8v1h-8zM46 31h1v1h-1zM29 32h1v1h-1zM33 32h1v1h-1zM46 32h1v1h-1zM30 33h1v1h-1zM34 33h1v1h-1zM45 33h1v1h-1zM31 34h1v1h-1zM34 34h5v1h-5zM44 34h1v1h-1zM31 35h1v1h-1zM33 35h1v1h-1zM39 35h5v1h-5zM32 36h1v1h-1zM39 36h1v1h-1zM44 36h1v1h-1zM29 37h3v1h-3zM39 37h1v1h-1zM45 37h1v1h-1zM28 38h1v1h-1zM31 38h1v1h-1zM39 38h1v1h-1zM46 38h1v1h-1zM27 39h1v1h-1zM31 39h1v1h-1zM39 39h1v1h-1zM46 39h1v1h-1zM26 40h1v1h-1zM32 40h1v1h-1zM38 40h1v1h-1zM46 40h1v1h-1zM25 41h1v1h-1zM33 41h6v1h-6zM45 41h1v1h-1zM24 42h1v1h-1zM33 42h1v1h-1zM38 42h3v1h-3zM44 42h1v1h-1zM23 43h1v1h-1zM33 43h1v1h-1zM38 43h1v1h-1zM21 44h2v1h-2zM33 44h1v1h-1zM38 44h1v1h-1zM45 44h1v1h-1zM20 45h1v1h-1zM32 45h1v1h-1zM34 45h1v1h-1zM39 45h1v1h-1zM45 45h1v1h-1zM19 46h1v1h-1zM24 46h1v1h-1zM31 46h1v1h-1zM33 46h1v1h-1zM35 46h1v1h-1zM39 46h1v1h-1zM46 46h1v1h-1zM20 47h4v1h-4zM29 47h2v1h-2zM34 47h2v1h-2zM40 47h1v1h-1zM42 47h5v1h-5zM23 48h1v1h-1zM28 48h1v1h-1zM36 48h1v1h-1zM40 48h1v1h-1zM42 48h1v1h-1zM47 48h1v1h-1zM22 49h1v1h-1zM27 49h1v1h-1zM36 49h4v1h-4zM42 49h1v1h-1zM47 49h1v1h-1zM22 50h1v1h-1zM27 50h1v1h-1zM36 50h1v1h-1zM42 50h1v1h-1zM48 50h1v1h-1zM21 51h1v1h-1zM26 51h1v1h-1zM37 51h1v1h-1zM42 51h1v1h-1zM48 51h1v1h-1zM20 52h1v1h-1zM25 52h1v1h-1zM36 52h2v1h-2zM42 52h1v1h-1zM47 52h1v1h-1zM19 53h1v1h-1zM24 53h1v1h-1zM36 53h2v1h-2zM42 53h1v1h-1zM45 53h2v1h-2zM19 54h1v1h-1zM23 54h1v1h-1zM37 54h1v1h-1zM42 54h3v1h-3zM20 55h3v1h-3zM37 55h1v1h-1zM41 55h1v1h-1zM37 56h1v1h-1zM41 56h1v1h-1zM37 57h1v1h-1zM41 57h1v1h-1zM36 58h1v1h-1zM41 58h2v1h-2zM36 59h1v1h-1zM43 59h1v1h-1zM37 60h1v1h-1zM40 60h3v1h-3zM38 61h2v1h-2z" fill="#141414"></path></g>
+<g data-hf="r2" style="display: none"><path d="M40 26h3v1h-3zM43 27h1v1h-1zM35 28h2v1h-2zM44 28h1v1h-1zM35 29h3v1h-3zM44 29h1v1h-1zM35 30h4v1h-4zM45 30h1v1h-1zM35 31h11v1h-11zM35 32h2v1h-2zM45 32h1v1h-1zM36 33h2v1h-2zM45 33h1v1h-1zM37 34h2v1h-2zM44 34h1v1h-1zM39 35h5v1h-5zM40 37h2v1h-2zM32 39h1v1h-1zM38 39h1v1h-1zM33 40h1v1h-1zM37 40h1v1h-1zM40 40h1v1h-1zM41 41h1v1h-1zM45 41h1v1h-1zM44 42h1v1h-1zM38 43h1v1h-1zM38 44h4v1h-4zM36 45h1v1h-1zM41 45h2v1h-2zM36 46h1v1h-1zM39 47h1v1h-1zM45 47h1v1h-1zM36 48h2v1h-2zM36 49h2v1h-2zM36 50h1v1h-1zM36 51h1v1h-1zM37 52h1v1h-1zM33 53h2v1h-2zM31 54h3v1h-3zM28 55h4v1h-4zM28 56h2v1h-2zM29 57h1v1h-1zM50 58h1v1h-1zM49 59h1v1h-1z" fill="#74726B"></path><path d="M18 12h2v1h-2zM19 13h3v1h-3zM20 14h4v1h-4zM21 15h3v1h-3zM21 16h4v1h-4zM22 17h4v1h-4zM23 18h4v1h-4zM24 19h4v1h-4zM25 20h3v1h-3zM26 21h3v1h-3zM26 22h4v1h-4zM27 23h3v1h-3zM28 24h1v1h-1zM32 28h2v1h-2zM32 29h2v1h-2zM33 30h1v1h-1z" fill="#F3F1EB"></path><path d="M34 31h1v1h-1zM34 32h1v1h-1zM34 33h2v1h-2zM35 34h2v1h-2zM40 34h1v1h-1zM42 34h1v1h-1zM32 40h1v1h-1zM38 40h1v1h-1zM34 41h3v1h-3zM37 43h1v1h-1zM37 44h1v1h-1zM35 45h1v1h-1zM38 45h3v1h-3zM35 46h1v1h-1zM41 46h2v1h-2zM36 47h1v1h-1zM38 47h1v1h-1zM35 48h1v1h-1zM35 49h1v1h-1zM42 49h5v1h-5zM34 50h1v1h-1zM43 50h1v1h-1zM45 50h3v1h-3zM45 51h3v1h-3zM45 52h3v1h-3zM45 53h3v1h-3zM34 54h2v1h-2zM45 54h3v1h-3zM32 55h2v1h-2zM45 55h3v1h-3zM31 56h1v1h-1zM46 56h2v1h-2zM46 57h2v1h-2zM46 58h2v1h-2zM46 59h3v1h-3z" fill="#474642"></path><path d="M35 37h2v1h-2zM35 38h1v1h-1z" fill="#FAF8F2"></path><path d="M41 27h2v1h-2zM42 28h2v1h-2zM43 29h1v1h-1zM43 33h2v1h-2zM35 36h3v1h-3zM34 37h1v1h-1zM37 37h2v1h-2zM43 37h1v1h-1zM33 38h2v1h-2zM36 38h2v1h-2zM43 38h2v1h-2zM33 39h4v1h-4zM43 39h2v1h-2zM44 40h1v1h-1zM44 45h1v1h-1zM43 46h2v1h-2zM35 52h2v1h-2zM36 53h1v1h-1z" fill="#D2CFC5"></path><path d="M33 41h1v1h-1zM37 41h1v1h-1zM34 47h1v1h-1zM41 49h1v1h-1zM42 50h1v1h-1zM44 50h1v1h-1zM43 51h2v1h-2zM44 52h1v1h-1zM44 53h1v1h-1zM44 54h1v1h-1zM45 56h1v1h-1zM45 57h1v1h-1zM45 58h1v1h-1zM45 59h1v1h-1z" fill="#2E2D2B"></path><path d="M32 23h4v1h-4zM30 24h8v1h-8zM29 25h5v1h-5zM35 25h4v1h-4zM28 26h4v1h-4zM37 26h2v1h-2zM28 27h3v1h-3zM38 27h1v1h-1zM29 28h1v1h-1zM31 37h1v1h-1zM30 38h1v1h-1zM28 39h3v1h-3zM27 40h4v1h-4zM20 41h1v1h-1zM25 41h7v1h-7zM21 42h10v1h-10zM23 43h7v1h-7zM24 44h5v1h-5zM23 45h5v1h-5zM22 46h4v1h-4zM20 47h5v1h-5z" fill="var(--c2)"></path><path d="M40 27h1v1h-1zM37 28h1v1h-1zM39 28h3v1h-3zM38 29h5v1h-5zM39 30h6v1h-6zM38 33h5v1h-5zM39 34h1v1h-1zM41 34h1v1h-1zM43 34h1v1h-1zM34 36h1v1h-1zM38 36h1v1h-1zM33 37h1v1h-1zM42 37h1v1h-1zM32 38h1v1h-1zM38 38h1v1h-1zM40 38h3v1h-3zM37 39h1v1h-1zM40 39h3v1h-3zM45 39h1v1h-1zM34 40h3v1h-3zM41 40h3v1h-3zM45 40h1v1h-1zM39 41h1v1h-1zM42 41h3v1h-3zM38 42h2v1h-2zM43 42h1v1h-1zM39 43h4v1h-4zM42 44h3v1h-3zM43 45h1v1h-1zM37 46h1v1h-1zM37 47h1v1h-1zM40 47h1v1h-1zM38 48h3v1h-3zM38 49h2v1h-2zM35 50h1v1h-1zM37 50h2v1h-2zM33 51h3v1h-3zM37 51h2v1h-2zM32 52h3v1h-3zM30 53h3v1h-3zM35 53h1v1h-1zM37 53h1v1h-1zM29 54h2v1h-2zM36 54h1v1h-1zM30 56h1v1h-1zM30 57h1v1h-1z" fill="#A5A299"></path><path d="M17 11h1v1h-1zM17 12h1v1h-1zM17 13h2v1h-2zM17 14h3v1h-3zM18 15h3v1h-3zM18 16h3v1h-3zM18 17h3v1h-3zM18 18h4v1h-4zM19 19h4v1h-4zM20 20h3v1h-3zM21 21h3v1h-3zM21 22h4v1h-4zM22 23h4v1h-4zM23 24h4v1h-4zM24 25h3v1h-3zM25 26h2v1h-2zM25 27h2v1h-2zM26 28h2v1h-2zM27 29h2v1h-2zM28 30h3v1h-3zM29 31h3v1h-3zM29 32h4v1h-4zM30 33h3v1h-3zM31 34h3v1h-3zM32 35h2v1h-2z" fill="#BDBAB1"></path><path d="M21 17h1v1h-1zM22 18h1v1h-1zM23 19h1v1h-1zM23 20h2v1h-2zM24 21h2v1h-2zM25 22h1v1h-1zM26 23h1v1h-1zM27 24h1v1h-1zM27 25h1v1h-1zM31 29h1v1h-1zM31 30h2v1h-2zM32 31h1v1h-1z" fill="#8B8880"></path><path d="M34 25h1v1h-1zM32 26h2v1h-2zM36 26h1v1h-1zM31 27h1v1h-1zM30 28h1v1h-1zM31 42h2v1h-2zM30 43h5v1h-5zM29 44h4v1h-4zM28 45h4v1h-4zM26 46h5v1h-5zM25 47h5v1h-5zM19 48h10v1h-10zM20 49h8v1h-8zM22 50h5v1h-5zM24 51h1v1h-1z" fill="var(--c2)"></path><path d="M34 25h1v1h-1zM32 26h2v1h-2zM36 26h1v1h-1zM31 27h1v1h-1zM30 28h1v1h-1zM31 42h2v1h-2zM30 43h5v1h-5zM29 44h4v1h-4zM28 45h4v1h-4zM26 46h5v1h-5zM25 47h5v1h-5zM19 48h10v1h-10zM20 49h8v1h-8zM22 50h5v1h-5zM24 51h1v1h-1z" fill="#000000" fill-opacity="0.26"></path><path d="M17 10h1v1h-1zM16 11h1v1h-1zM18 11h2v1h-2zM16 12h1v1h-1zM20 12h2v1h-2zM16 13h1v1h-1zM22 13h2v1h-2zM16 14h1v1h-1zM24 14h1v1h-1zM17 15h1v1h-1zM24 15h1v1h-1zM17 16h1v1h-1zM25 16h1v1h-1zM17 17h1v1h-1zM26 17h1v1h-1zM17 18h1v1h-1zM27 18h1v1h-1zM18 19h1v1h-1zM28 19h1v1h-1zM19 20h1v1h-1zM28 20h1v1h-1zM20 21h1v1h-1zM29 21h1v1h-1zM20 22h1v1h-1zM30 22h1v1h-1zM32 22h4v1h-4zM21 23h1v1h-1zM30 23h2v1h-2zM36 23h2v1h-2zM22 24h1v1h-1zM29 24h1v1h-1zM38 24h1v1h-1zM23 25h1v1h-1zM28 25h1v1h-1zM39 25h4v1h-4zM24 26h1v1h-1zM27 26h1v1h-1zM34 26h2v1h-2zM39 26h1v1h-1zM43 26h1v1h-1zM24 27h1v1h-1zM27 27h1v1h-1zM32 27h6v1h-6zM39 27h1v1h-1zM44 27h1v1h-1zM25 28h1v1h-1zM28 28h1v1h-1zM31 28h1v1h-1zM34 28h1v1h-1zM38 28h1v1h-1zM45 28h1v1h-1zM26 29h1v1h-1zM29 29h2v1h-2zM34 29h1v1h-1zM45 29h1v1h-1zM27 30h1v1h-1zM34 30h1v1h-1zM46 30h1v1h-1zM28 31h1v1h-1zM33 31h1v1h-1zM46 31h1v1h-1zM28 32h1v1h-1zM33 32h1v1h-1zM37 32h8v1h-8zM46 32h1v1h-1zM29 33h1v1h-1zM33 33h1v1h-1zM46 33h1v1h-1zM30 34h1v1h-1zM34 34h1v1h-1zM45 34h1v1h-1zM31 35h1v1h-1zM34 35h5v1h-5zM44 35h1v1h-1zM31 36h3v1h-3zM39 36h5v1h-5zM30 37h1v1h-1zM32 37h1v1h-1zM39 37h1v1h-1zM44 37h1v1h-1zM28 38h2v1h-2zM31 38h1v1h-1zM39 38h1v1h-1zM45 38h1v1h-1zM27 39h1v1h-1zM31 39h1v1h-1zM39 39h1v1h-1zM46 39h1v1h-1zM20 40h1v1h-1zM25 40h2v1h-2zM31 40h1v1h-1zM39 40h1v1h-1zM46 40h1v1h-1zM19 41h1v1h-1zM21 41h4v1h-4zM32 41h1v1h-1zM38 41h1v1h-1zM40 41h1v1h-1zM46 41h1v1h-1zM20 42h1v1h-1zM33 42h5v1h-5zM40 42h3v1h-3zM45 42h1v1h-1zM21 43h2v1h-2zM35 43h2v1h-2zM43 43h2v1h-2zM23 44h1v1h-1zM33 44h4v1h-4zM45 44h1v1h-1zM22 45h1v1h-1zM32 45h1v1h-1zM34 45h1v1h-1zM37 45h1v1h-1zM45 45h1v1h-1zM20 46h2v1h-2zM31 46h1v1h-1zM34 46h1v1h-1zM38 46h3v1h-3zM45 46h1v1h-1zM19 47h1v1h-1zM30 47h1v1h-1zM33 47h1v1h-1zM35 47h1v1h-1zM41 47h4v1h-4zM46 47h1v1h-1zM18 48h1v1h-1zM29 48h1v1h-1zM34 48h1v1h-1zM41 48h6v1h-6zM19 49h1v1h-1zM28 49h1v1h-1zM34 49h1v1h-1zM40 49h1v1h-1zM47 49h1v1h-1zM20 50h2v1h-2zM27 50h1v1h-1zM33 50h1v1h-1zM39 50h1v1h-1zM41 50h1v1h-1zM48 50h1v1h-1zM22 51h2v1h-2zM25 51h2v1h-2zM32 51h1v1h-1zM39 51h1v1h-1zM42 51h1v1h-1zM48 51h1v1h-1zM24 52h1v1h-1zM30 52h2v1h-2zM38 52h1v1h-1zM43 52h1v1h-1zM48 52h1v1h-1zM29 53h1v1h-1zM38 53h1v1h-1zM43 53h1v1h-1zM48 53h1v1h-1zM28 54h1v1h-1zM37 54h1v1h-1zM43 54h1v1h-1zM48 54h1v1h-1zM27 55h1v1h-1zM34 55h3v1h-3zM44 55h1v1h-1zM48 55h1v1h-1zM27 56h1v1h-1zM32 56h2v1h-2zM44 56h1v1h-1zM48 56h1v1h-1zM28 57h1v1h-1zM31 57h1v1h-1zM44 57h1v1h-1zM48 57h1v1h-1zM50 57h1v1h-1zM29 58h2v1h-2zM44 58h1v1h-1zM48 58h2v1h-2zM51 58h1v1h-1zM44 59h1v1h-1zM50 59h1v1h-1zM45 60h5v1h-5z" fill="#141414"></path></g>
+<g data-hf="r3" style="display: none"><path d="M40 25h3v1h-3zM43 26h1v1h-1zM35 27h2v1h-2zM44 27h1v1h-1zM35 28h3v1h-3zM44 28h1v1h-1zM35 29h4v1h-4zM45 29h1v1h-1zM35 30h11v1h-11zM35 31h2v1h-2zM45 31h1v1h-1zM36 32h2v1h-2zM45 32h1v1h-1zM37 33h2v1h-2zM44 33h1v1h-1zM39 34h5v1h-5zM40 36h2v1h-2zM32 38h1v1h-1zM38 38h1v1h-1zM33 39h1v1h-1zM37 39h1v1h-1zM40 39h1v1h-1zM39 40h3v1h-3zM45 40h1v1h-1zM40 41h2v1h-2zM44 41h1v1h-1zM41 42h3v1h-3zM36 43h1v1h-1zM37 44h1v1h-1zM42 44h1v1h-1zM44 44h1v1h-1zM38 45h1v1h-1zM42 45h1v1h-1zM44 45h1v1h-1zM38 46h1v1h-1zM45 46h1v1h-1zM40 48h1v1h-1zM41 49h1v1h-1zM44 50h1v1h-1zM41 51h1v1h-1zM44 51h1v1h-1zM35 52h7v1h-7zM35 53h3v1h-3zM36 54h2v1h-2zM45 59h1v1h-1z" fill="#74726B"></path><path d="M18 11h2v1h-2zM19 12h3v1h-3zM20 13h4v1h-4zM21 14h3v1h-3zM21 15h4v1h-4zM22 16h4v1h-4zM23 17h4v1h-4zM24 18h4v1h-4zM25 19h3v1h-3zM26 20h3v1h-3zM26 21h4v1h-4zM27 22h4v1h-4zM28 23h1v1h-1zM33 27h1v1h-1zM32 28h2v1h-2zM33 29h1v1h-1z" fill="#F3F1EB"></path><path d="M34 30h1v1h-1zM34 31h1v1h-1zM34 32h2v1h-2zM35 33h2v1h-2zM40 33h1v1h-1zM42 33h1v1h-1zM32 39h1v1h-1zM38 39h1v1h-1zM34 40h3v1h-3zM35 42h1v1h-1zM35 43h1v1h-1zM35 44h2v1h-2zM41 44h1v1h-1zM36 45h2v1h-2zM35 46h1v1h-1zM37 46h1v1h-1zM38 47h1v1h-1zM39 48h1v1h-1zM42 52h3v1h-3zM38 53h4v1h-4zM42 54h2v1h-2zM41 55h3v1h-3zM41 56h3v1h-3zM41 57h3v1h-3zM41 58h3v1h-3zM41 59h4v1h-4zM41 60h2v1h-2z" fill="#474642"></path><path d="M35 36h2v1h-2zM35 37h1v1h-1z" fill="#FAF8F2"></path><path d="M41 26h2v1h-2zM42 27h2v1h-2zM43 28h1v1h-1zM43 32h2v1h-2zM35 35h3v1h-3zM34 36h1v1h-1zM37 36h2v1h-2zM43 36h1v1h-1zM33 37h2v1h-2zM36 37h2v1h-2zM43 37h2v1h-2zM33 38h4v1h-4zM43 38h2v1h-2zM44 39h1v1h-1zM40 46h1v1h-1zM39 47h2v1h-2zM42 50h2v1h-2zM43 51h1v1h-1z" fill="#D2CFC5"></path><path d="M33 40h1v1h-1zM37 40h1v1h-1zM40 43h5v1h-5zM34 46h1v1h-1zM40 55h1v1h-1zM40 56h1v1h-1zM40 57h1v1h-1zM40 58h1v1h-1zM40 59h1v1h-1zM40 60h1v1h-1z" fill="#2E2D2B"></path><path d="M33 22h3v1h-3zM31 23h7v1h-7zM29 24h6v1h-6zM36 24h3v1h-3zM28 25h5v1h-5zM37 25h2v1h-2zM29 26h2v1h-2zM38 26h1v1h-1zM30 39h1v1h-1zM28 40h4v1h-4zM24 41h9v1h-9zM24 42h8v1h-8zM25 43h6v1h-6zM24 44h6v1h-6zM22 45h7v1h-7zM22 46h6v1h-6zM21 47h4v1h-4zM20 48h2v1h-2zM20 49h1v1h-1z" fill="var(--c2)"></path><path d="M40 26h1v1h-1zM37 27h1v1h-1zM39 27h3v1h-3zM38 28h5v1h-5zM39 29h6v1h-6zM38 32h5v1h-5zM39 33h1v1h-1zM41 33h1v1h-1zM43 33h1v1h-1zM34 35h1v1h-1zM38 35h1v1h-1zM33 36h1v1h-1zM42 36h1v1h-1zM32 37h1v1h-1zM38 37h1v1h-1zM40 37h3v1h-3zM37 38h1v1h-1zM40 38h3v1h-3zM45 38h1v1h-1zM34 39h3v1h-3zM41 39h3v1h-3zM45 39h1v1h-1zM42 40h3v1h-3zM38 41h1v1h-1zM42 41h2v1h-2zM36 42h3v1h-3zM37 43h2v1h-2zM38 44h2v1h-2zM43 44h1v1h-1zM39 45h2v1h-2zM43 45h1v1h-1zM39 46h1v1h-1zM41 46h1v1h-1zM43 46h2v1h-2zM41 47h1v1h-1zM42 48h2v1h-2zM42 49h3v1h-3zM39 50h3v1h-3zM36 51h5v1h-5zM42 51h1v1h-1zM38 54h1v1h-1z" fill="#A5A299"></path><path d="M17 10h1v1h-1zM17 11h1v1h-1zM17 12h2v1h-2zM17 13h3v1h-3zM18 14h3v1h-3zM18 15h3v1h-3zM18 16h3v1h-3zM18 17h4v1h-4zM19 18h4v1h-4zM20 19h3v1h-3zM21 20h3v1h-3zM21 21h4v1h-4zM22 22h4v1h-4zM23 23h4v1h-4zM24 24h3v1h-3zM25 25h2v1h-2zM25 26h3v1h-3zM26 27h3v1h-3zM27 28h4v1h-4zM28 29h3v1h-3zM29 30h3v1h-3zM29 31h4v1h-4zM30 32h3v1h-3zM31 33h3v1h-3zM32 34h2v1h-2zM32 35h1v1h-1z" fill="#BDBAB1"></path><path d="M21 16h1v1h-1zM22 17h1v1h-1zM23 18h1v1h-1zM23 19h2v1h-2zM24 20h2v1h-2zM25 21h1v1h-1zM26 22h1v1h-1zM27 23h1v1h-1zM27 24h1v1h-1zM31 28h1v1h-1zM31 29h2v1h-2zM32 30h1v1h-1z" fill="#8B8880"></path><path d="M35 24h1v1h-1zM33 25h2v1h-2zM36 25h1v1h-1zM31 26h2v1h-2zM32 42h2v1h-2zM31 43h3v1h-3zM30 44h3v1h-3zM29 45h4v1h-4zM28 46h4v1h-4zM25 47h6v1h-6zM22 48h8v1h-8zM24 49h5v1h-5zM25 50h3v1h-3zM24 51h2v1h-2zM23 52h1v1h-1z" fill="var(--c2)"></path><path d="M35 24h1v1h-1zM33 25h2v1h-2zM36 25h1v1h-1zM31 26h2v1h-2zM32 42h2v1h-2zM31 43h3v1h-3zM30 44h3v1h-3zM29 45h4v1h-4zM28 46h4v1h-4zM25 47h6v1h-6zM22 48h8v1h-8zM24 49h5v1h-5zM25 50h3v1h-3zM24 51h2v1h-2zM23 52h1v1h-1z" fill="#000000" fill-opacity="0.26"></path><path d="M17 9h1v1h-1zM16 10h1v1h-1zM18 10h2v1h-2zM16 11h1v1h-1zM20 11h2v1h-2zM16 12h1v1h-1zM22 12h2v1h-2zM16 13h1v1h-1zM24 13h1v1h-1zM17 14h1v1h-1zM24 14h1v1h-1zM17 15h1v1h-1zM25 15h1v1h-1zM17 16h1v1h-1zM26 16h1v1h-1zM17 17h1v1h-1zM27 17h1v1h-1zM18 18h1v1h-1zM28 18h1v1h-1zM19 19h1v1h-1zM28 19h1v1h-1zM20 20h1v1h-1zM29 20h1v1h-1zM20 21h1v1h-1zM30 21h1v1h-1zM33 21h3v1h-3zM21 22h1v1h-1zM31 22h2v1h-2zM36 22h2v1h-2zM22 23h1v1h-1zM29 23h2v1h-2zM38 23h1v1h-1zM23 24h1v1h-1zM28 24h1v1h-1zM39 24h4v1h-4zM24 25h1v1h-1zM27 25h1v1h-1zM35 25h1v1h-1zM39 25h1v1h-1zM43 25h1v1h-1zM24 26h1v1h-1zM28 26h1v1h-1zM33 26h5v1h-5zM39 26h1v1h-1zM44 26h1v1h-1zM25 27h1v1h-1zM29 27h4v1h-4zM34 27h1v1h-1zM38 27h1v1h-1zM45 27h1v1h-1zM26 28h1v1h-1zM34 28h1v1h-1zM45 28h1v1h-1zM27 29h1v1h-1zM34 29h1v1h-1zM46 29h1v1h-1zM28 30h1v1h-1zM33 30h1v1h-1zM46 30h1v1h-1zM28 31h1v1h-1zM33 31h1v1h-1zM37 31h8v1h-8zM46 31h1v1h-1zM29 32h1v1h-1zM33 32h1v1h-1zM46 32h1v1h-1zM30 33h1v1h-1zM34 33h1v1h-1zM45 33h1v1h-1zM31 34h1v1h-1zM34 34h5v1h-5zM44 34h1v1h-1zM31 35h1v1h-1zM33 35h1v1h-1zM39 35h5v1h-5zM32 36h1v1h-1zM39 36h1v1h-1zM44 36h1v1h-1zM31 37h1v1h-1zM39 37h1v1h-1zM45 37h1v1h-1zM30 38h2v1h-2zM39 38h1v1h-1zM46 38h1v1h-1zM28 39h2v1h-2zM31 39h1v1h-1zM39 39h1v1h-1zM46 39h1v1h-1zM24 40h4v1h-4zM32 40h1v1h-1zM38 40h1v1h-1zM46 40h1v1h-1zM23 41h1v1h-1zM33 41h5v1h-5zM39 41h1v1h-1zM45 41h1v1h-1zM23 42h1v1h-1zM34 42h1v1h-1zM39 42h2v1h-2zM44 42h1v1h-1zM24 43h1v1h-1zM34 43h1v1h-1zM39 43h1v1h-1zM22 44h2v1h-2zM33 44h2v1h-2zM40 44h1v1h-1zM45 44h1v1h-1zM21 45h1v1h-1zM33 45h3v1h-3zM41 45h1v1h-1zM45 45h1v1h-1zM21 46h1v1h-1zM32 46h2v1h-2zM36 46h1v1h-1zM42 46h1v1h-1zM46 46h1v1h-1zM20 47h1v1h-1zM31 47h1v1h-1zM34 47h4v1h-4zM42 47h4v1h-4zM19 48h1v1h-1zM30 48h1v1h-1zM37 48h2v1h-2zM41 48h1v1h-1zM44 48h1v1h-1zM19 49h1v1h-1zM21 49h3v1h-3zM29 49h1v1h-1zM38 49h3v1h-3zM45 49h1v1h-1zM20 50h1v1h-1zM24 50h1v1h-1zM28 50h1v1h-1zM36 50h3v1h-3zM45 50h1v1h-1zM23 51h1v1h-1zM26 51h2v1h-2zM35 51h1v1h-1zM45 51h1v1h-1zM22 52h1v1h-1zM24 52h2v1h-2zM34 52h1v1h-1zM45 52h1v1h-1zM23 53h1v1h-1zM34 53h1v1h-1zM42 53h3v1h-3zM35 54h1v1h-1zM39 54h3v1h-3zM44 54h1v1h-1zM36 55h4v1h-4zM44 55h1v1h-1zM39 56h1v1h-1zM44 56h1v1h-1zM39 57h1v1h-1zM44 57h1v1h-1zM39 58h1v1h-1zM44 58h2v1h-2zM39 59h1v1h-1zM46 59h1v1h-1zM39 60h1v1h-1zM43 60h3v1h-3zM40 61h3v1h-3z" fill="#141414"></path></g>
+<g data-hf="a0" style="display: none"><path d="M37 24h1v1h-1zM38 26h3v1h-3zM41 27h1v1h-1zM33 28h2v1h-2zM42 28h1v1h-1zM33 29h3v1h-3zM42 29h1v1h-1zM33 30h4v1h-4zM43 30h1v1h-1zM33 31h11v1h-11zM33 32h2v1h-2zM43 32h1v1h-1zM34 33h2v1h-2zM43 33h1v1h-1zM35 34h2v1h-2zM42 34h1v1h-1zM38 35h4v1h-4zM39 37h2v1h-2zM31 39h1v1h-1zM37 39h1v1h-1zM32 40h1v1h-1zM36 40h1v1h-1zM39 40h1v1h-1zM38 41h3v1h-3zM44 41h1v1h-1zM37 42h4v1h-4zM43 42h1v1h-1zM40 43h3v1h-3zM35 45h1v1h-1zM38 45h1v1h-1zM41 45h1v1h-1zM43 45h1v1h-1zM35 46h1v1h-1zM38 46h1v1h-1zM41 46h1v1h-1zM43 46h1v1h-1zM38 47h1v1h-1zM41 47h1v1h-1zM44 47h1v1h-1zM38 48h2v1h-2zM38 49h2v1h-2zM39 50h3v1h-3zM41 51h1v1h-1zM40 52h1v1h-1zM40 53h1v1h-1zM40 54h2v1h-2zM40 55h2v1h-2zM40 56h2v1h-2zM40 57h2v1h-2zM33 58h1v1h-1zM40 58h1v1h-1zM33 59h1v1h-1zM40 59h3v1h-3zM40 60h4v1h-4z" fill="#74726B"></path><path d="M9 11h3v1h-3zM5 12h10v1h-10zM9 13h9v1h-9zM12 14h10v1h-10zM15 15h10v1h-10zM19 16h9v1h-9zM22 17h10v1h-10zM25 18h9v1h-9zM29 19h5v1h-5zM31 20h3v1h-3z" fill="#F3F1EB"></path><path d="M36 23h2v1h-2zM38 24h1v1h-1zM32 31h1v1h-1zM32 32h1v1h-1zM32 33h2v1h-2zM33 34h2v1h-2zM38 34h1v1h-1zM40 34h1v1h-1zM31 40h1v1h-1zM37 40h1v1h-1zM33 41h3v1h-3zM34 45h1v1h-1zM37 45h1v1h-1zM40 45h1v1h-1zM34 46h1v1h-1zM37 46h1v1h-1zM40 46h1v1h-1zM34 47h2v1h-2zM37 47h1v1h-1zM40 47h1v1h-1zM36 48h2v1h-2zM37 49h1v1h-1zM38 50h1v1h-1zM36 51h1v1h-1zM38 51h3v1h-3zM35 52h3v1h-3zM39 52h1v1h-1zM34 53h4v1h-4zM39 53h1v1h-1zM34 54h3v1h-3zM39 54h1v1h-1zM33 55h4v1h-4zM39 55h1v1h-1zM32 56h4v1h-4zM39 56h1v1h-1zM31 57h4v1h-4zM39 57h1v1h-1zM31 58h2v1h-2zM39 58h1v1h-1zM32 59h1v1h-1zM39 59h1v1h-1z" fill="#474642"></path><path d="M34 37h2v1h-2zM34 38h1v1h-1z" fill="#FAF8F2"></path><path d="M39 27h2v1h-2zM40 28h2v1h-2zM41 29h1v1h-1zM41 33h2v1h-2zM34 36h3v1h-3zM33 37h1v1h-1zM36 37h2v1h-2zM42 37h1v1h-1zM32 38h2v1h-2zM35 38h2v1h-2zM42 38h2v1h-2zM32 39h4v1h-4zM42 39h2v1h-2zM43 40h1v1h-1zM41 52h2v1h-2zM42 53h1v1h-1z" fill="#D2CFC5"></path><path d="M32 41h1v1h-1zM36 41h1v1h-1zM35 43h1v1h-1zM35 44h9v1h-9zM33 47h1v1h-1zM35 50h2v1h-2zM35 51h1v1h-1zM34 52h1v1h-1zM33 53h1v1h-1zM33 54h1v1h-1zM32 55h1v1h-1zM31 56h1v1h-1z" fill="#2E2D2B"></path><path d="M31 23h3v1h-3zM29 24h7v1h-7zM27 25h6v1h-6zM34 25h3v1h-3zM26 26h5v1h-5zM35 26h2v1h-2zM27 27h2v1h-2zM36 27h1v1h-1zM29 41h2v1h-2zM27 42h5v1h-5zM26 43h7v1h-7zM25 44h7v1h-7zM24 45h7v1h-7zM24 46h6v1h-6zM23 47h6v1h-6zM23 48h2v1h-2zM26 48h1v1h-1zM22 49h2v1h-2zM22 50h1v1h-1z" fill="var(--c2)"></path><path d="M36 21h1v1h-1zM38 22h1v1h-1zM40 22h1v1h-1zM40 23h1v1h-1zM40 24h1v1h-1z" fill="#6E695F"></path><path d="M35 16h2v1h-2zM35 17h2v1h-2zM34 18h3v1h-3zM34 19h2v1h-2zM34 20h2v1h-2zM33 21h3v1h-3zM42 22h1v1h-1zM42 23h2v1h-2zM42 24h2v1h-2zM41 25h3v1h-3zM38 27h1v1h-1zM35 28h1v1h-1zM37 28h3v1h-3zM36 29h5v1h-5zM37 30h6v1h-6zM36 33h5v1h-5zM37 34h1v1h-1zM39 34h1v1h-1zM41 34h1v1h-1zM33 36h1v1h-1zM37 36h1v1h-1zM32 37h1v1h-1zM41 37h1v1h-1zM31 38h1v1h-1zM37 38h1v1h-1zM39 38h3v1h-3zM36 39h1v1h-1zM39 39h3v1h-3zM44 39h1v1h-1zM33 40h3v1h-3zM40 40h3v1h-3zM44 40h1v1h-1zM41 41h3v1h-3zM41 42h2v1h-2zM36 45h1v1h-1zM39 45h1v1h-1zM42 45h1v1h-1zM36 46h1v1h-1zM39 46h1v1h-1zM42 46h1v1h-1zM36 47h1v1h-1zM39 47h1v1h-1zM42 47h2v1h-2zM40 48h2v1h-2zM40 49h2v1h-2zM42 50h1v1h-1zM42 51h1v1h-1zM43 52h1v1h-1zM41 53h1v1h-1zM42 54h1v1h-1zM42 55h1v1h-1zM42 56h1v1h-1zM42 57h1v1h-1zM41 58h2v1h-2zM44 60h1v1h-1z" fill="#A5A299"></path><path d="M3 12h2v1h-2zM5 13h4v1h-4zM6 14h5v1h-5zM7 15h5v1h-5zM8 16h7v1h-7zM9 17h10v1h-10zM12 18h10v1h-10zM16 19h9v1h-9zM19 20h9v1h-9zM22 21h11v1h-11zM25 22h6v1h-6z" fill="#BDBAB1"></path><path d="M11 14h1v1h-1zM12 15h3v1h-3zM15 16h4v1h-4zM19 17h3v1h-3zM22 18h3v1h-3zM25 19h4v1h-4zM28 20h3v1h-3z" fill="#8B8880"></path><path d="M33 25h1v1h-1zM31 26h2v1h-2zM34 26h1v1h-1zM29 27h2v1h-2zM33 43h1v1h-1zM32 44h2v1h-2zM31 45h2v1h-2zM30 46h3v1h-3zM29 47h3v1h-3zM27 48h5v1h-5zM26 49h5v1h-5zM25 50h5v1h-5zM25 51h4v1h-4zM24 52h4v1h-4zM24 53h3v1h-3zM23 54h3v1h-3zM23 55h2v1h-2zM23 56h1v1h-1zM22 57h1v1h-1z" fill="var(--c2)"></path><path d="M33 25h1v1h-1zM31 26h2v1h-2zM34 26h1v1h-1zM29 27h2v1h-2zM33 43h1v1h-1zM32 44h2v1h-2zM31 45h2v1h-2zM30 46h3v1h-3zM29 47h3v1h-3zM27 48h5v1h-5zM26 49h5v1h-5zM25 50h5v1h-5zM25 51h4v1h-4zM24 52h4v1h-4zM24 53h3v1h-3zM23 54h3v1h-3zM23 55h2v1h-2zM23 56h1v1h-1zM22 57h1v1h-1z" fill="#000000" fill-opacity="0.26"></path><path d="M39 22h1v1h-1zM39 23h1v1h-1zM41 23h1v1h-1zM41 24h1v1h-1z" fill="#4A4640"></path><path d="M9 10h3v1h-3zM3 11h6v1h-6zM12 11h3v1h-3zM2 12h1v1h-1zM15 12h3v1h-3zM3 13h2v1h-2zM18 13h4v1h-4zM5 14h1v1h-1zM22 14h3v1h-3zM6 15h1v1h-1zM25 15h3v1h-3zM35 15h2v1h-2zM7 16h1v1h-1zM28 16h4v1h-4zM34 16h1v1h-1zM37 16h1v1h-1zM8 17h1v1h-1zM32 17h3v1h-3zM37 17h1v1h-1zM9 18h3v1h-3zM37 18h1v1h-1zM12 19h4v1h-4zM36 19h1v1h-1zM16 20h3v1h-3zM36 20h1v1h-1zM19 21h3v1h-3zM37 21h4v1h-4zM42 21h1v1h-1zM22 22h3v1h-3zM31 22h7v1h-7zM41 22h1v1h-1zM43 22h1v1h-1zM25 23h6v1h-6zM34 23h2v1h-2zM38 23h1v1h-1zM44 23h1v1h-1zM27 24h2v1h-2zM36 24h1v1h-1zM39 24h1v1h-1zM44 24h1v1h-1zM26 25h1v1h-1zM37 25h4v1h-4zM44 25h1v1h-1zM25 26h1v1h-1zM33 26h1v1h-1zM37 26h1v1h-1zM41 26h3v1h-3zM26 27h1v1h-1zM31 27h5v1h-5zM37 27h1v1h-1zM42 27h1v1h-1zM27 28h4v1h-4zM32 28h1v1h-1zM36 28h1v1h-1zM43 28h1v1h-1zM32 29h1v1h-1zM43 29h1v1h-1zM32 30h1v1h-1zM44 30h1v1h-1zM31 31h1v1h-1zM44 31h1v1h-1zM31 32h1v1h-1zM35 32h8v1h-8zM44 32h1v1h-1zM31 33h1v1h-1zM44 33h1v1h-1zM32 34h1v1h-1zM43 34h1v1h-1zM33 35h5v1h-5zM42 35h1v1h-1zM32 36h1v1h-1zM38 36h5v1h-5zM31 37h1v1h-1zM38 37h1v1h-1zM43 37h1v1h-1zM30 38h1v1h-1zM38 38h1v1h-1zM44 38h1v1h-1zM30 39h1v1h-1zM38 39h1v1h-1zM45 39h1v1h-1zM29 40h2v1h-2zM38 40h1v1h-1zM45 40h1v1h-1zM27 41h2v1h-2zM31 41h1v1h-1zM37 41h1v1h-1zM45 41h1v1h-1zM26 42h1v1h-1zM32 42h5v1h-5zM44 42h1v1h-1zM25 43h1v1h-1zM34 43h1v1h-1zM36 43h4v1h-4zM43 43h1v1h-1zM24 44h1v1h-1zM34 44h1v1h-1zM23 45h1v1h-1zM33 45h1v1h-1zM44 45h1v1h-1zM23 46h1v1h-1zM33 46h1v1h-1zM44 46h1v1h-1zM22 47h1v1h-1zM32 47h1v1h-1zM45 47h1v1h-1zM22 48h1v1h-1zM25 48h1v1h-1zM32 48h4v1h-4zM42 48h3v1h-3zM21 49h1v1h-1zM24 49h2v1h-2zM31 49h1v1h-1zM35 49h2v1h-2zM42 49h1v1h-1zM21 50h1v1h-1zM23 50h2v1h-2zM30 50h1v1h-1zM34 50h1v1h-1zM37 50h1v1h-1zM43 50h1v1h-1zM22 51h1v1h-1zM24 51h1v1h-1zM29 51h1v1h-1zM34 51h1v1h-1zM37 51h1v1h-1zM43 51h1v1h-1zM23 52h1v1h-1zM28 52h1v1h-1zM33 52h1v1h-1zM38 52h1v1h-1zM44 52h1v1h-1zM23 53h1v1h-1zM27 53h1v1h-1zM32 53h1v1h-1zM38 53h1v1h-1zM43 53h1v1h-1zM22 54h1v1h-1zM26 54h1v1h-1zM32 54h1v1h-1zM37 54h2v1h-2zM43 54h1v1h-1zM22 55h1v1h-1zM25 55h1v1h-1zM31 55h1v1h-1zM37 55h2v1h-2zM43 55h1v1h-1zM22 56h1v1h-1zM24 56h1v1h-1zM30 56h1v1h-1zM36 56h1v1h-1zM38 56h1v1h-1zM43 56h1v1h-1zM21 57h1v1h-1zM23 57h1v1h-1zM30 57h1v1h-1zM35 57h1v1h-1zM38 57h1v1h-1zM43 57h1v1h-1zM22 58h1v1h-1zM30 58h1v1h-1zM34 58h1v1h-1zM38 58h1v1h-1zM43 58h1v1h-1zM31 59h1v1h-1zM34 59h1v1h-1zM38 59h1v1h-1zM43 59h2v1h-2zM32 60h2v1h-2zM39 60h1v1h-1zM45 60h1v1h-1zM40 61h5v1h-5z" fill="#141414"></path></g>
+<g data-hf="a1" style="display: none"><path d="M41 27h3v1h-3zM44 28h1v1h-1zM36 29h2v1h-2zM45 29h1v1h-1zM36 30h3v1h-3zM45 30h1v1h-1zM36 31h4v1h-4zM46 31h1v1h-1zM36 32h11v1h-11zM36 33h2v1h-2zM46 33h1v1h-1zM37 34h2v1h-2zM46 34h1v1h-1zM38 35h2v1h-2zM45 35h1v1h-1zM40 36h5v1h-5zM33 40h1v1h-1zM39 40h1v1h-1zM34 41h1v1h-1zM38 41h1v1h-1zM41 41h6v1h-6zM50 41h2v1h-2zM49 42h2v1h-2zM49 43h2v1h-2zM42 44h3v1h-3zM49 44h2v1h-2zM49 45h2v1h-2zM37 46h1v1h-1zM40 46h1v1h-1zM43 46h1v1h-1zM45 46h1v1h-1zM49 46h2v1h-2zM37 47h1v1h-1zM40 47h1v1h-1zM43 47h1v1h-1zM45 47h1v1h-1zM40 48h1v1h-1zM43 48h1v1h-1zM46 48h1v1h-1zM41 49h2v1h-2zM42 50h2v1h-2zM45 50h1v1h-1zM44 52h1v1h-1zM44 53h2v1h-2zM44 54h1v1h-1zM44 55h1v1h-1zM44 56h1v1h-1zM43 57h2v1h-2zM34 58h1v1h-1zM43 58h3v1h-3zM34 59h1v1h-1zM43 59h4v1h-4z" fill="#74726B"></path><path d="M52 38h6v1h-6zM52 39h15v1h-15zM52 40h24v1h-24zM60 41h18v1h-18zM69 42h11v1h-11zM78 43h3v1h-3z" fill="#F3F1EB"></path><path d="M35 32h1v1h-1zM35 33h1v1h-1zM35 34h2v1h-2zM36 35h2v1h-2zM41 35h1v1h-1zM43 35h1v1h-1zM33 41h1v1h-1zM39 41h1v1h-1zM35 42h3v1h-3zM40 42h8v1h-8zM36 46h1v1h-1zM39 46h1v1h-1zM42 46h1v1h-1zM36 47h1v1h-1zM39 47h1v1h-1zM42 47h1v1h-1zM36 48h2v1h-2zM39 48h1v1h-1zM42 48h1v1h-1zM38 49h3v1h-3zM40 50h2v1h-2zM44 50h1v1h-1zM38 51h2v1h-2zM41 51h4v1h-4zM37 52h4v1h-4zM43 52h1v1h-1zM36 53h4v1h-4zM43 53h1v1h-1zM35 54h4v1h-4zM43 54h1v1h-1zM34 55h4v1h-4zM43 55h1v1h-1zM33 56h4v1h-4zM43 56h1v1h-1zM32 57h4v1h-4zM32 58h2v1h-2zM42 58h1v1h-1zM33 59h1v1h-1z" fill="#474642"></path><path d="M36 38h2v1h-2zM36 39h1v1h-1z" fill="#FAF8F2"></path><path d="M42 28h2v1h-2zM43 29h2v1h-2zM44 30h1v1h-1zM44 34h2v1h-2zM36 37h3v1h-3zM35 38h1v1h-1zM38 38h2v1h-2zM34 39h2v1h-2zM37 39h2v1h-2zM34 40h4v1h-4zM48 40h1v1h-1zM47 41h2v1h-2zM45 51h2v1h-2zM46 52h1v1h-1z" fill="#D2CFC5"></path><path d="M34 42h1v1h-1zM38 42h1v1h-1zM37 44h1v1h-1zM37 45h9v1h-9zM35 48h1v1h-1zM37 50h1v1h-1zM36 51h2v1h-2zM35 52h2v1h-2zM34 53h2v1h-2zM34 54h1v1h-1zM33 55h1v1h-1zM32 56h1v1h-1zM31 57h1v1h-1z" fill="#2E2D2B"></path><path d="M33 24h4v1h-4zM31 25h8v1h-8zM30 26h5v1h-5zM36 26h4v1h-4zM29 27h4v1h-4zM38 27h2v1h-2zM29 28h3v1h-3zM39 28h1v1h-1zM30 29h1v1h-1zM28 37h6v1h-6zM18 38h2v1h-2zM26 38h7v1h-7zM19 39h13v1h-13zM20 40h12v1h-12zM22 41h10v1h-10zM23 42h6v1h-6zM23 43h4v1h-4zM21 44h4v1h-4zM21 45h2v1h-2z" fill="var(--c2)"></path><path d="M32 2h17v1h-17zM29 3h3v1h-3zM44 3h8v1h-8zM26 4h2v1h-2zM48 4h7v1h-7zM24 5h1v1h-1zM51 5h6v1h-6zM22 6h1v1h-1zM53 6h6v1h-6zM55 7h6v1h-6zM57 8h5v1h-5zM17 9h1v1h-1zM58 9h5v1h-5zM16 10h1v1h-1zM60 10h5v1h-5zM61 11h5v1h-5zM62 12h5v1h-5zM63 13h5v1h-5zM64 14h5v1h-5zM65 15h5v1h-5zM65 16h5v1h-5zM66 17h5v1h-5zM67 18h5v1h-5zM67 19h6v1h-6zM68 20h5v1h-5zM69 21h5v1h-5zM69 22h5v1h-5zM70 23h5v1h-5zM70 24h5v1h-5zM70 25h6v1h-6zM71 26h5v1h-5zM71 27h5v1h-5zM71 28h6v1h-6zM71 29h6v1h-6zM72 30h5v1h-5zM72 31h6v1h-6zM72 32h6v1h-6zM72 33h6v1h-6zM72 34h6v1h-6zM72 35h6v1h-6zM72 36h6v1h-6zM72 37h6v1h-6zM72 38h6v1h-6zM76 39h2v1h-2z" fill="var(--c3)"></path><path d="M41 28h1v1h-1zM38 29h1v1h-1zM40 29h3v1h-3zM39 30h5v1h-5zM40 31h6v1h-6zM39 34h5v1h-5zM40 35h1v1h-1zM42 35h1v1h-1zM44 35h1v1h-1zM50 35h2v1h-2zM50 36h2v1h-2zM35 37h1v1h-1zM39 37h1v1h-1zM50 37h2v1h-2zM34 38h1v1h-1zM41 38h2v1h-2zM50 38h2v1h-2zM33 39h1v1h-1zM39 39h1v1h-1zM46 39h2v1h-2zM50 39h2v1h-2zM38 40h1v1h-1zM41 40h7v1h-7zM50 40h2v1h-2zM35 41h3v1h-3zM38 46h1v1h-1zM41 46h1v1h-1zM44 46h1v1h-1zM38 47h1v1h-1zM41 47h1v1h-1zM44 47h1v1h-1zM38 48h1v1h-1zM41 48h1v1h-1zM44 48h1v1h-1zM43 49h3v1h-3zM46 50h1v1h-1zM47 51h1v1h-1zM45 52h1v1h-1zM47 52h1v1h-1zM46 53h1v1h-1zM45 54h2v1h-2zM45 55h2v1h-2zM45 56h1v1h-1zM45 57h1v1h-1zM47 59h1v1h-1z" fill="#A5A299"></path><path d="M52 41h2v1h-2zM51 42h8v1h-8zM51 43h18v1h-18zM75 43h3v1h-3zM52 44h31v1h-31zM61 45h19v1h-19zM71 46h6v1h-6z" fill="#BDBAB1"></path><path d="M54 41h6v1h-6zM59 42h10v1h-10zM69 43h6v1h-6z" fill="#8B8880"></path><path d="M35 26h1v1h-1zM33 27h2v1h-2zM37 27h1v1h-1zM32 28h1v1h-1zM31 29h1v1h-1zM29 42h4v1h-4zM27 43h7v1h-7zM25 44h9v1h-9zM18 45h3v1h-3zM23 45h7v1h-7zM18 46h10v1h-10zM19 47h8v1h-8zM21 48h5v1h-5zM23 49h1v1h-1z" fill="var(--c2)"></path><path d="M35 26h1v1h-1zM33 27h2v1h-2zM37 27h1v1h-1zM32 28h1v1h-1zM31 29h1v1h-1zM29 42h4v1h-4zM27 43h7v1h-7zM25 44h9v1h-9zM18 45h3v1h-3zM23 45h7v1h-7zM18 46h10v1h-10zM19 47h8v1h-8zM21 48h5v1h-5zM23 49h1v1h-1z" fill="#000000" fill-opacity="0.26"></path><path d="M33 23h4v1h-4zM31 24h2v1h-2zM37 24h2v1h-2zM30 25h1v1h-1zM39 25h1v1h-1zM29 26h1v1h-1zM40 26h4v1h-4zM28 27h1v1h-1zM35 27h2v1h-2zM40 27h1v1h-1zM44 27h1v1h-1zM28 28h1v1h-1zM33 28h2v1h-2zM36 28h3v1h-3zM40 28h1v1h-1zM45 28h1v1h-1zM29 29h1v1h-1zM32 29h1v1h-1zM35 29h1v1h-1zM39 29h1v1h-1zM46 29h1v1h-1zM30 30h2v1h-2zM35 30h1v1h-1zM46 30h1v1h-1zM35 31h1v1h-1zM47 31h1v1h-1zM34 32h1v1h-1zM47 32h1v1h-1zM34 33h1v1h-1zM38 33h8v1h-8zM47 33h1v1h-1zM34 34h1v1h-1zM47 34h1v1h-1zM50 34h2v1h-2zM35 35h1v1h-1zM46 35h1v1h-1zM49 35h1v1h-1zM52 35h1v1h-1zM28 36h12v1h-12zM45 36h1v1h-1zM49 36h1v1h-1zM52 36h1v1h-1zM18 37h2v1h-2zM26 37h2v1h-2zM34 37h1v1h-1zM40 37h5v1h-5zM49 37h1v1h-1zM52 37h6v1h-6zM17 38h1v1h-1zM20 38h6v1h-6zM33 38h1v1h-1zM40 38h1v1h-1zM43 38h5v1h-5zM49 38h1v1h-1zM58 38h9v1h-9zM18 39h1v1h-1zM32 39h1v1h-1zM40 39h6v1h-6zM48 39h2v1h-2zM67 39h9v1h-9zM19 40h1v1h-1zM32 40h1v1h-1zM40 40h1v1h-1zM49 40h1v1h-1zM76 40h2v1h-2zM20 41h2v1h-2zM32 41h1v1h-1zM40 41h1v1h-1zM49 41h1v1h-1zM78 41h2v1h-2zM22 42h1v1h-1zM33 42h1v1h-1zM39 42h1v1h-1zM48 42h1v1h-1zM80 42h1v1h-1zM21 43h2v1h-2zM34 43h15v1h-15zM81 43h2v1h-2zM18 44h3v1h-3zM34 44h3v1h-3zM38 44h4v1h-4zM45 44h4v1h-4zM51 44h1v1h-1zM83 44h1v1h-1zM17 45h1v1h-1zM30 45h4v1h-4zM36 45h1v1h-1zM48 45h1v1h-1zM51 45h10v1h-10zM80 45h3v1h-3zM17 46h1v1h-1zM28 46h2v1h-2zM35 46h1v1h-1zM46 46h1v1h-1zM48 46h1v1h-1zM51 46h1v1h-1zM61 46h10v1h-10zM77 46h3v1h-3zM18 47h1v1h-1zM27 47h1v1h-1zM35 47h1v1h-1zM46 47h1v1h-1zM49 47h2v1h-2zM71 47h6v1h-6zM19 48h2v1h-2zM26 48h1v1h-1zM34 48h1v1h-1zM45 48h1v1h-1zM47 48h1v1h-1zM21 49h2v1h-2zM24 49h2v1h-2zM35 49h3v1h-3zM46 49h1v1h-1zM23 50h1v1h-1zM36 50h1v1h-1zM38 50h2v1h-2zM47 50h1v1h-1zM35 51h1v1h-1zM40 51h1v1h-1zM48 51h1v1h-1zM34 52h1v1h-1zM41 52h2v1h-2zM48 52h1v1h-1zM33 53h1v1h-1zM40 53h1v1h-1zM42 53h1v1h-1zM47 53h1v1h-1zM33 54h1v1h-1zM39 54h1v1h-1zM42 54h1v1h-1zM47 54h1v1h-1zM32 55h1v1h-1zM38 55h1v1h-1zM42 55h1v1h-1zM47 55h1v1h-1zM31 56h1v1h-1zM37 56h1v1h-1zM42 56h1v1h-1zM46 56h1v1h-1zM30 57h1v1h-1zM36 57h1v1h-1zM42 57h1v1h-1zM46 57h1v1h-1zM31 58h1v1h-1zM35 58h1v1h-1zM41 58h1v1h-1zM46 58h2v1h-2zM32 59h1v1h-1zM35 59h1v1h-1zM42 59h1v1h-1zM48 59h1v1h-1zM33 60h2v1h-2zM43 60h5v1h-5z" fill="#141414"></path></g>
+<g data-hf="a2" style="display: none"><path d="M41 28h3v1h-3zM44 29h1v1h-1zM36 30h2v1h-2zM45 30h1v1h-1zM36 31h3v1h-3zM45 31h1v1h-1zM36 32h4v1h-4zM46 32h1v1h-1zM36 33h11v1h-11zM36 34h2v1h-2zM46 34h1v1h-1zM37 35h2v1h-2zM46 35h1v1h-1zM38 36h2v1h-2zM45 36h1v1h-1zM40 37h5v1h-5zM41 39h2v1h-2zM33 41h1v1h-1zM39 41h1v1h-1zM34 42h1v1h-1zM38 42h1v1h-1zM46 43h1v1h-1zM40 44h2v1h-2zM41 45h3v1h-3zM43 46h2v1h-2zM37 47h1v1h-1zM40 47h1v1h-1zM47 47h1v1h-1zM37 48h1v1h-1zM40 48h1v1h-1zM43 48h1v1h-1zM48 48h1v1h-1zM40 49h1v1h-1zM43 49h1v1h-1zM47 49h2v1h-2zM41 50h3v1h-3zM46 50h2v1h-2zM42 51h2v1h-2zM45 51h3v1h-3zM46 52h1v1h-1zM44 53h1v1h-1zM44 54h2v1h-2zM44 55h1v1h-1zM44 56h1v1h-1zM43 57h2v1h-2zM34 58h1v1h-1zM43 58h3v1h-3zM34 59h1v1h-1zM43 59h4v1h-4zM43 60h1v1h-1z" fill="#74726B"></path><path d="M50 45h3v1h-3zM50 46h5v1h-5zM50 47h7v1h-7zM53 48h6v1h-6zM55 49h7v1h-7zM57 50h7v1h-7zM59 51h7v1h-7zM62 52h6v1h-6zM64 53h7v1h-7zM66 54h7v1h-7zM68 55h6v1h-6zM71 56h4v1h-4zM73 57h3v1h-3zM75 58h1v1h-1z" fill="#F3F1EB"></path><path d="M35 33h1v1h-1zM35 34h1v1h-1zM35 35h2v1h-2zM36 36h2v1h-2zM41 36h1v1h-1zM43 36h1v1h-1zM33 42h1v1h-1zM39 42h1v1h-1zM35 43h3v1h-3zM39 44h1v1h-1zM39 45h2v1h-2zM41 46h2v1h-2zM36 47h1v1h-1zM39 47h1v1h-1zM44 47h1v1h-1zM36 48h1v1h-1zM39 48h1v1h-1zM42 48h1v1h-1zM46 48h1v1h-1zM36 49h2v1h-2zM39 49h1v1h-1zM42 49h1v1h-1zM38 50h3v1h-3zM40 51h2v1h-2zM37 52h3v1h-3zM41 52h4v1h-4zM36 53h5v1h-5zM43 53h1v1h-1zM35 54h5v1h-5zM43 54h1v1h-1zM34 55h5v1h-5zM43 55h1v1h-1zM33 56h4v1h-4zM43 56h1v1h-1zM32 57h4v1h-4zM42 57h1v1h-1zM31 58h3v1h-3zM42 58h1v1h-1zM31 59h3v1h-3zM42 59h1v1h-1z" fill="#474642"></path><path d="M36 39h2v1h-2zM36 40h1v1h-1z" fill="#FAF8F2"></path><path d="M42 29h2v1h-2zM43 30h2v1h-2zM44 31h1v1h-1zM44 35h2v1h-2zM36 38h3v1h-3zM35 39h1v1h-1zM38 39h2v1h-2zM44 39h1v1h-1zM34 40h2v1h-2zM37 40h2v1h-2zM44 40h2v1h-2zM34 41h4v1h-4zM44 41h2v1h-2zM45 42h1v1h-1zM46 46h1v1h-1zM45 47h2v1h-2z" fill="#D2CFC5"></path><path d="M34 43h1v1h-1zM38 43h1v1h-1zM37 45h1v1h-1zM37 46h2v1h-2zM35 49h1v1h-1zM36 51h2v1h-2zM36 52h1v1h-1zM35 53h1v1h-1zM34 54h1v1h-1zM33 55h1v1h-1zM32 56h1v1h-1zM31 57h1v1h-1z" fill="#2E2D2B"></path><path d="M34 25h3v1h-3zM32 26h7v1h-7zM30 27h6v1h-6zM37 27h3v1h-3zM29 28h5v1h-5zM38 28h2v1h-2zM30 29h2v1h-2zM39 29h1v1h-1zM32 39h1v1h-1zM31 40h1v1h-1zM29 41h3v1h-3zM28 42h4v1h-4zM21 43h2v1h-2zM25 43h8v1h-8zM23 44h9v1h-9zM25 45h6v1h-6zM24 46h6v1h-6zM23 47h6v1h-6zM21 48h6v1h-6zM20 49h6v1h-6z" fill="var(--c2)"></path><path d="M41 29h1v1h-1zM38 30h1v1h-1zM40 30h3v1h-3zM39 31h5v1h-5zM40 32h6v1h-6zM39 35h5v1h-5zM40 36h1v1h-1zM42 36h1v1h-1zM44 36h1v1h-1zM35 38h1v1h-1zM39 38h1v1h-1zM34 39h1v1h-1zM43 39h1v1h-1zM33 40h1v1h-1zM39 40h1v1h-1zM41 40h3v1h-3zM38 41h1v1h-1zM42 41h2v1h-2zM46 41h1v1h-1zM35 42h3v1h-3zM43 42h2v1h-2zM46 42h1v1h-1zM49 42h3v1h-3zM40 43h3v1h-3zM45 43h1v1h-1zM49 43h2v1h-2zM42 44h3v1h-3zM48 44h3v1h-3zM44 45h3v1h-3zM48 45h2v1h-2zM45 46h1v1h-1zM47 46h1v1h-1zM49 46h1v1h-1zM38 47h1v1h-1zM49 47h1v1h-1zM38 48h1v1h-1zM41 48h1v1h-1zM38 49h1v1h-1zM41 49h1v1h-1zM44 49h1v1h-1zM44 50h1v1h-1zM45 53h1v1h-1zM47 53h1v1h-1zM46 54h1v1h-1zM45 55h2v1h-2zM45 56h1v1h-1zM45 57h1v1h-1zM47 59h1v1h-1zM44 60h1v1h-1z" fill="#A5A299"></path><path d="M49 48h3v1h-3zM49 49h3v1h-3zM48 50h7v1h-7zM50 51h7v1h-7zM52 52h7v1h-7zM54 53h7v1h-7zM57 54h7v1h-7zM59 55h7v1h-7zM61 56h7v1h-7zM63 57h7v1h-7zM71 57h2v1h-2zM66 58h9v1h-9zM68 59h9v1h-9zM70 60h5v1h-5z" fill="#BDBAB1"></path><path d="M52 48h1v1h-1zM52 49h3v1h-3zM55 50h2v1h-2zM57 51h2v1h-2zM59 52h3v1h-3zM61 53h3v1h-3zM64 54h2v1h-2zM66 55h2v1h-2zM68 56h3v1h-3zM70 57h1v1h-1z" fill="#8B8880"></path><path d="M36 27h1v1h-1zM34 28h2v1h-2zM37 28h1v1h-1zM32 29h2v1h-2zM32 44h2v1h-2zM31 45h4v1h-4zM30 46h4v1h-4zM29 47h3v1h-3zM27 48h4v1h-4zM26 49h4v1h-4zM20 50h9v1h-9zM22 51h7v1h-7zM24 52h3v1h-3zM25 53h1v1h-1z" fill="var(--c2)"></path><path d="M36 27h1v1h-1zM34 28h2v1h-2zM37 28h1v1h-1zM32 29h2v1h-2zM32 44h2v1h-2zM31 45h4v1h-4zM30 46h4v1h-4zM29 47h3v1h-3zM27 48h4v1h-4zM26 49h4v1h-4zM20 50h9v1h-9zM22 51h7v1h-7zM24 52h3v1h-3zM25 53h1v1h-1z" fill="#000000" fill-opacity="0.26"></path><path d="M34 24h3v1h-3zM32 25h2v1h-2zM37 25h2v1h-2zM30 26h2v1h-2zM39 26h1v1h-1zM29 27h1v1h-1zM40 27h4v1h-4zM28 28h1v1h-1zM36 28h1v1h-1zM40 28h1v1h-1zM44 28h1v1h-1zM29 29h1v1h-1zM34 29h5v1h-5zM40 29h1v1h-1zM45 29h1v1h-1zM30 30h4v1h-4zM35 30h1v1h-1zM39 30h1v1h-1zM46 30h1v1h-1zM35 31h1v1h-1zM46 31h1v1h-1zM35 32h1v1h-1zM47 32h1v1h-1zM34 33h1v1h-1zM47 33h1v1h-1zM34 34h1v1h-1zM38 34h8v1h-8zM47 34h1v1h-1zM34 35h1v1h-1zM47 35h1v1h-1zM35 36h1v1h-1zM46 36h1v1h-1zM35 37h5v1h-5zM45 37h1v1h-1zM32 38h3v1h-3zM40 38h5v1h-5zM31 39h1v1h-1zM33 39h1v1h-1zM40 39h1v1h-1zM45 39h1v1h-1zM29 40h2v1h-2zM32 40h1v1h-1zM40 40h1v1h-1zM46 40h1v1h-1zM28 41h1v1h-1zM32 41h1v1h-1zM40 41h2v1h-2zM47 41h1v1h-1zM49 41h3v1h-3zM21 42h2v1h-2zM25 42h3v1h-3zM32 42h1v1h-1zM40 42h3v1h-3zM47 42h2v1h-2zM52 42h1v1h-1zM20 43h1v1h-1zM23 43h2v1h-2zM33 43h1v1h-1zM39 43h1v1h-1zM43 43h2v1h-2zM47 43h2v1h-2zM51 43h1v1h-1zM21 44h2v1h-2zM34 44h5v1h-5zM45 44h3v1h-3zM51 44h2v1h-2zM23 45h2v1h-2zM35 45h2v1h-2zM38 45h1v1h-1zM47 45h1v1h-1zM53 45h2v1h-2zM23 46h1v1h-1zM34 46h1v1h-1zM36 46h1v1h-1zM39 46h2v1h-2zM48 46h1v1h-1zM55 46h2v1h-2zM21 47h2v1h-2zM32 47h2v1h-2zM35 47h1v1h-1zM41 47h3v1h-3zM48 47h1v1h-1zM57 47h2v1h-2zM20 48h1v1h-1zM31 48h1v1h-1zM35 48h1v1h-1zM44 48h2v1h-2zM47 48h1v1h-1zM59 48h3v1h-3zM19 49h1v1h-1zM30 49h1v1h-1zM34 49h1v1h-1zM45 49h2v1h-2zM62 49h2v1h-2zM19 50h1v1h-1zM29 50h1v1h-1zM35 50h3v1h-3zM45 50h1v1h-1zM64 50h2v1h-2zM20 51h2v1h-2zM29 51h1v1h-1zM35 51h1v1h-1zM38 51h2v1h-2zM44 51h1v1h-1zM48 51h2v1h-2zM66 51h2v1h-2zM22 52h2v1h-2zM27 52h2v1h-2zM35 52h1v1h-1zM40 52h1v1h-1zM45 52h1v1h-1zM47 52h2v1h-2zM50 52h2v1h-2zM68 52h3v1h-3zM24 53h1v1h-1zM26 53h1v1h-1zM34 53h1v1h-1zM41 53h2v1h-2zM46 53h1v1h-1zM48 53h1v1h-1zM52 53h2v1h-2zM71 53h2v1h-2zM25 54h1v1h-1zM33 54h1v1h-1zM40 54h1v1h-1zM42 54h1v1h-1zM47 54h1v1h-1zM54 54h3v1h-3zM73 54h1v1h-1zM32 55h1v1h-1zM39 55h1v1h-1zM42 55h1v1h-1zM47 55h1v1h-1zM57 55h2v1h-2zM74 55h1v1h-1zM31 56h1v1h-1zM37 56h2v1h-2zM42 56h1v1h-1zM46 56h1v1h-1zM59 56h2v1h-2zM75 56h1v1h-1zM30 57h1v1h-1zM36 57h1v1h-1zM41 57h1v1h-1zM46 57h1v1h-1zM61 57h2v1h-2zM76 57h1v1h-1zM30 58h1v1h-1zM35 58h1v1h-1zM41 58h1v1h-1zM46 58h2v1h-2zM63 58h3v1h-3zM76 58h1v1h-1zM30 59h1v1h-1zM35 59h1v1h-1zM41 59h1v1h-1zM48 59h1v1h-1zM66 59h2v1h-2zM77 59h1v1h-1zM31 60h4v1h-4zM42 60h1v1h-1zM45 60h3v1h-3zM68 60h2v1h-2zM75 60h2v1h-2zM43 61h2v1h-2zM70 61h5v1h-5z" fill="#141414"></path></g>
+</svg>
+</span>
+</span>
 
-                    <div class="philosophy-item">
-                        <div class="philosophy-number">03</div>
-                        <div class="philosophy-content">
-                            <h4 class="philosophy-keyword" data-en="Boundaryless" data-zh="无边界">Boundaryless</h4>
-                            <p class="philosophy-desc" data-en="Breaking beyond conventional interfaces to explore freely without constraints." data-zh="跳出传统界面，放开手去探索。">Breaking beyond conventional interfaces to explore freely without constraints.</p>
-                        </div>
-                    </div>
-                </div>
+<a class="clip" data-clip="1" data-lane="1" href="projects/vivid.html" style="position: absolute; left: 1260px; top: 0; width: 293px; height: 220px; display: block; text-decoration: none">
+<span style="position: absolute; left: 0; bottom: 100%; margin-bottom: 8px; font-size: 12px; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: scale(var(--iz))">VividXperience</span>
+<span class="shot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; background: #DAD7CF; display: block"><img src="Assets/thumbs/vivid.jpg" alt="VividXperience: Vivid Sydney seen through a headset" style="width: 100%; height: 100%; object-fit: cover; display: block"></span>
+</a>
+<a class="clip" data-clip="1" data-lane="1" href="projects/anno.html" style="position: absolute; left: 1573px; top: 0; width: 293px; height: 220px; display: block; text-decoration: none">
+<span style="position: absolute; left: 0; bottom: 100%; margin-bottom: 8px; font-size: 12px; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: scale(var(--iz))">ANNO</span>
+<span class="shot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; background: #DAD7CF; display: block"><img src="Assets/thumbs/anno.jpg" alt="ANNO: a white companion robot dog" style="width: 100%; height: 100%; object-fit: cover; display: block"></span>
+</a>
+<a class="clip" data-clip="1" data-lane="1" href="projects/whisper.html" style="position: absolute; left: 1886px; top: 0; width: 293px; height: 220px; display: block; text-decoration: none">
+<span style="position: absolute; left: 0; bottom: 100%; margin-bottom: 8px; font-size: 12px; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: scale(var(--iz))">Whisperfield</span>
+<span class="shot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; background: #DAD7CF; display: block"><img src="Assets/thumbs/whisperfield.jpg" alt="Whisperfield: people resting in a projected meadow" style="width: 100%; height: 100%; object-fit: cover; display: block"></span>
+</a>
+<a class="clip" data-clip="1" data-lane="1" href="projects/colab.html" style="position: absolute; left: 2219px; top: 0; width: 293px; height: 220px; display: block; text-decoration: none">
+<span style="position: absolute; left: 0; bottom: 100%; margin-bottom: 8px; font-size: 12px; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: scale(var(--iz))">CoLab</span>
+<span class="shot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; background: #DAD7CF; display: block"><img src="Assets/thumbs/colab.jpg" alt="CoLab: learning platform screens on a tablet" style="width: 100%; height: 100%; object-fit: cover; display: block"></span>
+</a>
 
-                <!-- Right Column: Timeline -->
-                <div class="timeline">
-                    <div class="timeline-title" data-en="EXPERIENCE" data-zh="经历">EXPERIENCE</div>
-                    <div class="timeline-track">
-                        <div class="timeline-item">
-                            <div class="timeline-content">
-                                <div class="timeline-year">2018-2022</div>
-                                <h4 class="timeline-role" data-en="New Media" data-zh="新媒体">New Media</h4>
-                                <p class="timeline-desc" data-en="Sichuan University Jincheng College — Bachelor's degree in new media design and digital storytelling" data-zh="四川大学锦城学院  本科，新媒体设计与数字叙事方向">Sichuan University Jincheng College — Bachelor's degree in new media design and digital storytelling</p>
-                            </div>
-                        </div>
+<a class="clip" data-clip="1" data-lane="2" href="projects/chunks.html" style="position: absolute; left: 2552px; top: 264px; width: 293px; height: 220px; display: block; text-decoration: none">
+<span style="position: absolute; left: 0; bottom: 100%; margin-bottom: 8px; font-size: 12px; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: scale(var(--iz))">Chunks</span>
+<span class="shot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; background: #DAD7CF; display: block"><img src="Assets/thumbs/chunks.svg" alt="Chunks: the app on a phone with flashcards" style="width: 100%; height: 100%; object-fit: cover; display: block"></span>
+</a>
+<a class="clip" data-clip="1" data-lane="2" href="projects/investment.html" style="position: absolute; left: 2865px; top: 264px; width: 293px; height: 220px; display: block; text-decoration: none">
+<span style="position: absolute; left: 0; bottom: 100%; margin-bottom: 8px; font-size: 12px; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: scale(var(--iz))">Investment Assistant</span>
+<span class="shot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; background: #DAD7CF; display: block"><img src="Assets/thumbs/investment.svg" alt="Investment Assistant: a portfolio dashboard" style="width: 100%; height: 100%; object-fit: cover; display: block"></span>
+</a>
+<a class="clip" data-clip="1" data-lane="2" href="projects/gyn-dashboard.html" style="position: absolute; left: 3178px; top: 264px; width: 293px; height: 220px; display: block; text-decoration: none">
+<span style="position: absolute; left: 0; bottom: 100%; margin-bottom: 8px; font-size: 12px; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: scale(var(--iz))">Gyn Research Dashboard</span>
+<span class="shot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; background: #DAD7CF; display: block"><img src="Assets/thumbs/gyn.svg" alt="Gyn Research Dashboard: a daily list of graded papers" style="width: 100%; height: 100%; object-fit: cover; display: block"></span>
+</a>
+<a class="clip" data-clip="1" data-lane="2" href="projects/this-site.html" style="position: absolute; left: 3491px; top: 264px; width: 293px; height: 220px; display: block; text-decoration: none">
+<span style="position: absolute; left: 0; bottom: 100%; margin-bottom: 8px; font-size: 12px; line-height: 14px; white-space: nowrap; transform-origin: left bottom; transform: scale(var(--iz))">This Portfolio</span>
+<span class="shot" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; background: #DAD7CF; display: block"><img src="Assets/thumbs/portfolio.svg" alt="This Portfolio: the site with its AI chat" style="width: 100%; height: 100%; object-fit: cover; display: block"></span>
+</a>
 
-                        <div class="timeline-item">
-                            <div class="timeline-content">
-                                <div class="timeline-year">2020-2022</div>
-                                <h4 class="timeline-role" data-en="Weibo Memer" data-zh="微博梗图博主">Weibo Memer</h4>
-                                <p class="timeline-desc" data-en="Grew account to 200K followers through cultural insight and viral content creation" data-zh="靠文化洞察和爆款内容，把账号做到 20 万粉丝。">Grew account to 200K followers through cultural insight and viral content creation</p>
-                            </div>
-                        </div>
+<span aria-hidden="true" style="position: absolute; left: 3944px; top: 264px; width: 2600px; height: 220px; background: var(--c3)"></span>
+<h2 aria-label="Ready to start?" style="position: absolute; left: 0; top: 0; margin: 0; font-size: 288px; font-weight: 600; letter-spacing: -0.04em; line-height: 220px; white-space: nowrap">
+<span id="tl-end" aria-hidden="true" style="position: absolute; left: 3964px; top: 0; height: 220px; padding-right: 0.05em">READY TO</span>
+<span aria-hidden="true" style="position: absolute; left: 3964px; top: 264px; height: 220px">START?</span>
+</h2>
+<div style="position: absolute; left: 3964px; top: -22px; display: flex; gap: 36px; font-size: 22px; line-height: 1.2; font-weight: 500; white-space: nowrap; transform: translateY(-100%)">
+<a class="lnk" href="mailto:AidenYang5995@gmail.com" style="text-underline-offset: 5px">Send a message</a>
+<a class="lnk" href="https://www.linkedin.com/in/aiden-yang-ty" style="text-underline-offset: 5px">LinkedIn</a>
+<a class="lnk" href="https://github.com/Li1aid" style="text-underline-offset: 5px">GitHub</a>
+</div>
 
-                        <div class="timeline-item">
-                            <div class="timeline-content">
-                                <div class="timeline-year">2022-2023</div>
-                                <h4 class="timeline-role" data-en="Camera360 — Overseas Content Planning Intern" data-zh="Camera360  海外内容策划实习生">Camera360 — Overseas Content Planning Intern</h4>
-                                <p class="timeline-desc" data-en="Managed international campaigns and content strategy for Blurrr editing app" data-zh="负责剪辑 app Blurrr 的海外活动和内容策略。">Managed international campaigns and content strategy for Blurrr editing app</p>
-                            </div>
-                        </div>
+</div>
 
-                        <div class="timeline-item">
-                            <div class="timeline-content">
-                                <div class="timeline-year">2024-2026</div>
-                                <h4 class="timeline-role" data-en="Interaction Design" data-zh="交互设计">Interaction Design</h4>
-                                <p class="timeline-desc" data-en="University of Sydney — Master of Interaction Design, completed July 2026" data-zh="悉尼大学  交互设计硕士，2026 年 7 月毕业。">University of Sydney — Master of Interaction Design, completed July 2026</p>
-                            </div>
-                        </div>
+<span class="rule" aria-hidden="true" style="position: absolute; left: 0; right: 0; top: calc(var(--cy) + -242px * var(--z)); height: 1px; background: #141414; pointer-events: none; z-index: 2"></span>
+<span class="rule" aria-hidden="true" style="animation-delay: .08s; position: absolute; left: 0; right: 0; top: calc(var(--cy) + -22px * var(--z)); height: 1px; background: #141414; pointer-events: none; z-index: 2"></span>
+<span class="rule" aria-hidden="true" style="animation-delay: .16s; position: absolute; left: 0; right: 0; top: calc(var(--cy) + 22px * var(--z)); height: 1px; background: #141414; pointer-events: none; z-index: 2"></span>
+<span class="rule" aria-hidden="true" style="animation-delay: .24s; position: absolute; left: 0; right: 0; top: calc(var(--cy) + 242px * var(--z)); height: 1px; background: #141414; pointer-events: none; z-index: 2"></span>
 
-                        <div class="timeline-item">
-                            <div class="timeline-content">
-                                <div class="timeline-year" data-en="2025-Present" data-zh="2025 至今">2025-Present</div>
-                                <h4 class="timeline-role" data-en="Design Engineer (independent)" data-zh="Design Engineer（独立）">Design Engineer (independent)</h4>
-                                <p class="timeline-desc" data-en="Designed, built and shipped four AI products solo with Claude Code — from concept to production" data-zh="用 Claude Code 独立设计、开发并上线了四个 AI 产品，从想法一路做到线上。">Designed, built and shipped four AI products solo with Claude Code — from concept to production</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<span aria-hidden="true" style="position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: #141414; opacity: var(--po); pointer-events: none; z-index: 3"></span>
 
-    <!-- Showcase Section (Dark Background) -->
-    <section class="showcase bg-dark" id="showcase">
-        <div class="section-header">
-            <h2 class="section-title" data-en="SELECTED WORKS" data-zh="精选作品">SELECTED WORKS</h2>
-        </div>
+</div>
 
-        <div class="projects-grid">
-            <article class="project-card">
-                <div class="project-image">
-                    <img src="Assets/1.jpg" alt="CoLab">
-                    <div class="project-overlay"></div>
-                    <a href="projects/colab.html" class="project-btn" data-en="View" data-zh="查看">View</a>
-                </div>
-                <div class="project-info">
-                    <div class="project-meta">
-                        <span class="project-category" data-en="Education Platform" data-zh="教育平台">Education Platform</span>
-                        <span class="project-year">2025</span>
-                    </div>
-                    <h3 class="project-title">CoLab</h3>
-                    <p class="project-description" data-en="A concept learning platform for international design students: standardized lectures, real-time tutorial support and skill-based teams. Exhibited at the University of Sydney's graduation exhibition and used by the university as a reference." data-zh="一个面向设计专业留学生的概念学习平台：标准化 lecture、实时 tutorial 支持和按技能组队。曾在悉尼大学毕业展展出，并被学校参考使用。">A concept learning platform for international design students: standardized lectures, real-time tutorial support and skill-based teams. Exhibited at the University of Sydney's graduation exhibition and used by the university as a reference.</p>
-                    <div class="project-tech">
-                        <span>UX Design</span>
-                        <span>Web Platform</span>
-                        <span>EdTech</span>
-                    </div>
-                </div>
-            </article>
-            <article class="project-card">
-                <div class="project-image">
-                    <img src="Assets/chunks-poster.svg" alt="Chunks — an English-learning app by Xuejian (Aiden) Yang: type Chinese, keep the English you need">
-                    <div class="project-overlay"></div>
-                    <a href="projects/chunks.html" class="project-btn" data-en="View" data-zh="查看">View</a>
-                </div>
-                <div class="project-info">
-                    <div class="project-meta">
-                        <span class="project-category" data-en="Language Learning · PWA + iOS" data-zh="语言学习 · PWA + iOS">Language Learning · PWA + iOS</span>
-                        <span class="project-year">2026</span>
-                    </div>
-                    <h3 class="project-title">Chunks</h3>
-                    <p class="project-description" data-en="Type a Chinese sentence; Chunks returns natural English and extracts the reusable “chunks” — each becomes a spaced-repetition flashcard. PWA in daily use, native iOS app in progress." data-zh="输入一句中文，Chunks 给出地道的英文，并拆出可复用的「语块」，每个语块都会变成一张间隔重复卡片。PWA 已经每天在用，原生 iOS 版正在做。">Type a Chinese sentence; Chunks returns natural English and extracts the reusable “chunks” — each becomes a spaced-repetition flashcard. PWA in daily use, native iOS app in progress.</p>
-                    <div class="project-tech">
-                        <span>Vanilla JS · SwiftUI</span>
-                        <span>CF Worker · D1</span>
-                        <span>SM-2 · FSRS</span>
-                    </div>
-                </div>
-            </article>
-            <article class="project-card">
-                <div class="project-image">
-                    <img src="Assets/vivid.png" alt="vividXperience">
-                    <div class="project-overlay"></div>
-                    <a href="projects/vivid.html" class="project-btn" data-en="View" data-zh="查看">View</a>
-                </div>
-                <div class="project-info">
-                    <div class="project-meta">
-                        <span class="project-category" data-en="Spatial Design" data-zh="空间设计">Spatial Design</span>
-                        <span class="project-year">2024</span>
-                    </div>
-                    <h3 class="project-title">VividXperience</h3>
-                    <p class="project-description" data-en="Vision Pro-based remote participation platform enabling global audiences to immerse in Vivid Sydney through multimodal interaction and spatial storytelling." data-zh="基于 Vision Pro 的远程参与平台，让世界各地的观众通过多模态交互和空间叙事，身临其境地感受 Vivid Sydney。">Vision Pro-based remote participation platform enabling global audiences to immerse in Vivid Sydney through multimodal interaction and spatial storytelling.</p>
-                    <div class="project-tech">
-                        <span>Vision Pro</span>
-                        <span>Spatial Design</span>
-                        <span>Cultural Tech</span>
-                    </div>
-                </div>
-            </article>
-            <article class="project-card">
-                <div class="project-image">
-                    <img src="Assets/investment-poster.svg" alt="Investment Assistant — a production portfolio dashboard by Xuejian (Aiden) Yang">
-                    <div class="project-overlay"></div>
-                    <a href="projects/investment.html" class="project-btn" data-en="View" data-zh="查看">View</a>
-                </div>
-                <div class="project-info">
-                    <div class="project-meta">
-                        <span class="project-category" data-en="Personal Tool · In Production" data-zh="个人工具 · 线上运行中">Personal Tool · In Production</span>
-                        <span class="project-year">2026</span>
-                    </div>
-                    <h3 class="project-title" data-en="Investment Assistant" data-zh="投资助手">Investment Assistant</h3>
-                    <p class="project-description" data-en="A multi-market, multi-currency portfolio dashboard — with a daily briefing written by an AI that reads it every morning." data-zh="一个跨市场、多币种的持仓面板，每天早上由 AI 读一遍，写成一份简报。">A multi-market, multi-currency portfolio dashboard — with a daily briefing written by an AI that reads it every morning.</p>
-                    <div class="project-tech">
-                        <span>Multi-market</span>
-                        <span>Daily AI briefing</span>
-                        <span>In production</span>
-                    </div>
-                </div>
-            </article>
-            <article class="project-card">
-                <div class="project-image">
-                    <img src="Assets/gyn-dashboard.svg" alt="Gynaecology Research Dashboard — AI literature radar by Xuejian (Aiden) Yang">
-                    <div class="project-overlay"></div>
-                    <a href="projects/gyn-dashboard.html" class="project-btn" data-en="View" data-zh="查看">View</a>
-                </div>
-                <div class="project-info">
-                    <div class="project-meta">
-                        <span class="project-category" data-en="Research Tool · AI Pipeline" data-zh="科研工具 · AI 流水线">Research Tool · AI Pipeline</span>
-                        <span class="project-year">2026</span>
-                    </div>
-                    <h3 class="project-title">Gyn Research Dashboard</h3>
-                    <p class="project-description" data-en="A daily literature radar built for a medical researcher. Dual-route PubMed retrieval plus 26 society and news sources; Claude grades every paper and writes a structured reading card in Chinese." data-zh="给一位医学研究者做的每日文献雷达：两路 PubMed 检索，加上 26 个学会和新闻来源；每篇论文都由 Claude 评级，并写成一张结构化的中文阅读卡。">A daily literature radar built for a medical researcher. Dual-route PubMed retrieval plus 26 society and news sources; Claude grades every paper and writes a structured reading card in Chinese.</p>
-                    <div class="project-tech">
-                        <span>Python · stdlib only</span>
-                        <span>Claude API</span>
-                        <span>In daily use</span>
-                    </div>
-                </div>
-            </article>
-            <article class="project-card">
-                <div class="project-image">
-                    <img src="Assets/3.jpg" alt="ANNO Health System">
-                    <div class="project-overlay"></div>
-                    <a href="projects/anno.html" class="project-btn" data-en="View" data-zh="查看">View</a>
-                </div>
-                <div class="project-info">
-                    <div class="project-meta">
-                        <span class="project-category" data-en="Health Tech" data-zh="健康科技">Health Tech</span>
-                        <span class="project-year">2024</span>
-                    </div>
-                    <h3 class="project-title">ANNO</h3>
-                    <p class="project-description" data-en="Companion-based smart health system for older adults living alone, blending emotional support with medication management through gentle, voice-driven interactions." data-zh="给独居老人做的陪伴型智能健康系统，用温和的语音交互，把情感陪伴和用药管理放在一起。">Companion-based smart health system for older adults living alone, blending emotional support with medication management through gentle, voice-driven interactions.</p>
-                    <div class="project-tech">
-                        <span>Companion Robot</span>
-                        <span>Product Design</span>
-                        <span>IoT</span>
-                    </div>
-                </div>
-            </article>
-            <article class="project-card">
-                <div class="project-image">
-                    <img src="Assets/4.jpg" alt="Whisperfield">
-                    <div class="project-overlay"></div>
-                    <a href="projects/whisper.html" class="project-btn" data-en="View" data-zh="查看">View</a>
-                </div>
-                <div class="project-info">
-                    <div class="project-meta">
-                        <span class="project-category" data-en="Immersive Experience" data-zh="沉浸式体验">Immersive Experience</span>
-                        <span class="project-year">2024</span>
-                    </div>
-                    <h3 class="project-title">Whisperfield</h3>
-                    <p class="project-description" data-en="ADHD-focused immersive meditation experience featuring gentle delays, natural rhythms, and responsive environments designed for neurodivergent individuals." data-zh="为 ADHD 人群设计的沉浸式冥想体验：温和的延迟、自然的节奏、会回应你的环境，都是为神经多样性人群考虑的。">ADHD-focused immersive meditation experience featuring gentle delays, natural rhythms, and responsive environments designed for neurodivergent individuals.</p>
-                    <div class="project-tech">
-                        <span>Neurodiversity</span>
-                        <span>UE5</span>
-                        <span>Interactive Installation</span>
-                    </div>
-                </div>
-            </article>
-            <article class="project-card">
-                <div class="project-image">
-                    <img src="Assets/this-site.svg" alt="Architecture diagram of this portfolio site — Aiden Yang vibecoding case study">
-                    <div class="project-overlay"></div>
-                    <a href="projects/this-site.html" class="project-btn" data-en="View" data-zh="查看">View</a>
-                </div>
-                <div class="project-info">
-                    <div class="project-meta">
-                        <span class="project-category" data-en="Self-built · Vibecoding" data-zh="自建项目 · Vibecoding">Self-built · Vibecoding</span>
-                        <span class="project-year">2026</span>
-                    </div>
-                    <h3 class="project-title" data-en="This Portfolio" data-zh="这个网站">This Portfolio</h3>
-                    <p class="project-description" data-en="A portfolio that talks back. Static front-end on GitHub, AI chat on Cloudflare's edge, real-time signal detection in the admin. Vibecoded with Claude, running for about $3/month." data-zh="一个会回话的作品集。前端是 GitHub 上的静态页，AI 聊天跑在 Cloudflare 边缘，后台实时捕捉对话信号。和 Claude 一起 vibecoding 出来的，一个月大概 $3。">A portfolio that talks back. Static front-end on GitHub, AI chat on Cloudflare's edge, real-time signal detection in the admin. Vibecoded with Claude, running for about $3/month.</p>
-                    <div class="project-tech">
-                        <span>Vibecoding</span>
-                        <span>AI · Edge Compute</span>
-                        <span>Full-stack</span>
-                    </div>
-                </div>
-            </article>
-        </div>
-    </section>
+<div id="tl-ghost" aria-hidden="true" style="flex: 0 0 3944px; height: 1px"></div>
+</div>
+</main>
 
-    <!-- Skills Section (Transparent Grey BG) -->
-    <section class="skills-section bg-medium" id="skills">
-        <div class="section-header">
-            <h2 class="section-title" data-en="Skills & Tools" data-zh="技能与工具">Skills & Tools</h2>
-        </div>
+<div class="cs-chat-wrap fade"><div id="chat" role="region" aria-label="Chat with AI Aiden" data-qs="Chat with AI Aiden|What is Chunks?|How was this site built?|What does the Investment Assistant do?">
+<div class="chat-log"><div class="chat-top"><button type="button" class="chat-close" aria-label="Close conversation"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12"/></svg></button></div><div class="chat-msgs" aria-live="polite"></div></div>
+<form><span class="chat-dot" aria-hidden="true"></span><input type="text" aria-label="Ask AI Aiden" placeholder="Chat with AI Aiden" autocomplete="off"><button type="submit" aria-label="Send"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></button></form>
+</div></div>
 
-        <div class="skills-grid">
-            <div class="skill-category-box">
-                <h3 class="category-title" data-en="Design" data-zh="设计">Design</h3>
-                <div class="category-keywords">
-                    <div class="keyword-item">
-                        <svg class="keyword-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                        </svg>
-                        <span class="keyword-text">Figma</span>
-                    </div>
-                    <div class="keyword-item">
-                        <svg class="keyword-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="3" width="7" height="7"></rect>
-                            <rect x="14" y="3" width="7" height="7"></rect>
-                            <rect x="14" y="14" width="7" height="7"></rect>
-                            <rect x="3" y="14" width="7" height="7"></rect>
-                        </svg>
-                        <span class="keyword-text" data-en="Prototyping" data-zh="原型设计">Prototyping</span>
-                    </div>
-                    <div class="keyword-item">
-                        <svg class="keyword-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="9" cy="7" r="4"></circle>
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                        </svg>
-                        <span class="keyword-text" data-en="User Research" data-zh="用户研究">User Research</span>
-                    </div>
-                    <div class="keyword-item">
-                        <svg class="keyword-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-                            <polyline points="2 17 12 22 22 17"></polyline>
-                            <polyline points="2 12 12 17 22 12"></polyline>
-                        </svg>
-                        <span class="keyword-text" data-en="Design Systems" data-zh="设计系统">Design Systems</span>
-                    </div>
-                </div>
-            </div>
+</div>
+<script src="chat.js"></script>
+<script>
 
-            <div class="skill-category-box">
-                <h3 class="category-title" data-en="Build" data-zh="开发">Build</h3>
-                <div class="category-keywords">
-                    <div class="keyword-item">
-                        <svg class="keyword-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
-                        <span class="keyword-text">Vibecoding · Claude Code / Codex</span>
-                    </div>
-                    <div class="keyword-item">
-                        <svg class="keyword-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>
-                        <span class="keyword-text">Cloudflare</span>
-                    </div>
-                    <div class="keyword-item">
-                        <svg class="keyword-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
-                        <span class="keyword-text">Railway</span>
-                    </div>
-                    <div class="keyword-item">
-                        <svg class="keyword-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
-                        <span class="keyword-text">HTML · CSS · JS</span>
-                    </div>
-                </div>
-            </div>
+class Component {
+constructor() { this.props = { palette: "Primary" }; this.state = {}; }
+componentDidMount() {
+var self = this;
+this.tries = 0;
+this.boot = function () {
+if (!self.init() && self.tries++ < 40) self.bootTimer = setTimeout(self.boot, 120);
+};
+this.boot();
+}
+componentDidUpdate() {
+if (this.api && this.api.sync) this.api.sync();
+}
+init() {
+var self = this;
+var $ = function (id) { return document.getElementById(id); };
+var root = $('tl-root'), scroller = $('tl-scroller'), stage = $('tl-stage'), world = $('tl-world');
+var track = $('tl-track'), ask = $('ask'), ghost = $('tl-ghost'), nameEl = $('tl-name'), runner = $('tl-runner'), squash = $('tl-squash'), far = $('tl-far'), mid = $('tl-mid');
+if (!root || !scroller || !stage || !world) return false;
+var STARTX = 20, ENDX = 3964, ZLEN = 560, CY = 242, STACK = 484, M = 40;
+var BASEW = 293, EXTRA = 98, R = BASEW * 0.9, STEP = 20, SC0 = 2620, SCW = 1304, BACK = 48, FRONT = 138, RUN = ['r0', 'r1', 'r2', 'r3'];
+var reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+var clips = [], lanes = { 1: [], 2: [] }, pins = [], obst = [], frames = {}, stops = [];
+var endW = 1296, designW = 956;
+var S = { W: 0, H: 0, z0: 1, z1: 1, zE: 1, cx: 0, cy: 0, p0: 644, pend: 4588, max: 3944 };
+var REPLIES = [
+[/chunks/i, 5, "Type a Chinese sentence; Chunks returns natural English and extracts the reusable “chunks”. Each becomes a spaced-repetition flashcard. The PWA is in daily use and a native iOS app is in progress."],
+[/invest/i, 6, "A multi-market, multi-currency portfolio dashboard, with a daily briefing written by an AI that reads it every morning."],
+[/gyn|research|paper/i, 7, "A daily literature radar built for a medical researcher. Dual-route PubMed retrieval plus 26 society and news sources; Claude grades every paper and writes a structured reading card in Chinese."],
+[/vivid/i, 1, "A Vision Pro-based remote participation platform that lets global audiences immerse in Vivid Sydney through multimodal interaction and spatial storytelling."],
+[/anno/i, 2, "A companion-based smart health system for older adults living alone, blending emotional support with medication management through gentle, voice-driven interactions."],
+[/whisper/i, 3, "An ADHD-focused immersive meditation experience with gentle delays, natural rhythms and responsive environments designed for neurodivergent people."],
+[/colab/i, 4, "A concept learning platform for international design students: standardized lectures, real-time tutorial support and skill-based teams."],
+[/site|portfolio|built|website/i, 8, "A portfolio that talks back. Static front-end on GitHub, AI chat on Cloudflare's edge, real-time signal detection in the admin. Vibecoded with Claude, running for about $3 a month."]
+];
+var q = function (sel) { return Array.prototype.slice.call(root.querySelectorAll(sel)); };
+function collect() {
+var i;
+clips = q('[data-clip]').map(function (el) {
+var x0 = el.offsetLeft;
+return { el: el, lane: el.getAttribute('data-lane') === '2' ? 2 : 1, x0: x0, w0: BASEW, c0: x0 + BASEW / 2, x: x0, w: BASEW, e: 0, fo: 0, dx: null, wv: null, fv: null };
+});
+clips.sort(function (a, b) { return a.x0 - b.x0; });
+lanes = { 1: [], 2: [] };
+for (i = 0; i < clips.length; i++) lanes[clips[i].lane].push(clips[i]);
+pins = q('[data-pin]').map(function (el) {
+return { el: el, w: el.offsetWidth, lane: el.getAttribute('data-lane') === '2' ? 2 : 1, side: el.getAttribute('data-side'), a: +el.getAttribute('data-a'), b: +el.getAttribute('data-b') };
+});
+for (i = 0; i < pins.length; i++) { if (pins[i].lane === 1 && pins[i].side === 'pre' && pins[i].w > 50) designW = pins[i].w; }
+obst = q('[data-sk]').map(function (el) {
+return { el: el, x: (parseFloat(el.style.left) || 0) + (+el.getAttribute('data-cx') || 86), body: el.querySelector('[data-sf="body"]'), s0: el.querySelector('[data-sf="s0"]'), s1: el.querySelector('[data-sf="s1"]'), pile: el.querySelector('[data-sf="p"]'), st: null };
+});
+frames = {};
+q('[data-hf]').forEach(function (el) { frames[el.getAttribute('data-hf')] = el; });
+self.pose = null;
+var ew = $('tl-end');
+if (ew && ew.offsetWidth > 50) endW = ew.offsetWidth;
+}
+function measure() {
+S.W = stage.clientWidth; S.H = stage.clientHeight;
+S.cx = S.W / 2; S.cy = S.H / 2;
+S.z0 = Math.min(S.H * 0.7 / STACK, (S.W - 2 * M) / designW);
+S.z1 = S.z0 * 0.72;
+S.zE = Math.min(S.z0, (S.W - 2 * M) / endW);
+S.p0 = STARTX + (S.cx - M) / S.z0;
+S.pend = ENDX + (S.cx - M) / S.zE;
+S.max = Math.max(ZLEN * 2 + 200, S.pend - S.p0);
+if (ghost) ghost.style.flexBasis = S.max.toFixed(0) + 'px';
+stops = [S.p0];
+for (var i = 0; i < clips.length; i++) stops.push(clips[i].c0);
+stops.push(S.pend);
+}
+function remeasure() {
+var had = S.W > 0, sx = scroller.scrollLeft, pOld = S.p0 + sx, atEnd = had && sx >= S.max - 1;
+measure();
+if (!had || sx <= 1) return;
+var nx = atEnd ? S.max : Math.max(0, Math.min(S.max, pOld - S.p0));
+if (Math.abs(nx - sx) > 0.5) scroller.scrollLeft = nx;
+}
+function clamp(v, a, b) { return b < a ? a : Math.max(a, Math.min(b, v)); }
+function smooth(t) { t = Math.max(0, Math.min(1, t)); return t * t * (3 - 2 * t); }
+function update() {
+self.queued = false;
+var sx = scroller.scrollLeft;
+var P = S.p0 + sx;
+var k1 = smooth(sx / ZLEN), k2 = smooth((sx - (S.max - ZLEN)) / ZLEN);
+var z = S.z0 + (S.z1 - S.z0) * k1 + (S.zE - S.z1) * k2, iz = 1 / z;
+stage.style.setProperty('--z', z.toFixed(4));
+stage.style.setProperty('--iz', iz.toFixed(4));
+stage.style.setProperty('--po', (k1 * (1 - k2) * 0.55).toFixed(3));
+stage.style.setProperty('--cy', S.cy.toFixed(1) + 'px');
+world.style.transform = 'translate(' + S.cx.toFixed(1) + 'px,' + S.cy.toFixed(1) + 'px) scale(' + z.toFixed(4) + ') translate(' + (-P).toFixed(1) + 'px,' + (-CY) + 'px)';
+var ln, i, c, L, E, pre, fo, v;
+for (ln = 1; ln <= 2; ln++) {
+L = lanes[ln]; E = 0; pre = 0;
+for (i = 0; i < L.length; i++) {
+c = L[i];
+fo = smooth(1 - Math.min(1, Math.abs(P - c.c0) / R));
+c.fo = fo; c.e = EXTRA * fo;
+E += c.e * Math.max(0, Math.min(1, (P - c.x0) / c.w0));
+}
+for (i = 0; i < L.length; i++) {
+c = L[i];
+c.x = c.x0 + pre - E; c.w = c.w0 + c.e; pre += c.e;
+v = Math.round((c.x - c.x0) * 10) / 10;
+if (v !== c.dx) { c.el.style.transform = 'translateX(' + v + 'px)'; c.dx = v; }
+v = Math.round(c.w * 10) / 10;
+if (v !== c.wv) { c.el.style.width = v + 'px'; c.wv = v; }
+v = Math.round(c.fo * 100) / 100;
+if (v !== c.fv) { c.el.style.setProperty('--f', String(v)); c.fv = v; }
+}
+}
+var f, a, b, tx, want = P - (S.cx - M) * iz;
+for (i = 0; i < pins.length; i++) {
+f = pins[i]; L = lanes[f.lane];
+a = (f.side === 'post' && L.length) ? L[L.length - 1].x + L[L.length - 1].w : f.a;
+b = (f.side === 'pre' && L.length) ? L[0].x : f.b;
+tx = clamp(want, a + 20, b - f.w - 20);
+f.el.style.transform = 'translateX(' + tx.toFixed(1) + 'px)';
+}
+L = lanes[1];
+a = L.length ? L[L.length - 1].x + L[L.length - 1].w : 2532;
+b = ENDX - 20;
+if (runner) {
+var lo = a + 20 - BACK, hi = ENDX + 16 - FRONT, push = P + 3 * iz - BACK;
+tx = clamp(push, lo, hi);
+runner.style.transform = 'translateX(' + tx.toFixed(1) + 'px)';
+var pushed = push > lo && push < hi;
+var pose = pushed ? RUN[Math.floor(tx / 22) % 4] : 'i0';
+var front = tx + FRONT, qd, o, st, rot, op, key;
+for (i = 0; i < obst.length; i++) {
+o = obst[i]; qd = front - o.x;
+if (qd >= -196 && qd < -131) pose = 'a0';
+else if (qd >= -131 && qd < -70) pose = 'a1';
+else if (qd >= -70 && qd < -25) pose = 'a2';
+st = qd < -260 ? 0 : (qd < -70 ? 1 : 2);
+rot = Math.max(0, Math.min(1, (qd + 128) / 58)) * 88;
+op = st === 2 ? Math.max(0, Math.min(1, 1 - (qd + 60) / 90)) : 1;
+if (st !== o.st) {
+o.st = st;
+if (o.s0) o.s0.style.display = st === 0 ? '' : 'none';
+if (o.s1) o.s1.style.display = st === 1 ? '' : 'none';
+if (o.body) o.body.style.display = st === 2 ? 'none' : '';
+if (o.pile) o.pile.style.display = st === 2 ? '' : 'none';
+}
+if (o.body) o.body.style.transform = 'rotate(' + rot.toFixed(1) + 'deg)';
+o.el.style.opacity = op.toFixed(2);
+}
+if (pose !== self.pose) {
+for (key in frames) frames[key].style.display = key === pose ? '' : 'none';
+self.pose = pose;
+}
+if (squash) squash.style.transform = 'scaleX(' + Math.max(0, Math.min(1, 1 - (push - hi) / 150)).toFixed(3) + ')';
+}
+var pc = P - (SC0 + SCW / 2);
+if (far) far.style.transform = 'translateX(' + clamp(0.7 * pc, -1320, 1320).toFixed(1) + 'px)';
+if (mid) mid.style.transform = 'translateX(' + clamp(0.4 * pc, -750, 750).toFixed(1) + 'px)';
+if (nameEl) {
+var ruleY = 56 + S.cy - 242 * S.z0;
+var s0 = Math.max(0.45, Math.min(1.25, 1.09 * S.z0));
+var x0 = M + 15 * S.z0, y0 = Math.max(2, ruleY - 16 - 72 * s0);
+nameEl.style.transform = 'translate(' + (x0 + (20 - x0) * k1).toFixed(1) + 'px,' + (y0 + (18.5 - y0) * k1).toFixed(1) + 'px) scale(' + (s0 + (0.26 - s0) * k1).toFixed(3) + ')';
+}
+if (track) {
+var idx = stops.length - 1;
+for (i = 0; i < stops.length - 1; i++) {
+if (P <= stops[i + 1]) { idx = i + (P - stops[i]) / (stops[i + 1] - stops[i]); break; }
+}
+track.style.transform = 'translateX(' + (Math.max(0, idx) * STEP).toFixed(1) + 'px)';
+}
+}
+function queue() {
+if (self.queued) return;
+self.queued = true;
+self.raf = requestAnimationFrame(update);
+}
+function glide(to) {
+to = Math.max(0, Math.min(S.max, to));
+if (reduce) { scroller.scrollLeft = to; return; }
+self.target = to;
+if (self.moving) return;
+self.moving = true;
+var step = function () {
+var cur = scroller.scrollLeft, d = self.target - cur;
+if (Math.abs(d) < 1.5) { scroller.scrollLeft = self.target; self.moving = false; return; }
+var s = d * 0.16;
+if (Math.abs(s) < 1) s = d > 0 ? 1 : -1;
+scroller.scrollLeft = cur + s;
+if (Math.abs(scroller.scrollLeft - cur) < 0.01) { self.moving = false; return; }
+self.raf2 = requestAnimationFrame(step);
+};
+step();
+}
+this.api = {
+scroll: queue,
+sync: function () {
+collect(); remeasure(); update();
+var m = $('tl-msgs');
+if (m) m.scrollTop = m.scrollHeight;
+},
+wheel: function (e) {
+var t = e.target;
+if (t && t.closest && t.closest('#tl-chat')) return;
+if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+var unit = e.deltaMode === 1 ? 32 : 1;
+var base = self.moving ? self.target : scroller.scrollLeft;
+glide(base + e.deltaY * unit * 1.2);
+},
+pick: function (e) {
+var t = e.target;
+if (!t || !t.closest) return;
+var el = t.closest('[data-clip]');
+if (!el) return;
+if (e.preventDefault) e.preventDefault();
+glide(el.offsetLeft + BASEW / 2 - S.p0);
+},
+jump: function (e) {
+var t = e.target;
+if (!t || !t.closest) return;
+var el = t.closest('[data-i]');
+if (!el) return;
+var i = +el.getAttribute('data-i');
+if (stops[i] !== undefined) glide(stops[i] - S.p0);
+},
+home: function (e) {
+if (e && e.preventDefault) e.preventDefault();
+glide(0);
+},
+send: function (e) {
+if (e && e.preventDefault) e.preventDefault();
+var text = ask ? ask.value.replace(/^\s+|\s+$/g, '') : '';
+if (!text) text = self.qNow || 'What is Chunks?';
+if (ask) ask.value = '';
+var pal = self.pal || ['#2247C9', '#D9412C', '#F2C12E'];
+var msgs = ((self.state || {}).msgs || []).concat([{ text: text, fill: '#F7F5F0', color: '#5F5D58' }]);
+self.setState({ open: true, msgs: msgs });
+clearTimeout(self.replyTimer);
+self.replyTimer = setTimeout(function () {
+var r = null, i;
+for (i = 0; i < REPLIES.length; i++) { if (REPLIES[i][0].test(text)) { r = REPLIES[i]; break; } }
+var cur = (self.state || {}).msgs || [];
+self.setState({ msgs: cur.concat([{ text: r ? r[2] : "[ AI Aiden's reply appears here ]", fill: pal[2], color: '#141414' }]) });
+if (r && stops[r[1]] !== undefined) glide(stops[r[1]] - S.p0);
+}, 650);
+},
+close: function () {},
+goto: function (text) { for (var i = 0; i < REPLIES.length; i++) { if (REPLIES[i][0].test(text)) { if (stops[REPLIES[i][1]] !== undefined) glide(stops[REPLIES[i][1]] - S.p0); return; } } }
+};
+this.onResize = function () { collect(); remeasure(); update(); };
+window.addEventListener('resize', this.onResize);
+if (window.ResizeObserver) {
+this.ro = new ResizeObserver(function () { remeasure(); update(); });
+this.ro.observe(stage);
+}
+collect(); measure(); update();
+if (document.fonts && document.fonts.ready && document.fonts.ready.then) {
+document.fonts.ready.then(function () { collect(); remeasure(); update(); });
+}
+this.late = setTimeout(function () { collect(); remeasure(); update(); }, 800);
+var qs = ['Chat with AI Aiden', 'What is Chunks?', 'How was this site built?', 'What does the Investment Assistant do?'];
+this.qNow = qs[1];
+if (ask && !reduce) {
+var qi = 0, n = qs[0].length, dir = -1, wait = 60;
+this.timer = setInterval(function () {
+if (document.activeElement === ask) return;
+if (wait > 0) { wait--; return; }
+n += dir;
+if (dir === 1 && n >= qs[qi].length) { dir = -1; wait = qi === 0 ? 60 : 34; }
+else if (dir === -1 && n <= 0) { dir = 1; qi = (qi + 1) % qs.length; wait = 8; self.qNow = qs[qi === 0 ? 1 : qi]; }
+ask.setAttribute('placeholder', qs[qi].slice(0, Math.max(0, n)) || ' ');
+}, 55);
+}
+return true;
+}
+componentWillUnmount() {
+clearTimeout(this.bootTimer);
+clearTimeout(this.late);
+clearTimeout(this.replyTimer);
+clearInterval(this.timer);
+cancelAnimationFrame(this.raf);
+cancelAnimationFrame(this.raf2);
+if (this.ro) this.ro.disconnect();
+if (this.onResize) window.removeEventListener('resize', this.onResize);
+}
+renderVals() {
+var self = this;
+if (!this.h) {
+var call = function (name) { return function (e) { if (self.api && self.api[name]) self.api[name](e); else if (e && e.preventDefault && (name === 'send' || name === 'home')) e.preventDefault(); }; };
+this.h = { scroll: call('scroll'), wheel: call('wheel'), pick: call('pick'), jump: call('jump'), home: call('home'), send: call('send'), close: call('close') };
+}
+var sets = {
+Primary: ['#2247C9', '#D9412C', '#F2C12E'],
+Cool: ['#23398F', '#1F8A70', '#EFD95A'],
+Mono: ['#141414', '#8C8A84', '#DCD9D0']
+};
+var p = sets[this.props.palette] || sets.Primary;
+this.pal = p;
+var st = this.state || {};
+var open = !!st.open;
+return {
+c1: p[0], c2: p[1], c3: p[2],
+msgs: st.msgs || [],
+logH: open ? '260px' : '0px',
+stageBottom: open ? '348px' : '88px',
+formTop: open ? '1px solid #141414' : '0px solid #141414',
+scroll: this.h.scroll, wheel: this.h.wheel, pick: this.h.pick, jump: this.h.jump,
+home: this.h.home, send: this.h.send, close: this.h.close
+};
+}
+}
 
-            <div class="skill-category-box">
-                <h3 class="category-title" data-en="Content" data-zh="内容">Content</h3>
-                <div class="category-keywords">
-                    <div class="keyword-item">
-                        <svg class="keyword-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                        <span class="keyword-text" data-en="Content Strategy" data-zh="内容策划">Content Strategy</span>
-                    </div>
-                    <div class="keyword-item">
-                        <svg class="keyword-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-                            <polyline points="17 6 23 6 23 12"></polyline>
-                        </svg>
-                        <span class="keyword-text" data-en="Trend Insight" data-zh="热点洞察">Trend Insight</span>
-                    </div>
-                    <div class="keyword-item">
-                        <svg class="keyword-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polygon points="23 7 16 12 23 17 23 7"></polygon>
-                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-                        </svg>
-                        <span class="keyword-text" data-en="Short-form Video" data-zh="短视频">Short-form Video</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section (Dark) -->
-    <section class="contact bg-dark" id="contact">
-        <div class="section-header">
-            <h2 class="section-title" data-en="Let's Work Together" data-zh="聊聊合作">Let's Work Together</h2>
-        </div>
-
-        <div class="contact-content">
-            <div class="contact-methods">
-
-                <a href="https://www.linkedin.com/in/aiden-yang-ty" target="_blank" rel="noopener" class="contact-method">
-                    <div class="method-icon">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                        </svg>
-                    </div>
-                    <div class="method-info">
-                        <h3>LinkedIn</h3>
-                        <p data-en="Connect with me" data-zh="联系我">Connect with me</p>
-                    </div>
-                    <div class="method-arrow">→</div>
-                </a>
-
-                <a href="https://github.com/Li1aid" target="_blank" rel="noopener" class="contact-method">
-                    <div class="method-icon">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
-                        </svg>
-                    </div>
-                    <div class="method-info">
-                        <h3>GitHub</h3>
-                        <p data-en="View my code" data-zh="看我的代码">View my code</p>
-                    </div>
-                    <div class="method-arrow">→</div>
-                </a>
-            </div>
-
-            <div class="contact-cta">
-                <h3 data-en="Ready to start?" data-zh="想聊聊？">Ready to start?</h3>
-                <p data-en="Send me a message and I'll get back to you within 24 hours" data-zh="留个言，我会在 24 小时内回复你。">Send me a message and I'll get back to you within 24 hours</p>
-                <a href="mailto:AidenYang5995@gmail.com" class="btn btn-large btn-primary">
-                    <span data-en="Send Message" data-zh="发送">Send Message</span>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-simple">
-            <p class="footer-credit" data-en="© Xuejian Yang · 杨雪健 (Aiden) · Sydney, Australia" data-zh="© 杨雪健 · Xuejian Yang (Aiden) · 澳大利亚悉尼">© Xuejian Yang · 杨雪健 (Aiden) · Sydney, Australia</p>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
+(function () {
+  var c = new Component();
+  c.renderVals();
+  c.componentDidMount();
+  function wire() {
+    if (!c.api) return setTimeout(wire, 100);
+    var $ = function (id) { return document.getElementById(id); };
+    $('tl-root').addEventListener('wheel', function (e) { c.api.wheel(e); }, { passive: true });
+    $('tl-scroller').addEventListener('scroll', function (e) { c.api.scroll(e); });
+    $('tl-mini').addEventListener('click', function (e) { c.api.jump(e); });
+    $('tl-name').addEventListener('click', function (e) { c.api.home(e); });
+    $('tl-world').addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('[data-clip]');
+      if (!a) return;
+      var f = parseFloat(a.style.getPropertyValue('--f')) || 0;
+      if (f > 0.85) return;                 // already in focus: open the case study
+      c.api.pick(e);                        // otherwise bring it into focus first
+    });
+    window.addEventListener('chat:resize', function () { setTimeout(c.api.sync, 470); });
+    window.addEventListener('chat:reply', function (e) { if (c.api.goto) c.api.goto(e.detail.question); });
+  }
+  wire();
+})();
+</script>
 </body>
-
 </html>

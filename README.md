@@ -9,7 +9,7 @@ Bilingual portfolio of **Xuejian (Aiden) Yang**, Design Engineer in Sydney — w
 
 ## What's in it
 
-- **Homepage** — eight case studies: four shipped products and four design projects.
+- **Homepage** — one horizontal timeline: design work in the blue lane, shipped products in the red lane. Scrolling zooms and pans the whole strip; a pixel knight is pushed along by the playhead.
 - **Interactive case studies** — each product page has a clickable architecture diagram; the Chunks page has a working replica of the app.
 - **AI assistant** — a chat widget grounded in `knowledge.md`, running on a Cloudflare Worker. Costs about $3 a month.
 - **Bilingual** — every piece of copy carries `data-en` / `data-zh`; the toggle swaps them in place.
@@ -21,7 +21,7 @@ GitHub Pages (this repo)  ──►  static HTML / CSS / JS, no build step
 Cloudflare Worker (worker/) ──►  proxies the Anthropic API · logs chats to D1 · admin behind Cloudflare Access
 ```
 
-- **Front-end** — vanilla HTML/CSS/JS with GSAP for scroll animation and a canvas particle background.
+- **Front-end** — vanilla HTML/CSS/JS, no build step. Case studies share `projects/case.css`; the chat bar is `chat.js` + `chat.css` on every page.
 - **Chatbot** — `knowledge.md` is the single source of truth for what it may say; conversations are stored in D1 and purged after 30 days.
 - **Status badge** — the "open to work" pill reads `status.json`, editable from the Worker admin panel.
 

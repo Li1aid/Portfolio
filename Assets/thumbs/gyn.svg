@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a0a12"/><stop offset="1" stop-color="#1c1410"/></linearGradient>
+    <radialGradient id="g1" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#d49a4f" stop-opacity="0.22"/><stop offset="1" stop-color="#d49a4f" stop-opacity="0"/></radialGradient>
+    <filter id="sh" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="30" stdDeviation="30" flood-color="#000" flood-opacity="0.6"/></filter>
+    <clipPath id="sheet"><rect x="0" y="0" width="980" height="900" rx="16"/></clipPath>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <circle cx="800" cy="520" r="640" fill="url(#g1)"/>
+
+  <!-- sheets behind: neat stack, each inset and lifted -->
+  <rect x="342" y="112" width="916" height="900" rx="14" fill="#d9d1b8"/>
+  <rect x="326" y="126" width="948" height="900" rx="15" fill="#ece5cf"/>
+
+  <!-- today's sheet -->
+  <g transform="translate(310 140)" filter="url(#sh)">
+    <rect x="0" y="0" width="980" height="900" rx="16" fill="#faf8f3"/>
+    <g clip-path="url(#sheet)">
+      <g transform="translate(40 0)">
+        <text x="0" y="52" fill="#8b2c2c" font-size="12" font-family="'Times New Roman', 'Songti SC', 'STSong', Georgia, serif" letter-spacing="4">GYNAECOLOGY · FRONTIER WATCH</text>
+        <text x="0" y="104" fill="#1a1a1a" font-size="46" font-weight="700" font-family="'Times New Roman', 'Songti SC', 'STSong', Georgia, serif">Daily Academic Brief</text>
+        <text x="900" y="52" text-anchor="end" fill="#6b5e44" font-size="12" font-family="ui-monospace, 'SF Mono', Menlo, monospace">2026 · 05 · 13 · 08:00</text>
+        <text x="900" y="100" text-anchor="end" fill="#6b5e44" font-size="14" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Helvetica Neue', sans-serif">41 new  ·  10 A  ·  16 B  ·  15 C</text>
+        <line x1="0" y1="122" x2="900" y2="122" stroke="#1a1a1a" stroke-width="2"/>
+        <line x1="0" y1="127" x2="900" y2="127" stroke="#1a1a1a" stroke-width="0.6"/>
+        <g transform="translate(0 150)">
+      <rect x="0" y="0" width="900" height="118" rx="10" fill="#ffffff" stroke="#d4cdb8"/>
+      <rect x="0" y="0" width="6" height="118" rx="3" fill="#8b2c2c"/>
+      <rect x="24" y="24" width="40" height="40" rx="8" fill="#8b2c2c"/>
+      <text x="44" y="52" text-anchor="middle" fill="#faf8f3" font-size="22" font-weight="700" font-family="'Times New Roman', 'Songti SC', 'STSong', Georgia, serif">A</text>
+      <text x="84" y="40" fill="#1a1a1a" font-size="18" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Helvetica Neue', sans-serif">Polyendocrine metabolic ovarian syndrome, the new name for PCOS</text>
+      <text x="84" y="66" fill="#6b5e44" font-size="14" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Helvetica Neue', sans-serif">多内分泌代谢性卵巢综合征：多囊卵巢综合征的新命名</text>
+      <text x="84" y="96" fill="#a8a08a" font-size="12" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Helvetica Neue', sans-serif">Lancet</text>
+      <rect x="141" y="82" width="40" height="20" rx="4" fill="#f0ead3" stroke="#d4cdb8"/>
+      <text x="161" y="96" text-anchor="middle" fill="#8b2c2c" font-size="10" font-family="ui-monospace, 'SF Mono', Menlo, monospace" letter-spacing="1">TOP</text>
+      <text x="876" y="40" text-anchor="end" fill="#a8a08a" font-size="12" font-family="ui-monospace, 'SF Mono', Menlo, monospace">May 12</text>
+      <text x="876" y="96" text-anchor="end" fill="#c9a55c" font-size="14">★★★★★</text>
+    </g><g transform="translate(0 282)">
+      <rect x="0" y="0" width="900" height="118" rx="10" fill="#ffffff" stroke="#d4cdb8"/>
+      <rect x="0" y="0" width="6" height="118" rx="3" fill="#8b2c2c"/>
+      <rect x="24" y="24" width="40" height="40" rx="8" fill="#8b2c2c"/>
+      <text x="44" y="52" text-anchor="middle" fill="#faf8f3" font-size="22" font-weight="700" font-family="'Times New Roman', 'Songti SC', 'STSong', Georgia, serif">A</text>
+      <text x="84" y="40" fill="#1a1a1a" font-size="18" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Helvetica Neue', sans-serif">A new treatment for preterm pre-eclampsia</text>
+      <text x="84" y="66" fill="#6b5e44" font-size="14" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Helvetica Neue', sans-serif">早发型子痫前期的新疗法可能让母亲和孩子双双获益</text>
+      <text x="84" y="96" fill="#a8a08a" font-size="12" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Helvetica Neue', sans-serif">Nature Medicine</text>
+      <rect x="206" y="82" width="40" height="20" rx="4" fill="#f0ead3" stroke="#d4cdb8"/>
+      <text x="226" y="96" text-anchor="middle" fill="#8b2c2c" font-size="10" font-family="ui-monospace, 'SF Mono', Menlo, monospace" letter-spacing="1">TOP</text>
+      <text x="876" y="40" text-anchor="end" fill="#a8a08a" font-size="12" font-family="ui-monospace, 'SF Mono', Menlo, monospace">May 11</text>
+      <text x="876" y="96" text-anchor="end" fill="#c9a55c" font-size="14">★★★★★</text>
+    </g><g transform="translate(0 414)">
+      <rect x="0" y="0" width="900" height="118" rx="10" fill="#ffffff" stroke="#d4cdb8"/>
+      <rect x="0" y="0" width="6" height="118" rx="3" fill="#8b2c2c"/>
+      <rect x="24" y="24" width="40" height="40" rx="8" fill="#8b2c2c"/>
+      <text x="44" y="52" text-anchor="middle" fill="#faf8f3" font-size="22" font-weight="700" font-family="'Times New Roman', 'Songti SC', 'STSong', Georgia, serif">A</text>
+      <text x="84" y="40" fill="#1a1a1a" font-size="18" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Helvetica Neue', sans-serif">Endometrial Cancer: A Review</text>
+      <text x="84" y="66" fill="#6b5e44" font-size="14" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Helvetica Neue', sans-serif">子宫内膜癌：综述</text>
+      <text x="84" y="96" fill="#a8a08a" font-size="12" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Helvetica Neue', sans-serif">JAMA</text>
+      <rect x="127" y="82" width="40" height="20" rx="4" fill="#f0ead3" stroke="#d4cdb8"/>
+      <text x="147" y="96" text-anchor="middle" fill="#8b2c2c" font-size="10" font-family="ui-monospace, 'SF Mono', Menlo, monospace" letter-spacing="1">TOP</text>
+      <text x="876" y="40" text-anchor="end" fill="#a8a08a" font-size="12" font-family="ui-monospace, 'SF Mono', Menlo, monospace">May 12</text>
+      <text x="876" y="96" text-anchor="end" fill="#c9a55c" font-size="14">★★★★★</text>
+    </g><g transform="translate(0 546)">
+      <rect x="0" y="0" width="900" height="118" rx="10" fill="#ffffff" stroke="#d4cdb8"/>
+      <rect x="0" y="0" width="6" height="118" rx="3" fill="#6b5e44"/>
+      <rect x="24" y="24" width="40" height="40" rx="8" fill="#6b5e44"/>
+      <text x="44" y="52" text-anchor="middle" fill="#faf8f3" font-size="22" font-weight="700" font-family="'Times New Roman', 'Songti SC', 'STSong', Georgia, serif">B</text>
+      <text x="84" y="40" fill="#1a1a1a" font-size="18" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Helvetica Neue', sans-serif">Maternal genetic variants associated with aneuploid conception</text>
+      <text x="84" y="66" fill="#6b5e44" font-size="14" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Helvetica Neue', sans-serif">母源遗传变异与非整倍体妊娠的关联</text>
+      <text x="84" y="96" fill="#a8a08a" font-size="12" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Helvetica Neue', sans-serif">Human Reproduction Update</text>
+      <rect x="278" y="82" width="56" height="20" rx="4" fill="#f0ead3" stroke="#d4cdb8"/>
+      <text x="306" y="96" text-anchor="middle" fill="#8b2c2c" font-size="10" font-family="ui-monospace, 'SF Mono', Menlo, monospace" letter-spacing="1">OBGYN</text>
+      <text x="876" y="40" text-anchor="end" fill="#a8a08a" font-size="12" font-family="ui-monospace, 'SF Mono', Menlo, monospace">May 13</text>
+      <text x="876" y="96" text-anchor="end" fill="#c9a55c" font-size="14">★★★★★</text>
+    </g><g transform="translate(0 678)">
+      <rect x="0" y="0" width="900" height="118" rx="10" fill="#ffffff" stroke="#d4cdb8"/>
+      <rect x="0" y="0" width="6" height="118" rx="3" fill="#6b5e44"/>
+      <rect x="24" y="24" width="40" height="40" rx="8" fill="#6b5e44"/>
+      <text x="44" y="52" text-anchor="middle" fill="#faf8f3" font-size="22" font-weight="700" font-family="'Times New Roman', 'Songti SC', 'STSong', Georgia, serif">B</text>
+      <text x="84" y="40" fill="#1a1a1a" font-size="18" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Helvetica Neue', sans-serif">Recurrent pregnancy loss: a committee opinion</text>
+      <text x="84" y="66" fill="#6b5e44" font-size="14" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Helvetica Neue', sans-serif">复发性流产：委员会意见</text>
+      <text x="84" y="96" fill="#a8a08a" font-size="12" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Helvetica Neue', sans-serif">Fertility and Sterility</text>
+      <rect x="264" y="82" width="56" height="20" rx="4" fill="#f0ead3" stroke="#d4cdb8"/>
+      <text x="292" y="96" text-anchor="middle" fill="#8b2c2c" font-size="10" font-family="ui-monospace, 'SF Mono', Menlo, monospace" letter-spacing="1">OBGYN</text>
+      <text x="876" y="40" text-anchor="end" fill="#a8a08a" font-size="12" font-family="ui-monospace, 'SF Mono', Menlo, monospace">Apr 29</text>
+      <text x="876" y="96" text-anchor="end" fill="#c9a55c" font-size="14">★★★★★</text>
+    </g>
+      </g>
+    </g>
+  </g>
+</svg>
