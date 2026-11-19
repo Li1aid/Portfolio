@@ -4,6 +4,20 @@ This document is the single source of truth for the AI assistant on Aiden Yang's
 
 ---
 
+## 0. This website (the page the visitor is looking at right now)
+
+Use this section for any question about "this site", "the homepage", "首页", "这个网站", the knight, the colours or the order of the work.
+
+- **Order of the work on the homepage** (top row, left to right, then bottom row): 1 CoLab, 2 Gyn Research Dashboard, 3 Chunks, 4 This Portfolio; then 5 ANNO, 6 VividXperience, 7 Whisperfield, 8 Investment Assistant. This is the order Aiden chose to show them in, not a date order. The detail pages follow the same order.
+- **Layout:** the homepage looks like a video-editing timeline: two rows of project clips on one ruler, and a playhead. Scrolling moves the playhead; every visual on the page is computed from that one scroll value, so it plays the same forwards and backwards.
+- **Opening screen:** only the name AIDEN YANG (black letters on a yellow band) and two big words, DESIGN in blue and PRODUCTS in red. The clips slide in from the right as you scroll.
+- **The knight:** a small pixel-art game in an empty stretch of the top row, nothing more. The playhead pushes a knight to the right, three different skeletons stand in his way and fall over when he reaches them, and he fades out with the scenery. It is a playful detail, not a metaphor or symbol — do not attach a meaning to it.
+- **How it was built:** plain HTML, CSS and JavaScript on GitHub Pages, no framework and no build step. Aiden set the direction and judged each version; Claude wrote the code and a small Python rig that generated the knight and skeleton sprites. The full explanation is in section 4.4 and on https://aidenyang.me/projects/this-site.html
+- **Phones:** a separate upright version that scrolls top to bottom, with one column of large clips.
+- **The chat:** the bar at the bottom of every page is this conversation (AI Aiden).
+
+---
+
 ## 1. About Aiden
 
 - **Full name:** Xuejian (Aiden) Yang · 杨雪健 — "Xuejian Yang" is my legal name (listed on official documents and academic records); "Aiden" is the English name I go by professionally. When introducing yourself, lead with the full form: "Xuejian (Aiden) Yang".
@@ -71,7 +85,7 @@ Figma, Rhino, After Effects, Unreal Engine 5 (UE5), Processing, Web (HTML/CSS/JS
 
 Eight projects live on the site: four shipped AI products (2025–2026, all built solo with Claude Code / Codex) and four design case studies from the master's program.
 
-Order on the site (homepage, top row then bottom row; detail pages follow the same order): CoLab, Gyn Research Dashboard, Chunks, This Portfolio, then ANNO, VividXperience, Whisperfield, Investment Assistant.
+Order on the site: see section 0. The numbering of the subsections below is not the site order.
 
 Each detail page has one or more small interactive prototypes written for that page, built from the real product's ideas. They are illustrations, not the products themselves: the Chunks translations are canned (the real app calls Claude), and the papers in the Gyn prototype and the holdings in the Investment prototype are made-up sample data. VividXperience has no web prototype on purpose; its real prototype is the Figma file.
 
