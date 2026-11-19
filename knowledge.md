@@ -71,13 +71,17 @@ Figma, Rhino, After Effects, Unreal Engine 5 (UE5), Processing, Web (HTML/CSS/JS
 
 Eight projects live on the site: four shipped AI products (2025–2026, all built solo with Claude Code / Codex) and four design case studies from the master's program.
 
+Order on the site (homepage, top row then bottom row; detail pages follow the same order): CoLab, Gyn Research Dashboard, Chunks, This Portfolio, then ANNO, VividXperience, Whisperfield, Investment Assistant.
+
+Each detail page has one or more small interactive prototypes written for that page, built from the real product's ideas. They are illustrations, not the products themselves: the Chunks translations are canned (the real app calls Claude), and the papers in the Gyn prototype and the holdings in the Investment prototype are made-up sample data. VividXperience has no web prototype on purpose; its real prototype is the Figma file.
+
 ### 4.1 Chunks — Language Learning App
 - **Category:** Language Learning · PWA + iOS · 2026
 - **Status:** PWA in daily use · native iOS app in progress (targeting the App Store — not yet published)
 - **Stack:** Vanilla JS PWA (no build step) · SwiftUI + SwiftData iOS · Cloudflare Worker + D1
 - **Page:** https://aidenyang.me/projects/chunks.html
 
-**What it is:** Type a Chinese sentence; Chunks returns natural English and extracts 1–4 reusable phrases (“chunks”) — each automatically becomes a flashcard reviewed with spaced repetition (simplified SM-2 on the PWA, full FSRS on iOS).
+**What it is:** Type a Chinese sentence; Chunks returns natural English and extracts 1–4 reusable phrases (“chunks”) — each automatically becomes a flashcard reviewed with spaced repetition. There is no save button; duplicates are skipped. Review opens once there are 10 cards. Cards show Chinese first. Grading is a swipe: right before flipping = easy, flip then right = good, left = forgot; the screen edge glows green or red while dragging. Both the iOS app and the current web version schedule with FSRS (a card returns when the chance of recalling it drops below 90%); an earlier PWA used a simplified three-grade SM-2, and old cards were converted rather than reset.
 
 **Key features:** sentence-to-chunks extraction with whole-sentence fallback; offline-first sync (last-write-wins by timestamp, tombstones for deletes, server-side LWW enforcement); one Worker proxying both Claude and DeepSeek with keys held server-side; iOS picks the AI provider by device region for the China App Store.
 
@@ -103,17 +107,34 @@ Eight projects live on the site: four shipped AI products (2025–2026, all buil
 
 **What it is:** A daily literature radar: dual-route PubMed retrieval (a 51-journal whitelist route plus a publication-type guideline route that bypasses the whitelist) and 26 additional sources (18 RSS feeds, 6 society sitemaps — FIGO, ACOG, ASRM, NICE, ESGO, ESMO — and 2 scraped guideline pages). Claude grades every paper A/B/C, writes a structured Chinese reading card (core question, design, results, limitations, next steps), and switches to version-diff analysis for guidelines. News is classified into 8 major types with importance scores, deduplicated semantically across outlets.
 
-**Key features:** dashboard with 4 tabs (latest papers / academic news / weekly picks / favourites), folder-and-tag favourites synced server-side, rotating banner for major updates, scheduled daily 8am refresh.
+**Key features:** dashboard with 4 tabs (latest papers / academic news / weekly picks / favourites), folder-and-tag favourites synced server-side, rotating banner for major updates, scheduled daily 8am refresh. The look is an editorial "daily academic brief". Each paper card shows its grade, impact factor, JCR quartile, journal tier and article type; the full reading card also includes innovation, recommendation reason and a "TCM transfer" section (中医学迁移分析) on how the finding could inform traditional Chinese medicine research. News items get 1–5 importance stars and note when several outlets reported the same story.
 
 **Decisions worth telling:** the whitelist has a deliberate hole — a second query by publication type catches guidelines wherever they're published; favourites moved from GitHub Gist sync to a server-side store (atomic writes, 30 days of snapshots); every Claude call is cached per-item and capped, so a crash never loses paid analysis.
 
-### 4.4 This Portfolio — A Vibecoded AI Site
-- **Category:** Self-built · Vibecoding · 2026
+### 4.4 This Portfolio — A Site You Scrub Like a Video Timeline
+- **Category:** Personal site · 2026 (redesigned November 2026)
+- **Role:** Design and direction; built with Claude
 - **Status:** Live at aidenyang.me, running for about $3/month
-- **Stack:** Static front-end on GitHub Pages · Cloudflare Worker AI chat at ai.aidenyang.me · D1 conversation log · Cloudflare Access admin
+- **Stack:** Plain HTML, CSS and JavaScript on GitHub Pages, no framework and no build step · Cloudflare Worker AI chat at ai.aidenyang.me · D1 conversation log · Cloudflare Access admin
 - **Page:** https://aidenyang.me/projects/this-site.html
 
-**What it is:** The site you are on. Static HTML/CSS/JS front-end served by GitHub Pages; the AI assistant (this conversation) runs on a Cloudflare Worker that routes chat to Claude or DeepSeek by visitor region, logs conversations to D1 (auto-purged after 30 days), and serves an admin dashboard protected by Cloudflare Access.
+**The idea:** the homepage is laid out the way a video editor sees a project — two tracks of clips on one ruler, with a playhead. Scrolling moves the playhead instead of moving a page. Everything on screen is calculated from that one scroll value, so the page plays the same forwards and backwards at any speed; there are no scroll-triggered animations waiting to fire. The reference was rauno.me: Aiden wanted its logic (motion tied to scroll), not its look.
+
+**How the homepage visuals work:**
+- Opening: only the name and two words, DESIGN (blue) and PRODUCTS (red), are on screen. The timeline waits just off the right edge and slides in as you scroll.
+- Zoom: the first stretch of scroll pulls the camera back to 72% so the giant words shrink to track height; the end pushes back in for "READY TO START?".
+- Accordion: the clip under the playhead grows wider and pushes later clips along; its width depends on its distance from the playhead.
+- Pinned words: DESIGN and PRODUCTS stay at the left edge until the first clip of their row pushes them off.
+- Parallax: two background layers move at 0.7 and 0.4 of the scroll.
+- The knight: an empty stretch of the top row holds a small game. The playhead pushes a pixel knight right; three different skeletons (sword and shield, spear, horned axe) stand in his way. He has eight frames (one idle, four running, three attacking); the frame depends only on how far he has been pushed, so he runs backwards when you scroll back. Each skeleton notices him, tips over and becomes a pile of bones. The knight then fades out with the scenery.
+- The sprites were generated, not hand-drawn: a small Python rig builds each pose from joints with a one-pixel outline per part and exports frames as SVG rectangles, so they stay sharp at any zoom.
+- The name: black letters on a yellow band, set in Syne 800. It is not live text — the nine letter outlines were pulled from the font file, each path drawn from nothing with a dash offset and then filled. As the camera zooms out, the name shrinks and docks top-left as the logo.
+- Phones get their own upright version: native vertical scrolling, the same three words to open, one column of large clips, a horizontal playhead line, and the knight crossing a strip between the first four projects and the rest.
+- The chat bar at the bottom is this AI. When an answer names a project, the timeline travels to it.
+
+**Process:** Aiden directed and judged; Claude wrote the code and the sprite rig. He sent most mocks back (for example a red name on a red word looked unbalanced; the first knight didn't read as a knight; identical skeletons looked too uniform). The decisions were his.
+
+**Behind it:** the AI assistant runs on a Cloudflare Worker that routes chat to Claude or DeepSeek by visitor region, logs conversations to D1 (auto-purged after 30 days), and serves an admin dashboard protected by Cloudflare Access.
 
 ### 4.5 CoLab — Hybrid Learning Platform
 - **Category:** Education Platform · 2025 (design case study)
@@ -124,6 +145,8 @@ Eight projects live on the site: four shipped AI products (2025–2026, all buil
 **What it is:** A hybrid learning platform built for international design students. It pairs standardized online lectures and quizzes with an in-person tutorial space — letting students freely form skill-based teams, follow lectures at their own pace, and ask questions in real time through an embedded AI assistant and live chat. The project was exhibited at the University of Sydney's graduation exhibition and used by the university as a reference.
 
 **Key features:** free team-up via skill-based profiles; standardized online lectures with quiz-verified attendance; in-class tutorial whiteboard with AI term explanations and live chat.
+
+**Details from the build:** students build a profile by picking a character (Australian animals and icons) and traits in three groups — Personality, Strengths and Team Role — then browse classmates in Team-up, save people and form a team. The sample lecture "Grid Systems in Interaction Design" has chapters (Intro, Why grids, Columns, Baseline, Responsive, Breaking) that each set a live grid's columns, gutter and margin, which students can also drag themselves. A short quiz closes each lecture; attendance is marked at 60% correct or more. In the live tutorial, design terms such as Kerning, Visual Rhythm, Negative Space and Hierarchy are highlighted; hovering one shows a plain explanation and a Chinese translation. Aiden was team lead, made the storyboard and logo, and wrote lecture code; it was a graduation studio team project.
 
 ### 4.6 vividXperience — Vision Pro Cultural Tech
 - **Category:** Spatial Design · 2024 · IDEA9105 (design case study)
