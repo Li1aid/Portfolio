@@ -431,7 +431,7 @@ async function callAnthropic(env, messages) {
       "content-type": "application/json",
     },
     body: JSON.stringify({
-      model: "claude-haiku-4-5-20251001",   // cheapest Anthropic model
+      model: "claude-sonnet-5-5",           // follows the no-invention rules more reliably than Haiku
       max_tokens: 900,                      // headroom only; length is set by the prompt. Chinese uses ~1.5 tokens per character
       system: [
         {
