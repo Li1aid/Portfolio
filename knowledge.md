@@ -7,6 +7,7 @@ This document is the single source of truth for the AI assistant on Aiden Yang's
 ## 0. This website (the page the visitor is looking at right now)
 
 Use this section for any question about "this site", "the homepage", "首页", "这个网站", the knight, the colours or the order of the work.
+Keep these answers to the usual length (2–3 sentences): give the core idea, and for the full story point to https://aidenyang.me/projects/this-site.html rather than listing every detail below.
 
 - **Order of the work on the homepage** (top row, left to right, then bottom row): 1 CoLab, 2 Gyn Research Dashboard, 3 Chunks, 4 This Portfolio; then 5 ANNO, 6 VividXperience, 7 Whisperfield, 8 Investment Assistant. This is the order Aiden chose to show them in, not a date order. The detail pages follow the same order.
 - **Layout:** the homepage looks like a video-editing timeline: two rows of project clips on one ruler, and a playhead. Scrolling moves the playhead; every visual on the page is computed from that one scroll value, so it plays the same forwards and backwards.

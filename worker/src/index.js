@@ -423,7 +423,7 @@ async function callAnthropic(env, messages) {
     },
     body: JSON.stringify({
       model: "claude-haiku-4-5-20251001",   // cheapest Anthropic model
-      max_tokens: 350,                      // replies are capped at ~100 words / 300 chars
+      max_tokens: 900,                      // headroom only; length is set by the prompt. Chinese uses ~1.5 tokens per character
       system: [
         {
           type: "text",
@@ -436,7 +436,8 @@ async function callAnthropic(env, messages) {
   });
   if (!res.ok) throw new Error(`Anthropic ${res.status}: ${await res.text()}`);
   const data = await res.json();
-  return data.content?.[0]?.text ?? "";
+  const text = data.content?.[0]?.text ?? "";
+  return data.stop_reason === "max_tokens" ? endOnSentence(text) : text;
 }
 
 async function callDeepSeek(env, messages) {
@@ -449,18 +450,28 @@ async function callDeepSeek(env, messages) {
     },
     body: JSON.stringify({
       model: "deepseek-chat",              // cheapest DeepSeek model (not reasoner)
-      max_tokens: 350,
+      max_tokens: 900,
       messages: [{ role: "system", content: SYSTEM_PROMPT }, ...messages],
     }),
   });
   if (!res.ok) throw new Error(`DeepSeek ${res.status}: ${await res.text()}`);
   const data = await res.json();
-  return data.choices?.[0]?.message?.content ?? "";
+  const choice = data.choices?.[0];
+  const text = choice?.message?.content ?? "";
+  return choice?.finish_reason === "length" ? endOnSentence(text) : text;
 }
 
 // ─────────────────────────────────────────────────────────────────────────
 // Helpers
 // ─────────────────────────────────────────────────────────────────────────
+
+// If a reply hit the token limit, drop the unfinished sentence so it never ends mid-thought.
+function endOnSentence(text) {
+  const t = text.trimEnd();
+  let cut = -1;
+  for (const m of t.matchAll(/[。！？!?]|\.(?=\s|$)/g)) cut = m.index + m[0].length;
+  return cut > t.length * 0.4 ? t.slice(0, cut) : t + "…";
+}
 
 function detectLanguage(text) {
   // Anything with a CJK character → zh; else en. Good enough for tagging.
