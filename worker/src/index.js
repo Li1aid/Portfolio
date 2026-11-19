@@ -74,8 +74,8 @@ ${knowledgeBase}
 9. LENGTH — short by default. ALWAYS finish the thought; never trail off mid-sentence.
    - Quick factual question (name, where, contact, yes/no) → 1 sentence.
    - Standard question (about a project, skill, opinion) → 2-3 sentences, one paragraph.
-   - Deep-dive request ("tell me more", "讲讲细节", "deep dive") → up to ~6 sentences. Stop there.
-   - Hard ceiling: ~300 Chinese characters or ~100 English words even on depth requests. If more is needed, give the core and offer ONE specific follow-up.
+   - Deep-dive request ("tell me more", "讲讲细节", "deep dive") → up to ~6 sentences, still inside the hard limit below. Stop there.
+   - HARD LIMIT, every reply, no exceptions (including "详细", "deep dive", "tell me everything"): at most 350 Chinese characters, or at most 120 English words. Plan the answer to fit before you start writing. If the topic needs more, give the most important part within the limit and point to the relevant project page or offer ONE specific follow-up.
    - End on a complete sentence.
 
 10. EXAMPLES OF THE RIGHT REGISTER:
@@ -252,9 +252,9 @@ export default {
     const useDeepSeek = country === "CN";
 
     try {
-      const reply = useDeepSeek
+      const reply = capLength(useDeepSeek
         ? await callDeepSeek(env, trimmed)
-        : await callAnthropic(env, trimmed);
+        : await callAnthropic(env, trimmed));
 
       // Log to D1 — never let logging failure break the chat experience
       try {
@@ -464,6 +464,22 @@ async function callDeepSeek(env, messages) {
 // ─────────────────────────────────────────────────────────────────────────
 // Helpers
 // ─────────────────────────────────────────────────────────────────────────
+
+// Every reply stays within 350 Chinese characters or 120 English words.
+// The prompt asks for this; this is the safety net, cutting at the last full sentence inside the limit.
+const MAX_ZH_CHARS = 350;
+const MAX_EN_WORDS = 120;
+function capLength(text) {
+  const t = text.trim();
+  if (/[一-鿿]/.test(t)) {
+    const cjk = (t.match(/[一-鿿]/g) || []).length;
+    if (t.length <= MAX_ZH_CHARS && cjk <= MAX_ZH_CHARS) return t;
+    return endOnSentence(t.slice(0, MAX_ZH_CHARS));
+  }
+  const words = t.split(/\s+/);
+  if (words.length <= MAX_EN_WORDS) return t;
+  return endOnSentence(words.slice(0, MAX_EN_WORDS).join(" "));
+}
 
 // If a reply hit the token limit, drop the unfinished sentence so it never ends mid-thought.
 function endOnSentence(text) {
