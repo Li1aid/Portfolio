@@ -369,7 +369,7 @@ S.p0 = STARTX + (S.cx - M) / S.z0;
 S.sh = Math.max(0, STARTX + (S.W - M) / S.z0 + 24 - 1260);
 S.pend = ENDX + (S.cx - M) / S.zE;
 S.max = Math.max(ZLEN * 2 + 200, S.pend - S.p0);
-if (ghost) ghost.style.flexBasis = S.max.toFixed(0) + 'px';
+if (ghost) { ghost.style.flexBasis = S.max.toFixed(0) + 'px'; ghost.style.width = S.max.toFixed(0) + 'px'; ghost.parentNode.style.width = (S.W + S.max).toFixed(0) + 'px'; }
 stops = [S.p0];
 for (var i = 0; i < clips.length; i++) stops.push(clips[i].c0);
 stops.push(S.pend);
